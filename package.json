@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "jest": "^25.1.0"
+  },
+  "devDependencies": {
+    "jest-each": "^25.1.0"
+  },
+  "main": "./formatter.js"
+}
