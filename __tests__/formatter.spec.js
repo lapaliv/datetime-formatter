@@ -1,14 +1,14 @@
-const formatter = require('~/formatter.js');
+import DateTimeFormatter from '../dist/index.js';
 
 describe('constructor', () => {
     const now = new Date();
     const timestamps = [
-        ['timestamp', 0, 1970, 0, 1, 0, 0, 0, 0, 'UTC'],
-        ['timestamp', 1588547699, 2020, 4, 3, 23, 14, 59, 0, 'UTC'],
-        ['timestamp', 1588547699.123, 2020, 4, 3, 23, 14, 59, 123000, 'UTC'],
-        ['timestamp', 1588547699.123456, 2020, 4, 3, 23, 14, 59, 123456, 'UTC'],
-        ['timestamp', 1588547699123, 2020, 4, 3, 23, 14, 59, 123000, 'UTC'],
-        ['timestamp', 1588547699123456, 2020, 4, 3, 23, 14, 59, 123456, 'UTC'],
+        ['timestamp', 0, 1970, 0, 1, 0, 0, 0, 0],
+        ['timestamp', 1588547699, 2020, 4, 3, 23, 14, 59, 0],
+        ['timestamp', 1588547699.123, 2020, 4, 3, 23, 14, 59, 123000],
+        ['timestamp', 1588547699.123456, 2020, 4, 3, 23, 14, 59, 123456],
+        ['timestamp', 1588547699123, 2020, 4, 3, 23, 14, 59, 123000],
+        ['timestamp', 1588547699123456, 2020, 4, 3, 23, 14, 59, 123456],
         [
             'timestamp',
             Math.floor(now.getTime() / 1000),
@@ -19,23 +19,22 @@ describe('constructor', () => {
             now.getUTCMinutes(),
             now.getUTCSeconds(),
             0,
-            'UTC',
         ],
         [
             'date',
             new Date(1992, 4, 2, 13, 56, 23, 123),
-            1992, 4, 2, 13, 56, 23, 123000, 'UTC',
+            1992, 4, 2, 13, 56, 23, 123000,
         ],
         [
             'date',
             new Date(2008, 11, 19, 18, 3, 59, 44),
-            2008, 11, 19, 18, 3, 59, 44000, 'UTC',
+            2008, 11, 19, 18, 3, 59, 44000,
         ],
     ];
 
     for (const value of timestamps) {
         it(`${value[0]} ${value[2]}-${value[3]}-${value[4]} ${value[5]}:${value[6]}:${value[8]}`, () => {
-            const target = new formatter(value[1]);
+            const target = new DateTimeFormatter(value[1]);
             expect(target.year).toBe(value[2]);
             expect(target.month).toBe(value[3]);
             expect(target.day).toBe(value[4]);
@@ -43,24 +42,23 @@ describe('constructor', () => {
             expect(target.minutes).toBe(value[6]);
             expect(target.seconds).toBe(value[7]);
             expect(target.microseconds).toBe(value[8]);
-            expect(target.timezone).toBe(value[9]);
         });
     }
 
     const raws = [
         [
-            1998, 1, 2, 3, 4, 5, 6, 7, 'UTC',
-            1998, 1, 2, 3, 4, 5, 6, 7, 'UTC',
+            1998, 1, 2, 3, 4, 5, 6, 7,
+            1998, 1, 2, 3, 4, 5, 6, 7,
         ],
         [
-            1998, 10, 12, 13, 14, 15, 16, 17, 'UTC',
-            1998, 10, 12, 13, 14, 15, 16, 17, 'UTC',
+            1998, 10, 12, 13, 14, 15, 16, 17,
+            1998, 10, 12, 13, 14, 15, 16, 17,
         ],
     ];
 
     for (const value of raws) {
-        it(`raw ${value[9]}-${value[10]}-${value[11]} ${value[12]}:${value[13]}:${value[14]}`, () => {
-            const target = new formatter(
+        it(`raw ${value[8]}-${value[9]}-${value[10]} ${value[11]}:${value[12]}:${value[13]}`, () => {
+            const target = new DateTimeFormatter(
                 value[0],
                 value[1],
                 value[2],
@@ -69,76 +67,74 @@ describe('constructor', () => {
                 value[5],
                 value[6],
                 value[7],
-                value[8],
             );
-            expect(target.year).toBe(value[9]);
-            expect(target.month).toBe(value[10]);
-            expect(target.day).toBe(value[11]);
-            expect(target.hours).toBe(value[12]);
-            expect(target.minutes).toBe(value[13]);
-            expect(target.seconds).toBe(value[14]);
-            expect(target.microseconds).toBe(value[15]);
-            expect(target.timezone).toBe(value[16]);
+            expect(target.year).toBe(value[8]);
+            expect(target.month).toBe(value[9]);
+            expect(target.day).toBe(value[10]);
+            expect(target.hours).toBe(value[11]);
+            expect(target.minutes).toBe(value[12]);
+            expect(target.seconds).toBe(value[13]);
+            expect(target.microseconds).toBe(value[14]);
         });
     }
 });
 
 describe('format', () => {
     it('Y-m-d H:i:s', () => {
-        const target = new formatter(1588547699);
+        const target = new DateTimeFormatter(1588547699);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-05-03 23:14:59');
     });
     it('U', () => {
-        const target = new formatter(1588547699);
+        const target = new DateTimeFormatter(1588547699);
         expect(target.format('U')).toEqual('1588547699');
     });
     it('d/m/y H:i:s.u', () => {
-        const target = new formatter(1588547699123456);
+        const target = new DateTimeFormatter(1588547699123456);
         expect(target.format('d/m/y H:i:s.u')).toEqual('03/05/20 23:14:59.123456');
     });
 });
 
 describe('toDateTimeString', () => {
     it('2020-05-03 23:14:59', () => {
-        const target = new formatter(1588547699);
+        const target = new DateTimeFormatter(1588547699);
         expect(target.toDateTimeString()).toEqual('2020-05-03 23:14:59');
     });
     it('2008-11-09 07:03:12', () => {
-        const target = new formatter(1226214192);
+        const target = new DateTimeFormatter(1226214192);
         expect(target.toDateTimeString()).toEqual('2008-11-09 07:03:12');
     });
 });
 
 describe('toDateString', () => {
     it('2020-05-03', () => {
-        const target = new formatter(1588547699);
+        const target = new DateTimeFormatter(1588547699);
         expect(target.toDateString()).toEqual('2020-05-03');
     });
     it('2008-11-09', () => {
-        const target = new formatter(1226214192);
+        const target = new DateTimeFormatter(1226214192);
         expect(target.toDateString()).toEqual('2008-11-09');
     });
 });
 
 describe('toTimestamp', () => {
     it('1588547699', () => {
-        const target = new formatter(1588547699);
-        expect(target.toTimestamp()).toEqual('1588547699');
+        const target = new DateTimeFormatter(1588547699);
+        expect(target.toTimestamp()).toEqual(1588547699);
     });
     it('1226214192', () => {
-        const target = new formatter(1226214192);
-        expect(target.toTimestamp()).toEqual('1226214192');
+        const target = new DateTimeFormatter(1226214192);
+        expect(target.toTimestamp()).toEqual(1226214192);
     });
 });
 
 describe('toDate', () => {
     it('1588547699001', () => {
-        const target = new formatter(1588547699001);
+        const target = new DateTimeFormatter(1588547699001);
         expect(target.toDate()).toEqual(new Date(Date.UTC(2020, 4, 3, 23, 14, 59, 1)));
     });
 
     it('1226214192000000', () => {
-        const target = new formatter(1226214192000000);
+        const target = new DateTimeFormatter(1226214192000000);
         expect(target.toDate()).toEqual(new Date(Date.UTC(2008, 10, 9, 7, 3, 12, 0)));
     });
 });
@@ -187,7 +183,7 @@ describe('isLeapYear', () => {
 
     for (let year = 1; year <= 3000; year++) {
         it(`${year}`, () => {
-            const target = new formatter(new Date(year, 0, 1, 0, 0, 0));
+            const target = new DateTimeFormatter(new Date(year, 0, 1, 0, 0, 0));
             expect(target.isLeapYear()).toEqual(leapYears.includes(year));
         });
     }
@@ -195,92 +191,92 @@ describe('isLeapYear', () => {
 
 describe('getCountDaysInMonth', () => {
     it('2019-02 (28)', () => {
-        const target = new formatter(new Date(2019, 1, 1));
+        const target = new DateTimeFormatter(new Date(2019, 1, 1));
         expect(target.getCountDaysInMonth()).toEqual(28);
     });
     it('1776-02 (29)', () => {
-        const target = new formatter(new Date(1776, 1, 1));
+        const target = new DateTimeFormatter(new Date(1776, 1, 1));
         expect(target.getCountDaysInMonth()).toEqual(29);
     });
     it('2020-01 (31)', () => {
-        const target = new formatter(new Date(2020, 0, 1));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1));
         expect(target.getCountDaysInMonth()).toEqual(31);
     });
     it('2020-03 (31)', () => {
-        const target = new formatter(new Date(2020, 2, 1));
+        const target = new DateTimeFormatter(new Date(2020, 2, 1));
         expect(target.getCountDaysInMonth()).toEqual(31);
     });
     it('2020-04 (30)', () => {
-        const target = new formatter(new Date(2020, 3, 1));
+        const target = new DateTimeFormatter(new Date(2020, 3, 1));
         expect(target.getCountDaysInMonth()).toEqual(30);
     });
     it('2020-05 (31)', () => {
-        const target = new formatter(new Date(2020, 4, 1));
+        const target = new DateTimeFormatter(new Date(2020, 4, 1));
         expect(target.getCountDaysInMonth()).toEqual(31);
     });
     it('2020-06 (30)', () => {
-        const target = new formatter(new Date(2020, 5, 1));
+        const target = new DateTimeFormatter(new Date(2020, 5, 1));
         expect(target.getCountDaysInMonth()).toEqual(30);
     });
     it('2020-07 (31)', () => {
-        const target = new formatter(new Date(2020, 6, 1));
+        const target = new DateTimeFormatter(new Date(2020, 6, 1));
         expect(target.getCountDaysInMonth()).toEqual(31);
     });
     it('2020-08 (31)', () => {
-        const target = new formatter(new Date(2020, 7, 1));
+        const target = new DateTimeFormatter(new Date(2020, 7, 1));
         expect(target.getCountDaysInMonth()).toEqual(31);
     });
     it('2020-09 (30)', () => {
-        const target = new formatter(new Date(2020, 8, 1));
+        const target = new DateTimeFormatter(new Date(2020, 8, 1));
         expect(target.getCountDaysInMonth()).toEqual(30);
     });
     it('2020-10 (31)', () => {
-        const target = new formatter(new Date(2020, 9, 1));
+        const target = new DateTimeFormatter(new Date(2020, 9, 1));
         expect(target.getCountDaysInMonth()).toEqual(31);
     });
     it('2020-11 (30)', () => {
-        const target = new formatter(new Date(2020, 10, 1));
+        const target = new DateTimeFormatter(new Date(2020, 10, 1));
         expect(target.getCountDaysInMonth()).toEqual(30);
     });
     it('2020-12 (31)', () => {
-        const target = new formatter(new Date(2020, 11, 1));
+        const target = new DateTimeFormatter(new Date(2020, 11, 1));
         expect(target.getCountDaysInMonth()).toEqual(31);
     });
 });
 
 describe('addSecond', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 0, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 0, 0));
         target.addSecond();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:00:01');
     });
 
     it('next minute', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 0, 59));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 0, 59));
         target.addSecond();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:01:00');
     });
 
     it('next hour', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 59, 59));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 59, 59));
         target.addSecond();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 01:00:00');
     });
 
     it('next day', () => {
-        const target = new formatter(new Date(2020, 0, 1, 23, 59, 59));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 23, 59, 59));
         target.addSecond();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-02 00:00:00');
     });
 
     it('next month', () => {
-        const target = new formatter(new Date(2020, 0, 31, 23, 59, 59));
+        const target = new DateTimeFormatter(new Date(2020, 0, 31, 23, 59, 59));
         target.addSecond();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-02-01 00:00:00');
     });
 
     it('next year', () => {
-        const target = new formatter(new Date(2020, 11, 31, 23, 59, 59));
+        const target = new DateTimeFormatter(new Date(2020, 11, 31, 23, 59, 59));
         target.addSecond();
         expect(target.format('Y-m-d H:i:s')).toEqual('2021-01-01 00:00:00');
     });
@@ -288,37 +284,37 @@ describe('addSecond', () => {
 
 describe('addSeconds', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 0, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 0, 0));
         target.addSeconds(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:00:05');
     });
 
     it('next minute', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 0, 59));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 0, 59));
         target.addSeconds(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:01:04');
     });
 
     it('next hour', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 59, 59));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 59, 59));
         target.addSeconds(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 01:00:04');
     });
 
     it('next day', () => {
-        const target = new formatter(new Date(2020, 0, 1, 23, 59, 59));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 23, 59, 59));
         target.addSeconds(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-02 00:00:04');
     });
 
     it('next month', () => {
-        const target = new formatter(new Date(2020, 0, 31, 23, 59, 59));
+        const target = new DateTimeFormatter(new Date(2020, 0, 31, 23, 59, 59));
         target.addSeconds(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-02-01 00:00:04');
     });
 
     it('next year', () => {
-        const target = new formatter(new Date(2020, 11, 31, 23, 59, 59));
+        const target = new DateTimeFormatter(new Date(2020, 11, 31, 23, 59, 59));
         target.addSeconds(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2021-01-01 00:00:04');
     });
@@ -326,37 +322,37 @@ describe('addSeconds', () => {
 
 describe('subSecond', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 0, 1));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 0, 1));
         target.subSecond();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:00:00');
     });
 
     it('prev minute', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 1, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 1, 0));
         target.subSecond();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:00:59');
     });
 
     it('prev hour', () => {
-        const target = new formatter(new Date(2020, 0, 1, 1, 0, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 1, 0, 0));
         target.subSecond();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:59:59');
     });
 
     it('prev day', () => {
-        const target = new formatter(new Date(2020, 0, 2, 0, 0, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 2, 0, 0, 0));
         target.subSecond();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 23:59:59');
     });
 
     it('prev month', () => {
-        const target = new formatter(new Date(2020, 1, 1, 0, 0, 0));
+        const target = new DateTimeFormatter(new Date(2020, 1, 1, 0, 0, 0));
         target.subSecond();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-31 23:59:59');
     });
 
     it('prev year', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 0, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 0, 0));
         target.subSecond();
         expect(target.format('Y-m-d H:i:s')).toEqual('2019-12-31 23:59:59');
     });
@@ -364,37 +360,37 @@ describe('subSecond', () => {
 
 describe('subSeconds', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 0, 5));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 0, 5));
         target.subSeconds(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:00:00');
     });
 
     it('prev minute', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 1, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 1, 0));
         target.subSeconds(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:00:55');
     });
 
     it('prev hour', () => {
-        const target = new formatter(new Date(2020, 0, 1, 1, 0, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 1, 0, 0));
         target.subSeconds(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:59:55');
     });
 
     it('prev day', () => {
-        const target = new formatter(new Date(2020, 0, 2, 0, 0, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 2, 0, 0, 0));
         target.subSeconds(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 23:59:55');
     });
 
     it('prev month', () => {
-        const target = new formatter(new Date(2020, 1, 1, 0, 0, 0));
+        const target = new DateTimeFormatter(new Date(2020, 1, 1, 0, 0, 0));
         target.subSeconds(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-31 23:59:55');
     });
 
     it('prev year', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 0, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 0, 0));
         target.subSeconds(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2019-12-31 23:59:55');
     });
@@ -402,31 +398,31 @@ describe('subSeconds', () => {
 
 describe('addMinute', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 0));
         target.addMinute();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:01:00');
     });
 
     it('next hour', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 59));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 59));
         target.addMinute();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 01:00:00');
     });
 
     it('next day', () => {
-        const target = new formatter(new Date(2020, 0, 1, 23, 59));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 23, 59));
         target.addMinute();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-02 00:00:00');
     });
 
     it('next month', () => {
-        const target = new formatter(new Date(2020, 0, 31, 23, 59));
+        const target = new DateTimeFormatter(new Date(2020, 0, 31, 23, 59));
         target.addMinute();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-02-01 00:00:00');
     });
 
     it('next year', () => {
-        const target = new formatter(new Date(2020, 11, 31, 23, 59));
+        const target = new DateTimeFormatter(new Date(2020, 11, 31, 23, 59));
         target.addMinute();
         expect(target.format('Y-m-d H:i:s')).toEqual('2021-01-01 00:00:00');
     });
@@ -434,31 +430,31 @@ describe('addMinute', () => {
 
 describe('addMinutes', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 0));
         target.addMinutes(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:05:00');
     });
 
     it('next hour', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 59));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 59));
         target.addMinutes(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 01:04:00');
     });
 
     it('next day', () => {
-        const target = new formatter(new Date(2020, 0, 1, 23, 59));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 23, 59));
         target.addMinutes(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-02 00:04:00');
     });
 
     it('next month', () => {
-        const target = new formatter(new Date(2020, 0, 31, 23, 59));
+        const target = new DateTimeFormatter(new Date(2020, 0, 31, 23, 59));
         target.addMinutes(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-02-01 00:04:00');
     });
 
     it('next year', () => {
-        const target = new formatter(new Date(2020, 11, 31, 23, 59));
+        const target = new DateTimeFormatter(new Date(2020, 11, 31, 23, 59));
         target.addMinutes(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2021-01-01 00:04:00');
     });
@@ -466,31 +462,31 @@ describe('addMinutes', () => {
 
 describe('subMinute', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 1));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 1));
         target.subMinute();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:00:00');
     });
 
     it('prev hour', () => {
-        const target = new formatter(new Date(2020, 0, 1, 1, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 1, 0));
         target.subMinute();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:59:00');
     });
 
     it('prev day', () => {
-        const target = new formatter(new Date(2020, 0, 2, 0, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 2, 0, 0));
         target.subMinute();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 23:59:00');
     });
 
     it('prev month', () => {
-        const target = new formatter(new Date(2020, 1, 1, 0, 0));
+        const target = new DateTimeFormatter(new Date(2020, 1, 1, 0, 0));
         target.subMinute();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-31 23:59:00');
     });
 
     it('prev year', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 0));
         target.subMinute();
         expect(target.format('Y-m-d H:i:s')).toEqual('2019-12-31 23:59:00');
     });
@@ -498,31 +494,31 @@ describe('subMinute', () => {
 
 describe('subMinutes', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 5));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 5));
         target.subMinutes(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:00:00');
     });
 
     it('prev hour', () => {
-        const target = new formatter(new Date(2020, 0, 1, 1, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 1, 0));
         target.subMinutes(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:55:00');
     });
 
     it('prev day', () => {
-        const target = new formatter(new Date(2020, 0, 2, 0, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 2, 0, 0));
         target.subMinutes(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 23:55:00');
     });
 
     it('prev month', () => {
-        const target = new formatter(new Date(2020, 1, 1, 0, 0));
+        const target = new DateTimeFormatter(new Date(2020, 1, 1, 0, 0));
         target.subMinutes(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-31 23:55:00');
     });
 
     it('prev year', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 0));
         target.subMinutes(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2019-12-31 23:55:00');
     });
@@ -530,25 +526,25 @@ describe('subMinutes', () => {
 
 describe('addHour', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0));
         target.addHour();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 01:00:00');
     });
 
     it('next day', () => {
-        const target = new formatter(new Date(2020, 0, 1, 23));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 23));
         target.addHour();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-02 00:00:00');
     });
 
     it('next month', () => {
-        const target = new formatter(new Date(2020, 0, 31, 23));
+        const target = new DateTimeFormatter(new Date(2020, 0, 31, 23));
         target.addHour();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-02-01 00:00:00');
     });
 
     it('next year', () => {
-        const target = new formatter(new Date(2020, 11, 31, 23));
+        const target = new DateTimeFormatter(new Date(2020, 11, 31, 23));
         target.addHour();
         expect(target.format('Y-m-d H:i:s')).toEqual('2021-01-01 00:00:00');
     });
@@ -556,25 +552,25 @@ describe('addHour', () => {
 
 describe('addHours', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0));
         target.addHours(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 05:00:00');
     });
 
     it('next day', () => {
-        const target = new formatter(new Date(2020, 0, 1, 23));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 23));
         target.addHours(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-02 04:00:00');
     });
 
     it('next month', () => {
-        const target = new formatter(new Date(2020, 0, 31, 23));
+        const target = new DateTimeFormatter(new Date(2020, 0, 31, 23));
         target.addHours(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-02-01 04:00:00');
     });
 
     it('next year', () => {
-        const target = new formatter(new Date(2020, 11, 31, 23));
+        const target = new DateTimeFormatter(new Date(2020, 11, 31, 23));
         target.addHours(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2021-01-01 04:00:00');
     });
@@ -582,25 +578,25 @@ describe('addHours', () => {
 
 describe('subHour', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 0, 1, 1));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 1));
         target.subHour();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:00:00');
     });
 
     it('prev day', () => {
-        const target = new formatter(new Date(2020, 0, 2, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 2, 0));
         target.subHour();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 23:00:00');
     });
 
     it('prev month', () => {
-        const target = new formatter(new Date(2020, 1, 1, 0));
+        const target = new DateTimeFormatter(new Date(2020, 1, 1, 0));
         target.subHour();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-31 23:00:00');
     });
 
     it('prev year', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0));
         target.subHour();
         expect(target.format('Y-m-d H:i:s')).toEqual('2019-12-31 23:00:00');
     });
@@ -608,25 +604,25 @@ describe('subHour', () => {
 
 describe('subHours', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 0, 1, 5, 1, 2));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 5, 1, 2));
         target.subHours(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:01:02');
     });
 
     it('prev day', () => {
-        const target = new formatter(new Date(2020, 0, 2, 0, 10, 11));
+        const target = new DateTimeFormatter(new Date(2020, 0, 2, 0, 10, 11));
         target.subHours(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 19:10:11');
     });
 
     it('prev month', () => {
-        const target = new formatter(new Date(2020, 1, 1, 0, 25, 26));
+        const target = new DateTimeFormatter(new Date(2020, 1, 1, 0, 25, 26));
         target.subHours(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-31 19:25:26');
     });
 
     it('prev year', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 48, 37));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 48, 37));
         target.subHours(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2019-12-31 19:48:37');
     });
@@ -634,19 +630,19 @@ describe('subHours', () => {
 
 describe('addDay', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 0, 1, 1, 2, 3));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 1, 2, 3));
         target.addDay();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-02 01:02:03');
     });
 
     it('next month', () => {
-        const target = new formatter(new Date(2020, 0, 31, 12, 13, 14));
+        const target = new DateTimeFormatter(new Date(2020, 0, 31, 12, 13, 14));
         target.addDay();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-02-01 12:13:14');
     });
 
     it('next year', () => {
-        const target = new formatter(new Date(2020, 11, 31, 23, 9, 10));
+        const target = new DateTimeFormatter(new Date(2020, 11, 31, 23, 9, 10));
         target.addDay();
         expect(target.format('Y-m-d H:i:s')).toEqual('2021-01-01 23:09:10');
     });
@@ -654,19 +650,19 @@ describe('addDay', () => {
 
 describe('addDays', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 0, 1, 3, 26, 9));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 3, 26, 9));
         target.addDays(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-06 03:26:09');
     });
 
     it('next month', () => {
-        const target = new formatter(new Date(2020, 0, 31));
+        const target = new DateTimeFormatter(new Date(2020, 0, 31));
         target.addDays(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-02-05 00:00:00');
     });
 
     it('next year', () => {
-        const target = new formatter(new Date(2020, 11, 31));
+        const target = new DateTimeFormatter(new Date(2020, 11, 31));
         target.addDays(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2021-01-05 00:00:00');
     });
@@ -674,19 +670,19 @@ describe('addDays', () => {
 
 describe('subDay', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 0, 2));
+        const target = new DateTimeFormatter(new Date(2020, 0, 2));
         target.subDay();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:00:00');
     });
 
     it('prev month', () => {
-        const target = new formatter(new Date(2020, 1, 1));
+        const target = new DateTimeFormatter(new Date(2020, 1, 1));
         target.subDay();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-31 00:00:00');
     });
 
     it('prev year', () => {
-        const target = new formatter(new Date(2020, 0, 1));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1));
         target.subDay();
         expect(target.format('Y-m-d H:i:s')).toEqual('2019-12-31 00:00:00');
     });
@@ -694,33 +690,113 @@ describe('subDay', () => {
 
 describe('subDays', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 0, 6, 5, 1, 2));
+        const target = new DateTimeFormatter(new Date(2020, 0, 6, 5, 1, 2));
         target.subDays(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 05:01:02');
     });
 
     it('prev month', () => {
-        const target = new formatter(new Date(2020, 1, 1, 0, 25, 26));
+        const target = new DateTimeFormatter(new Date(2020, 1, 1, 0, 25, 26));
         target.subDays(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-27 00:25:26');
     });
 
     it('prev year', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 48, 37));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 48, 37));
         target.subDays(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2019-12-27 00:48:37');
     });
 });
 
+describe('addWeek', () => {
+    it('basic', () => {
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 1, 2, 3));
+        target.addWeek();
+        expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-08 01:02:03');
+    });
+
+    it('next month', () => {
+        const target = new DateTimeFormatter(new Date(2020, 0, 31, 12, 13, 14));
+        target.addWeek();
+        expect(target.format('Y-m-d H:i:s')).toEqual('2020-02-07 12:13:14');
+    });
+
+    it('next year', () => {
+        const target = new DateTimeFormatter(new Date(2020, 11, 31, 23, 9, 10));
+        target.addWeek();
+        expect(target.format('Y-m-d H:i:s')).toEqual('2021-01-07 23:09:10');
+    });
+});
+
+describe('addWeeks', () => {
+    it('basic', () => {
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 3, 26, 9));
+        target.addWeeks(2);
+        expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-15 03:26:09');
+    });
+
+    it('next month', () => {
+        const target = new DateTimeFormatter(new Date(2020, 0, 31));
+        target.addWeeks(2);
+        expect(target.format('Y-m-d H:i:s')).toEqual('2020-02-14 00:00:00');
+    });
+
+    it('next year', () => {
+        const target = new DateTimeFormatter(new Date(2020, 11, 31));
+        target.addWeeks(2);
+        expect(target.format('Y-m-d H:i:s')).toEqual('2021-01-14 00:00:00');
+    });
+});
+
+describe('subWeek', () => {
+    it('basic', () => {
+        const target = new DateTimeFormatter(new Date(2020, 0, 8));
+        target.subWeek();
+        expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 00:00:00');
+    });
+
+    it('prev month', () => {
+        const target = new DateTimeFormatter(new Date(2020, 1, 1));
+        target.subWeek();
+        expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-25 00:00:00');
+    });
+
+    it('prev year', () => {
+        const target = new DateTimeFormatter(new Date(2020, 0, 1));
+        target.subWeek();
+        expect(target.format('Y-m-d H:i:s')).toEqual('2019-12-25 00:00:00');
+    });
+});
+
+describe('subWeeks', () => {
+    it('basic', () => {
+        const target = new DateTimeFormatter(new Date(2020, 0, 15, 5, 1, 2));
+        target.subWeeks(2);
+        expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-01 05:01:02');
+    });
+
+    it('prev month', () => {
+        const target = new DateTimeFormatter(new Date(2020, 1, 1, 0, 25, 26));
+        target.subWeeks(2);
+        expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-18 00:25:26');
+    });
+
+    it('prev year', () => {
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 48, 37));
+        target.subWeeks(2);
+        expect(target.format('Y-m-d H:i:s')).toEqual('2019-12-18 00:48:37');
+    });
+});
+
 describe('addMonth', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 0, 1, 1, 2, 3));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 1, 2, 3));
         target.addMonth();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-02-01 01:02:03');
     });
 
     it('next year', () => {
-        const target = new formatter(new Date(2020, 11, 31, 23, 9, 10));
+        const target = new DateTimeFormatter(new Date(2020, 11, 31, 23, 9, 10));
         target.addMonth();
         expect(target.format('Y-m-d H:i:s')).toEqual('2021-01-31 23:09:10');
     });
@@ -728,13 +804,13 @@ describe('addMonth', () => {
 
 describe('addMonths', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 0, 1, 3, 26, 9));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 3, 26, 9));
         target.addMonths(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-06-01 03:26:09');
     });
 
     it('next year', () => {
-        const target = new formatter(new Date(2020, 11, 31));
+        const target = new DateTimeFormatter(new Date(2020, 11, 31));
         target.addMonths(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2021-05-31 00:00:00');
     });
@@ -742,13 +818,13 @@ describe('addMonths', () => {
 
 describe('subMonth', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 1, 2));
+        const target = new DateTimeFormatter(new Date(2020, 1, 2));
         target.subMonth();
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-02 00:00:00');
     });
 
     it('prev year', () => {
-        const target = new formatter(new Date(2020, 0, 1));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1));
         target.subMonth();
         expect(target.format('Y-m-d H:i:s')).toEqual('2019-12-01 00:00:00');
     });
@@ -756,69 +832,62 @@ describe('subMonth', () => {
 
 describe('subMonths', () => {
     it('basic', () => {
-        const target = new formatter(new Date(2020, 5, 6, 5, 1, 2));
+        const target = new DateTimeFormatter(new Date(2020, 5, 6, 5, 1, 2));
         target.subMonths(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2020-01-06 05:01:02');
     });
 
     it('prev year', () => {
-        const target = new formatter(new Date(2020, 0, 1, 0, 48, 37));
+        const target = new DateTimeFormatter(new Date(2020, 0, 1, 0, 48, 37));
         target.subMonths(5);
         expect(target.format('Y-m-d H:i:s')).toEqual('2019-08-01 00:48:37');
     });
 });
 
 it('addYear', () => {
-    const target = new formatter(new Date(2020, 0, 1, 1, 2, 3));
+    const target = new DateTimeFormatter(new Date(2020, 0, 1, 1, 2, 3));
     target.addYear();
     expect(target.format('Y-m-d H:i:s')).toEqual('2021-01-01 01:02:03');
 });
 
 it('addYears', () => {
-    const target = new formatter(new Date(2020, 0, 1, 3, 26, 9));
+    const target = new DateTimeFormatter(new Date(2020, 0, 1, 3, 26, 9));
     target.addYears(5);
     expect(target.format('Y-m-d H:i:s')).toEqual('2025-01-01 03:26:09');
 });
 
 it('subYear', () => {
-    const target = new formatter(new Date(2020, 1, 2));
+    const target = new DateTimeFormatter(new Date(2020, 1, 2));
     target.subYear();
     expect(target.format('Y-m-d H:i:s')).toEqual('2019-02-02 00:00:00');
 });
 
 it('subYears', () => {
-    const target = new formatter(new Date(2020, 5, 6, 5, 1, 2));
+    const target = new DateTimeFormatter(new Date(2020, 5, 6, 5, 1, 2));
     target.subYears(5);
     expect(target.format('Y-m-d H:i:s')).toEqual('2015-06-06 05:01:02');
 });
 
-describe('getDayOnFirstWeekInYear', () => {
-    it('2020', () => {
-        const target = new formatter(new Date(2020, 0, 1));
-        expect(target.getDayOnFirstWeekInYear()).toEqual(6);
+describe('createFromFormat', () => {
+    it('2020-01-02 03:04:05', () => {
+        const target = DateTimeFormatter.createFromFormat('Y-m-d H:i:s', '2020-01-02 03:04:05');
+        expect(target.year).toEqual(2020);
+        expect(target.month).toEqual(0);
+        expect(target.day).toEqual(2);
+        expect(target.hours).toEqual(3);
+        expect(target.minutes).toEqual(4);
+        expect(target.seconds).toEqual(5);
+        expect(target.microseconds).toEqual(0);
     });
-    it('2019', () => {
-        const target = new formatter(new Date(2019, 0, 1));
-        expect(target.getDayOnFirstWeekInYear()).toEqual(7);
-    });
-    it('2016', () => {
-        const target = new formatter(new Date(2016, 0, 1));
-        expect(target.getDayOnFirstWeekInYear()).toEqual(4);
-    });
-    it('2004', () => {
-        const target = new formatter(new Date(2004, 0, 1));
-        expect(target.getDayOnFirstWeekInYear()).toEqual(5);
-    });
-    it('1967', () => {
-        const target = new formatter(new Date(1967, 0, 1));
-        expect(target.getDayOnFirstWeekInYear()).toEqual(2);
-    });
-    it('2109', () => {
-        const target = new formatter(new Date(2109, 0, 1));
-        expect(target.getDayOnFirstWeekInYear()).toEqual(7);
-    });
-    it('2129', () => {
-        const target = new formatter(new Date(2129, 0, 1));
-        expect(target.getDayOnFirstWeekInYear()).toEqual(3);
+
+    it('02/03/20', () => {
+        const target = DateTimeFormatter.createFromFormat('d/m/y', '02/03/20');
+        expect(target.year).toEqual(2020);
+        expect(target.month).toEqual(2);
+        expect(target.day).toEqual(2);
+        expect(target.hours).toEqual(0);
+        expect(target.minutes).toEqual(0);
+        expect(target.seconds).toEqual(0);
+        expect(target.microseconds).toEqual(0);
     });
 });
