@@ -69,7 +69,7 @@ describe('constructor', () => {
                 value[7],
             );
             expect(target.year).toBe(value[8]);
-            expect(target.month).toBe(value[9]);
+            expect(target.month).toBe(value[9] - 1);
             expect(target.day).toBe(value[10]);
             expect(target.hours).toBe(value[11]);
             expect(target.minutes).toBe(value[12]);
