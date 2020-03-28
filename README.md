@@ -13,17 +13,6 @@ DateTimeFormatter.now(): DateTimeFormatter;
 DateTimeFormatter.createFromFormat(format: string, date: string): DateTimeFormatter;
 ```
 
-#### Properties
-```
-year: number;
-month: number;
-day: number;
-hours: number;
-minutes: number;
-seconds: number;
-microseconds: number;
-```
-
 #### Getters
 ```
 getMicroseconds(): number;
