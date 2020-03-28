@@ -124,6 +124,8 @@ toDate(): Date;
 
 ### Other methods
 ```
-getCountDaysInMonth(): number;
+getFirstDayInYearOnFullWeek:() number;
+getDayOfWeek:() number;
+getDayOfWeekIso:() number;
 clone(): DateTimeFormatter;
 ```
