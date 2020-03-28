@@ -4,13 +4,16 @@ module.exports = {
     // Change to your "entry-point".
     entry: './src/index.ts',
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'index.js',
-        library: 'DateTimeFormatter',
+        path: path.resolve(__dirname, '.'),
+        filename: 'datetime-formatter.js',
+        library: 'datetime-formatter',
         libraryTarget: 'umd',
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.json']
+        extensions: ['.ts', '.tsx', '.js', '.json'],
+        //alias: {
+        //    '': path.resolve(__dirname, 'src'),
+        //},
     },
     module: {
         rules: [{

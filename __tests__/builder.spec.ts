@@ -1,4 +1,4 @@
-import DateTimeFormatter from '../dist';
+import DateTimeFormatter from 'datetime-formatter';
 
 describe('builder', () => {
     describe('d', () => {
@@ -13,16 +13,16 @@ describe('builder', () => {
     });
     describe('D', () => {
         for (let day = 1; day <= 7; day++) {
-            it(DateTimeFormatter.SHORT_DAYS[day - 1], () => {
+            it(DateTimeFormatter.globalShortDayNames[day - 1], () => {
                 const formatter = new DateTimeFormatter(2020, 6, day);
                 expect(formatter.format('D')).toBe(
-                    DateTimeFormatter.SHORT_DAYS[day - 1]
+                    formatter.shortDayNames[day - 1]
                 );
             });
         }
 
         it(`2018-06-13 23:35:47`, () => {
-            const formatter = new DateTimeFormatter(2018, 6, 13);
+            const formatter = new DateTimeFormatter(2018, 6, 13, 23, 35, 47);
             expect(formatter.format('D')).toBe('Wed');
         });
     });
@@ -36,10 +36,10 @@ describe('builder', () => {
     });
     describe('l', () => {
         for (let day = 1; day <= 7; day++) {
-            it(DateTimeFormatter.DAYS[day - 1], () => {
+            it(DateTimeFormatter.globalDayNames[day - 1], () => {
                 const formatter = new DateTimeFormatter(2020, 6, day);
                 expect(formatter.format('l')).toBe(
-                    DateTimeFormatter.DAYS[day - 1]
+                    formatter.dayNames[day - 1]
                 );
             });
         }
@@ -142,7 +142,7 @@ describe('builder', () => {
             it(`${month}`, () => {
                 const formatter = new DateTimeFormatter(2020, month, 1);
                 expect(formatter.format('F')).toBe(
-                    DateTimeFormatter.MONTHS[month - 1]
+                    formatter.monthNames[month - 1]
                 );
             });
         }
@@ -166,7 +166,7 @@ describe('builder', () => {
             it(`${month}`, () => {
                 const formatter = new DateTimeFormatter(2020, month, 1);
                 expect(formatter.format('M')).toBe(
-                    DateTimeFormatter.SHORT_MONTHS[month - 1]
+                    formatter.shortMonthNames[month - 1]
                 );
             });
         }

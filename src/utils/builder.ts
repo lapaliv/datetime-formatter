@@ -12,17 +12,13 @@ export function builder(formatter: DateTimeFormatter, format: string): string {
                     result += `0${formatter.day}`.slice(-2);
                     break;
                 case 'D':
-                    result += formatter.toDate().getUTCDay() > 0
-                        ? DateTimeFormatter.SHORT_DAYS[formatter.toDate().getUTCDay() - 1]
-                        : DateTimeFormatter.SHORT_DAYS[DateTimeFormatter.SHORT_DAYS.length - 1];
+                    result += formatter.shortDayNames[formatter.getDayOfWeekIso() - 1];
                     break;
                 case 'j':
                     result += `${formatter.day}`;
                     break;
                 case 'l':
-                    result += formatter.toDate().getUTCDay()
-                        ? DateTimeFormatter.DAYS[formatter.toDate().getUTCDay() - 1]
-                        : DateTimeFormatter.DAYS[DateTimeFormatter.DAYS.length - 1];
+                    result += formatter.dayNames[formatter.getDayOfWeekIso() - 1];
                     break;
                 case 'N':
                     result += formatter.toDate().getUTCDay() ? formatter.toDate().getUTCDay() : 7;
@@ -59,13 +55,13 @@ export function builder(formatter: DateTimeFormatter, format: string): string {
                     result += `${resultForW < 10 ? 0 : ''}${resultForW}`;
                     break;
                 case 'F':
-                    result += DateTimeFormatter.MONTHS[formatter.month];
+                    result += formatter.monthNames[formatter.month];
                     break;
                 case 'm':
                     result += `0${formatter.month + 1}`.slice(-2);
                     break;
                 case 'M':
-                    result += DateTimeFormatter.SHORT_MONTHS[formatter.month];
+                    result += formatter.shortMonthNames[formatter.month];
                     break;
                 case 'n':
                     result += `${formatter.month + 1}`;

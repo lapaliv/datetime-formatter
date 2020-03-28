@@ -51,11 +51,11 @@ export function parser(format: string, target: string): ParserResult {
                     }
                     throw new Error('Date format is not correct');
                 case 'D':
-                    regexp = new RegExp(`^(${DateTimeFormatter.SHORT_DAYS.join('|')})`, 'i');
+                    regexp = new RegExp(`^(${DateTimeFormatter.globalShortDayNames.join('|')})`, 'i');
                     match = target.match(regexp);
 
                     if (match) {
-                        dayOfWeek = DateTimeFormatter.SHORT_DAYS.indexOf(pascalCase(match[1]));
+                        dayOfWeek = DateTimeFormatter.globalShortDayNames.indexOf(pascalCase(match[1]));
                         target = target.slice(match[1].length);
                         break;
                     }
@@ -72,11 +72,11 @@ export function parser(format: string, target: string): ParserResult {
                     }
                     throw new Error('Date format is not correct');
                 case 'l':
-                    regexp = new RegExp(`^(${DateTimeFormatter.DAYS.join('|')})`, 'i');
+                    regexp = new RegExp(`^(${DateTimeFormatter.globalDayNames.join('|')})`, 'i');
                     match = target.match(regexp);
 
                     if (match) {
-                        dayOfWeek = DateTimeFormatter.DAYS.indexOf(pascalCase(match[1]));
+                        dayOfWeek = DateTimeFormatter.globalDayNames.indexOf(pascalCase(match[1]));
                         target = target.slice(match[1].length);
                         break;
                     }
@@ -154,11 +154,11 @@ export function parser(format: string, target: string): ParserResult {
 
                     throw new Error('Date format is not correct');
                 case 'F':
-                    regexp = new RegExp(`^(${DateTimeFormatter.MONTHS.join('|')})`, 'i');
+                    regexp = new RegExp(`^(${DateTimeFormatter.globalMonthNames.join('|')})`, 'i');
                     match = target.match(regexp);
 
                     if (match) {
-                        month = DateTimeFormatter.MONTHS.indexOf(pascalCase(match[1]));
+                        month = DateTimeFormatter.globalMonthNames.indexOf(pascalCase(match[1]));
                         target = target.slice(match[1].length);
                         break;
                     }
@@ -175,11 +175,11 @@ export function parser(format: string, target: string): ParserResult {
 
                     throw new Error('Date format is not correct');
                 case 'M':
-                    regexp = new RegExp(`^(${DateTimeFormatter.SHORT_MONTHS.join('|')})`, 'i');
+                    regexp = new RegExp(`^(${DateTimeFormatter.globalShortMonthNames.join('|')})`, 'i');
                     match = target.match(regexp);
 
                     if (match && match.length) {
-                        month = DateTimeFormatter.SHORT_MONTHS.indexOf(pascalCase(match[1]));
+                        month = DateTimeFormatter.globalShortMonthNames.indexOf(pascalCase(match[1]));
                         target = target.slice(match[1].length);
                         break;
                     }
