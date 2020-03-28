@@ -202,27 +202,17 @@ describe('builder', () => {
     });
 
     describe('L', () => {
-        const leapYears = [
-            2428, 2432, 2436, 2440, 2444, 2448, 2452, 2456, 2460, 2464, 2468, 2472, 2476, 2480, 2484, 2488, 2492, 2496,
-            2504, 2508, 2512, 2516, 2520, 2524, 2528, 2532, 2536, 2540, 2544, 2548, 2552, 2556, 2560, 2564, 2568, 2572,
-            2576, 2580, 2584, 2588, 2592, 2596, 2604, 2608, 2612, 2616, 2620, 2624, 2628, 2632, 2636, 2640, 2644, 2648,
-            2652, 2656, 2660, 2664, 2668, 2672, 2676, 2680, 2684, 2688, 2692, 2696, 2704, 2708, 2712, 2716, 2720, 2724,
-            2728, 2732, 2736, 2740, 2744, 2748, 2752, 2756, 2760, 2764, 2768, 2772, 2776, 2780, 2784, 2788, 2792, 2796,
-            2800, 2804, 2808, 2812, 2816, 2820, 2824, 2828, 2832, 2836, 2840, 2844, 2848, 2852, 2856, 2860, 2864, 2868,
-            2872, 2876, 2880, 2884, 2888, 2892, 2896, 2904, 2908, 2912, 2916, 2920, 2924, 2928, 2932, 2936, 2940, 2944,
-            2948, 2952, 2956, 2960, 2964, 2968, 2972, 2976, 2980, 2984, 2988, 2992, 2996,
-        ];
-        for (let year = 2427; year <= 3000; year++) {
+        for (let year = 2000; year <= 3000; year++) {
             it(`${year}`, () => {
                 const formatter = new DateTimeFormatter(year, 1, 1);
-                expect(formatter.format('L')).toBe(leapYears.includes(year) ? '1' : '0');
+                expect(formatter.format('L')).toBe(formatter.isLeapYear() ? '1' : '0');
             });
         }
     });
 
     for (let format of ['o', 'Y']) {
         describe(format, () => {
-            for (let year = 1; year <= 3000; year++) {
+            for (let year = 1; year <= 3000; year += Math.pow(10, String(year).length)) {
                 it(`${year}`, () => {
                     const formatter = new DateTimeFormatter(year, 1, 1);
                     if (year < 10) {
@@ -240,7 +230,7 @@ describe('builder', () => {
     }
 
     describe('y', () => {
-        for (let year = 1; year <= 3000; year++) {
+        for (let year = 1; year <= 3000; year += Math.pow(10, String(year).length)) {
             it(`${year}`, () => {
                 const formatter = new DateTimeFormatter(year, 1, 1);
                 if (year < 10) {
