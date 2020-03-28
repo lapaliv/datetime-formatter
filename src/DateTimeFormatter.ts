@@ -56,7 +56,6 @@ export class DateTimeFormatter implements DateTimeFormatterContract {
         } else if (arguments.length >= 3) {
             for (let index = 0; index < Math.min(arguments.length, 7); index++) {
                 if (Number(arguments[index]) !== arguments[index]) {
-                    console.log(arguments[index], Number(arguments[index]), typeof arguments[index], typeof Number(arguments[index]));
                     throw new Error(`Argument ${index} is undefined`);
                 }
             }
