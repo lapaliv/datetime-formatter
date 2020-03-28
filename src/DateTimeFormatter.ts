@@ -3,6 +3,7 @@ import {builder} from "./utils/builder";
 import {isLeapYear} from "./utils/isLeapYear";
 import {parser} from "./utils/parser";
 import {countDaysInMonth} from "./utils/countDaysInMonth";
+import {dayOnFirstWeekInYear} from "./utils/dayOnFirstWeekInYear";
 
 export class DateTimeFormatter implements DateTimeFormatterContract {
     public static readonly MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -35,6 +36,7 @@ export class DateTimeFormatter implements DateTimeFormatterContract {
     public minutes: number = 0;
     public seconds: number = 0;
     public microseconds: number = 0;
+    public offset: number = 0;
 
     // @ts-ignore
     constructor()
@@ -52,19 +54,20 @@ export class DateTimeFormatter implements DateTimeFormatterContract {
 
             return this;
         } else if (arguments.length >= 3) {
-            for (let index = 0; index < Math.max(arguments.length, 7); index++) {
+            for (let index = 0; index < Math.min(arguments.length, 7); index++) {
                 if (Number(arguments[index]) !== arguments[index]) {
+                    console.log(arguments[index], Number(arguments[index]), typeof arguments[index], typeof Number(arguments[index]));
                     throw new Error(`Argument ${index} is undefined`);
                 }
             }
 
-            this.year = arguments[0];
-            this.month = arguments[1];
-            this.day = arguments[2];
-            this.hours = arguments[3] || 0;
-            this.minutes = arguments[4] || 0;
-            this.seconds = arguments[5] || 0;
-            this.microseconds = arguments[6] || 0;
+            this.setYear(arguments[0]);
+            this.setMonth(arguments[1]);
+            this.setDay(arguments[2]);
+            this.setHours(arguments[3] || 0);
+            this.setMinutes(arguments[4] || 0);
+            this.setSeconds(arguments[5] || 0);
+            this.setMicroseconds(arguments[6] || 0);
         } else if (!arguments.length) {
             this.parseFromDate(new Date());
             if (typeof process === 'object' && typeof process.hrtime === 'function') {
@@ -324,6 +327,7 @@ export class DateTimeFormatter implements DateTimeFormatterContract {
         this.minutes = date.getMinutes();
         this.seconds = date.getSeconds();
         this.microseconds = date.getMilliseconds() * 1000;
+        this.offset = date.getTimezoneOffset();
     }
 
     private parseFromTimestamp(timestamp: number) {
@@ -491,6 +495,10 @@ export class DateTimeFormatter implements DateTimeFormatterContract {
         return this.microseconds;
     }
 
+    getMilliseconds(): number {
+        return Math.floor(this.microseconds / 1000);
+    }
+
     getSeconds(): number {
         return this.seconds;
     }
@@ -508,7 +516,7 @@ export class DateTimeFormatter implements DateTimeFormatterContract {
     }
 
     getMonth(): number {
-        return this.month;
+        return this.month + 1;
     }
 
     getYear(): number {
@@ -546,7 +554,7 @@ export class DateTimeFormatter implements DateTimeFormatterContract {
     }
 
     setMonth(value: number): this {
-        this.month = value;
+        this.month = value - 1;
 
         return this;
     }
@@ -557,7 +565,19 @@ export class DateTimeFormatter implements DateTimeFormatterContract {
         return this;
     }
 
-    getCountDaysInMonth() {
+    getFirstDayInYearOnFullWeek(): number {
+        return dayOnFirstWeekInYear(this.year);
+    }
+
+    getCountDaysInMonth(): number {
         return countDaysInMonth(this.year, this.month);
+    }
+
+    getDayOfWeek(): number {
+        return this.toDate().getDay();
+    }
+
+    getDayOfWeekIso(): number {
+        return this.toDate().getDay() || 7;
     }
 }

@@ -1,6 +1,5 @@
 import {DateTimeFormatter} from "../DateTimeFormatter";
 import {countDaysInMonth} from "./countDaysInMonth";
-import {dayOnFirstWeekInYear} from "./dayOnFirstWeekInYear";
 
 export function builder(formatter: DateTimeFormatter, format: string): string {
     const symbols: Array<string> | null = format.match(/\\?./g);
@@ -13,20 +12,20 @@ export function builder(formatter: DateTimeFormatter, format: string): string {
                     result += `0${formatter.day}`.slice(-2);
                     break;
                 case 'D':
-                    result += formatter.toDate().getDay()
-                        ? DateTimeFormatter.SHORT_DAYS[formatter.toDate().getDay() - 1]
+                    result += formatter.toDate().getUTCDay() > 0
+                        ? DateTimeFormatter.SHORT_DAYS[formatter.toDate().getUTCDay() - 1]
                         : DateTimeFormatter.SHORT_DAYS[DateTimeFormatter.SHORT_DAYS.length - 1];
                     break;
                 case 'j':
                     result += `${formatter.day}`;
                     break;
                 case 'l':
-                    result += formatter.toDate().getDay()
-                        ? DateTimeFormatter.DAYS[formatter.toDate().getDay() - 1]
+                    result += formatter.toDate().getUTCDay()
+                        ? DateTimeFormatter.DAYS[formatter.toDate().getUTCDay() - 1]
                         : DateTimeFormatter.DAYS[DateTimeFormatter.DAYS.length - 1];
                     break;
                 case 'N':
-                    result += formatter.toDate().getDay() ? formatter.toDate().getDay() : 7;
+                    result += formatter.toDate().getUTCDay() ? formatter.toDate().getUTCDay() : 7;
                     break;
                 case 'S':
                     if (`${formatter.day}`.slice(-1) === '1' && `${formatter.day}`.slice(-2) !== '11') {
@@ -40,7 +39,7 @@ export function builder(formatter: DateTimeFormatter, format: string): string {
                     }
                     break;
                 case 'w':
-                    result += `${formatter.toDate().getDay()}`;
+                    result += `${formatter.toDate().getUTCDay()}`;
                     break;
                 case 'z':
                     let daysForZ = 0;
@@ -51,13 +50,13 @@ export function builder(formatter: DateTimeFormatter, format: string): string {
                     result += `${daysForZ + formatter.day - 1}`;
                     break;
                 case 'W':
-                    let daysForW = 0;
-                    for (let month = 0; month < formatter.month; month++) {
-                        daysForW += countDaysInMonth(formatter.year, month);
-                    }
+                    const diffInDays = formatter
+                        .clone()
+                        .setDay(formatter.day + 4 - formatter.getDayOfWeekIso())
+                        .diffInDays(formatter.clone().startOfYear());
 
-                    daysForW += formatter.day - dayOnFirstWeekInYear(formatter.year);
-                    result += `${Math.ceil(daysForW / 7)}`;
+                    let resultForW = Math.ceil((diffInDays + 1) / 7);
+                    result += `${resultForW < 10 ? 0 : ''}${resultForW}`;
                     break;
                 case 'F':
                     result += DateTimeFormatter.MONTHS[formatter.month];
@@ -91,10 +90,10 @@ export function builder(formatter: DateTimeFormatter, format: string): string {
                     result += formatter.hours < 12 ? 'AM' : 'PM';
                     break;
                 case 'B':
-                    const maxSecondsForB = 24 * 60 * 60 + 60 * 60 + 60;
-                    const actualSeconds = formatter.hours * 60 * 60 + formatter.minutes * 60 + formatter.seconds;
-                    const resultForB = Math.floor(actualSeconds * 999 / maxSecondsForB);
-                    result += `00${result}`.slice(-3);
+                    let seconds = formatter.hours * 60 * 60 + formatter.minutes * 60 + formatter.seconds;
+                    const actualSeconds = seconds - formatter.offset;
+                    const resultForB = Math.floor(actualSeconds / 86400 * 1000);
+                    result += `00${resultForB}`.slice(-3);
                     break;
                 case 'g':
                     result += `${formatter.hours < 13 ? formatter.hours : formatter.hours - 12}`;
@@ -118,7 +117,7 @@ export function builder(formatter: DateTimeFormatter, format: string): string {
                     result += `000000${formatter.microseconds}`.slice(-6);
                     break;
                 case 'v':
-                    result += `000${formatter.microseconds}`.slice(-6, 3);
+                    result += `000000${formatter.microseconds}`.slice(-6, -3);
                     break;
                 case 'c':
                     result += builder(formatter, 'Y-m-dTH:i:s+00:00');
