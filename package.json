@@ -1,5 +1,22 @@
 {
   "name": "datetime-formatter",
+  "description": "The library for work with date and time",
+  "version": "0.1",
+  "keywords": [
+    "date",
+    "time",
+    "datetime",
+    "formatter"
+  ],
+  "homepage": "https://github.com/lapaliv/datetime-formatter",
+  "author": {
+    "email": "lapaliv@gmail.com",
+    "name": "Alex Lapin"
+  },
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/lapaliv/datetime-formatter"
+  },
   "scripts": {
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
