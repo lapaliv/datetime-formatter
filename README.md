@@ -185,17 +185,16 @@ The following characters are recognized in the format parameter string.
 The table was copied from [php.net](https://www.php.net/manual/en/function.date.php)
 
 ### Day
-| Format character | Description                                                                                                      | Example returned values                       |
-|------------------|------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
-| `d`              | Day of the month, 2 digits with leading zeros                                                                    | `01` to `31`                                  |
-| `D`              | A textual representation of a day, three letters                                                                 | `Mon` through `Sun`                           |
-| `j`              | Day of the month without leading zeros                                                                           | `1` to `31`                                   |
-| `l`              | (lowercase 'L') A full textual representation of the day of the week                                             | `Sunday` through `Saturday`                   |
-| `N`              | [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) numeric representation of the day of the week | 1 (for Monday) through 7 (for Sunday)         |
-| `S`              | English ordinal suffix for the day of the month, 2 characters                                                    | `st`, `nd`, `rd` or `th`. Works well with `j` |
-| `w`              | Numeric representation of the day of the week                                                                    | `0` (for Sunday) through `6` (for Saturday)   |
-| `z`              | The day of the year (starting from 0)                                                                            | `0` through `365`                             |
-
+| Format character    | Description                                                                                                      | Example returned values                       |
+|---------------------|------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
+| `d`                 | Day of the month, 2 digits with leading zeros                                                                    | `01` to `31`                                  |
+| `D`                 | A textual representation of a day, three letters                                                                 | `Mon` through `Sun`                           |
+| `j`                 | Day of the month without leading zeros                                                                           | `1` to `31`                                   |
+| `l` (lowercase 'L') | A full textual representation of the day of the week                                                             | `Sunday` through `Saturday`                   |
+| `N`                 | [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) numeric representation of the day of the week | 1 (for Monday) through 7 (for Sunday)         |
+| `S`                 | English ordinal suffix for the day of the month, 2 characters                                                    | `st`, `nd`, `rd` or `th`. Works well with `j` |
+| `w`                 | Numeric representation of the day of the week                                                                    | `0` (for Sunday) through `6` (for Saturday)   |
+| `z`                 | The day of the year (starting from 0)                                                                            | `0` through `365`                             |
 
 ### Week
 | Format character | Description                                                                                                      | Example returned values          |
@@ -213,32 +212,31 @@ The table was copied from [php.net](https://www.php.net/manual/en/function.date.
 
 
 ### Year
-| Format character | Description                                                                                                                                                                                                                                        | Example returned values |
-|------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
-| `L`              | Whether it's a leap year 1 if it is a leap year, 0 otherwise.                                                                                                                                                                                      |                         |
-| `o`              | [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) week-numbering year. This has the same value as Y, except that if the ISO week number (W) belongs to the previous or next year, that year is used instead. (added in PHP 5.1.0) | `1999` or `2003`        |
-| `Y`              | A full numeric representation of a year, 4 digits Examples: 1999 or 2003                                                                                                                                                                           |                         |
-| `y`              | A two digit representation of a year Examples: 99 or 03                                                                                                                                                                                            |                         |
-
+| Format character | Description                                                                                                                                                                                                                  | Example returned values |                  |
+|------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|------------------|
+| `L`              | Whether it's a leap year `1` if it is a leap year, `0` otherwise.                                                                                                                                                            |                         |                  |
+| `o`              | [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) week-numbering year. This has the same value as Y, except that if the ISO week number (W) belongs to the previous or next year, that year is used instead | `1999` or `2003`        |                  |
+| `Y`              | A full numeric representation of a year, 4 digits                                                                                                                                                                            |                         | `1999` or `2003` |
+| `y`              | A two digit representation of a year                                                                                                                                                                                         | `99` or `03`            |                  |
 
 ### Time
-| Format character | Description                                                                                                                                                                                     | Example returned values |
-|------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
-| `a`              | Lowercase Ante meridiem and Post meridiem                                                                                                                                                       | `am` or `pm`            |
-| `A`              | Uppercase Ante meridiem and Post meridiem                                                                                                                                                       | `AM` or `PM`            |
-| `B`              | Swatch Internet time                                                                                                                                                                            | `000` through `999`     |
-| `g`              | 12-hour format of an hour without leading zeros                                                                                                                                                 | `1` through `12`        |
-| `G`              | 24-hour format of an hour without leading zeros                                                                                                                                                 | `0` through `23`        |
-| `h`              | 12-hour format of an hour with leading zeros                                                                                                                                                    | `01` through `12`       |
-| `H`              | 24-hour format of an hour with leading zeros                                                                                                                                                    | `00` through `23`       |
-| `i`              | Minutes with leading zeros                                                                                                                                                                      | `00` to `59`            |
-| `s`              | Seconds with leading zeros                                                                                                                                                                      | `00` through `59`       |
-| `u`              | Microseconds. Note that date() will always generate 000000 since it takes an integer parameter, whereas DateTime::format() does support microseconds if DateTime was created with microseconds. | `654321`                |
-| `v`              | Milliseconds. Same note applies as for u.                                                                                                                                                       | `654`                   |
+| Format character | Description                                     | Example returned values |
+|------------------|-------------------------------------------------|-------------------------|
+| `a`              | Lowercase Ante meridiem and Post meridiem       | `am` or `pm`            |
+| `A`              | Uppercase Ante meridiem and Post meridiem       | `AM` or `PM`            |
+| `B`              | Swatch Internet time                            | `000` through `999`     |
+| `g`              | 12-hour format of an hour without leading zeros | `1` through `12`        |
+| `G`              | 24-hour format of an hour without leading zeros | `0` through `23`        |
+| `h`              | 12-hour format of an hour with leading zeros    | `01` through `12`       |
+| `H`              | 24-hour format of an hour with leading zeros    | `00` through `23`       |
+| `i`              | Minutes with leading zeros                      | `00` to `59`            |
+| `s`              | Seconds with leading zeros                      | `00` through `59`       |
+| `u`              | Microseconds                                    | `654321`                |
+| `v`              | Milliseconds. Same note applies as for u.       | `654`                   |
 
 ### Full datetime
 | Format character | Description                                                             | Example returned values           |
 |------------------|-------------------------------------------------------------------------|-----------------------------------|
 | `c`              | [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) date | `2004-02-12T15:19:21+00:00`       |
 | `r`              | [RFC 2822](http://www.faqs.org/rfcs/rfc2822) formatted date             | `Thu, 21 Dec 2000 16:01:07 +0000` |
-| `U`              | Seconds since the Unix Epoch (January 1 1970 00:00:00 GMT)              |                                   |
+| `U`              | Seconds since the Unix Epoch (January 1 1970 00:00:00 GMT)              | `1585517413`                      |
