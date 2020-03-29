@@ -1,4 +1,4 @@
-import DateTimeFormatter from 'datetime-formatter';
+import DateTimeFormatter from '@lapaliv/datetime-formatter';
 
 const uuidv4 = require('uuid').v4;
 
@@ -1002,8 +1002,8 @@ describe('formatter', () => {
         const translations = {
             monthNames: [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()],
             shortMonthNames: [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()],
-            dayNames: [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()],
-            shortDayNames: [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()],
+            dayNames: [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()],
+            shortDayNames: [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()],
         };
         formatter.setTranslations(translations);
 
@@ -1033,7 +1033,7 @@ describe('formatter', () => {
         const formatter = new DateTimeFormatter(2018, 1, 1);
         const translations = {
             monthNames: [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()],
-            dayNames: [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()],
+            dayNames: [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()],
         };
         formatter.setTranslations(translations);
 
@@ -1065,8 +1065,8 @@ describe('formatter', () => {
         const translations = {
             monthNames: [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()],
             shortMonthNames: [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()],
-            dayNames: [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()],
-            shortDayNames: [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()],
+            dayNames: [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()],
+            shortDayNames: [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()],
         };
         DateTimeFormatter.setGlobalTranslations(translations);
         const formatter = new DateTimeFormatter(2018, 1, 1);
@@ -1096,7 +1096,7 @@ describe('formatter', () => {
     it('partially global setTranslations', () => {
         const translations = {
             monthNames: [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()],
-            dayNames: [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()],
+            dayNames: [uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4(), uuidv4()],
         };
         DateTimeFormatter.setGlobalTranslations(translations);
         const formatter = new DateTimeFormatter(2018, 1, 1);

@@ -1,4 +1,4 @@
-import DateTimeFormatter from 'datetime-formatter';
+import DateTimeFormatter from '@lapaliv/datetime-formatter';
 
 describe('builder', () => {
     describe('d', () => {

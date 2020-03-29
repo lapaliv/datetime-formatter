@@ -1,7 +1,5 @@
 import {DateTimeFormatter} from "../DateTimeFormatter";
 import {pascalCase} from "./pascalCase";
-import {dayOnFirstWeekInYear} from "./dayOnFirstWeekInYear";
-import {countDaysInMonth} from "./countDaysInMonth";
 
 type ParserResult = {
     year: number;
@@ -29,7 +27,8 @@ export function parser(format: string, target: string): ParserResult {
         leap: boolean | null = null,
         am: boolean | null = null,
         internetTime: number | null = null,
-        divideHours: number | null = null;
+        divideHours: number | null = null,
+        suffix: string | null = null;
 
     const symbols = format.match(/\\?./g);
 
@@ -55,7 +54,7 @@ export function parser(format: string, target: string): ParserResult {
                     match = target.match(regexp);
 
                     if (match) {
-                        dayOfWeek = DateTimeFormatter.globalShortDayNames.indexOf(pascalCase(match[1]));
+                        dayOfWeek = DateTimeFormatter.globalShortDayNames.indexOf(pascalCase(match[1])) + 1;
                         target = target.slice(match[1].length);
                         break;
                     }
@@ -65,7 +64,7 @@ export function parser(format: string, target: string): ParserResult {
                         day = parseInt(target.slice(0, 2));
                         target = target.slice(2);
                         break;
-                    } else if (target.match(/^[0-9]/)) {
+                    } else if (target.match(/^[1-9]/)) {
                         day = parseInt(target.slice(0, 1));
                         target = target.slice(1);
                         break;
@@ -76,7 +75,7 @@ export function parser(format: string, target: string): ParserResult {
                     match = target.match(regexp);
 
                     if (match) {
-                        dayOfWeek = DateTimeFormatter.globalDayNames.indexOf(pascalCase(match[1]));
+                        dayOfWeek = DateTimeFormatter.globalDayNames.indexOf(pascalCase(match[1])) + 1;
                         target = target.slice(match[1].length);
                         break;
                     }
@@ -86,15 +85,17 @@ export function parser(format: string, target: string): ParserResult {
                     match = target.match(/^[1-7]/);
 
                     if (match) {
-                        dayOfWeek = parseInt(match[1]) - 1;
+                        dayOfWeek = parseInt(match[0]);
                         target = target.slice(1);
                         break;
                     }
 
                     throw new Error('Date format is not correct');
                 case 'S':
-                    if (target.match(/^(st|nd|rd|th)/)) {
-                        // todo
+                    match = target.match(/^(st|nd|rd|th)/);
+
+                    if (match) {
+                        suffix = match[1];
                         target = target.slice(2);
                         break;
                     }
@@ -104,7 +105,7 @@ export function parser(format: string, target: string): ParserResult {
                     match = target.match(/^[0-6]/);
 
                     if (match) {
-                        dayOfWeek = parseInt(match[1]);
+                        dayOfWeek = parseInt(match[1]) + 1;
                         target = target.slice(1);
                         break;
                     }
@@ -134,21 +135,10 @@ export function parser(format: string, target: string): ParserResult {
 
                     throw new Error('Date format is not correct');
                 case 'W':
-                    regexps = [
-                        /^([1-4][0-9]|5[0-2])/,
-                        /^[0-9]/,
-                    ];
-
-                    for (const item of regexps) {
-                        const match = target.match(item);
-                        if (match) {
-                            weekOfYear = parseInt(match[1]);
-                            target = target.slice(match[1].length);
-                            needBreak = true;
-                        }
-                    }
-
-                    if (needBreak) {
+                    match = target.match(/^([0-4][0-9]|5[0-2])/);
+                    if (match) {
+                        weekOfYear = parseInt(match[0]);
+                        target = target.slice(match[0].length);
                         break;
                     }
 
@@ -406,19 +396,60 @@ export function parser(format: string, target: string): ParserResult {
     }
 
     if (!day) {
-        if (weekOfYear && dayOfWeek !== null && year) {
-            dayOfYear = weekOfYear * 7 + dayOnFirstWeekInYear(year) + dayOfWeek;
-        }
+        if (year) {
+            // @ts-ignore
+            const formatter = new DateTimeFormatter(year, month === null ? 1 : (month + 1), 1);
 
-        if (dayOfYear && year) {
-            let sum = 0;
-            for (let monthIndex = 0; monthIndex < 12; monthIndex++) {
-                if (sum + countDaysInMonth(year, monthIndex) >= dayOfYear) {
-                    month = monthIndex;
-                    day = dayOfYear - sum;
-                    break;
+            if (weekOfYear !== null || dayOfWeek !== null) {
+                if (weekOfYear !== null && weekOfYear > 1) {
+                    formatter.startOfYear();
+
+                    formatter.addWeeks(weekOfYear - 1);
+
+                    if (formatter.getFirstDayInYearOnFullWeek() > 1) {
+                        formatter.subDay();
+                    }
+
+                    if (formatter.isLeapYear()) {
+                        formatter.subDay();
+                    }
+                }
+
+                if (dayOfWeek) {
+                    if (formatter.getDayOfWeekIso() > dayOfWeek) {
+                        formatter.addDays((7 - formatter.getDayOfWeekIso()) + dayOfWeek);
+                    } else if (formatter.getDayOfWeekIso() < dayOfWeek) {
+                        formatter.addDays(dayOfWeek - formatter.getDayOfWeekIso());
+                    }
+                }
+            } else if (dayOfYear) {
+                formatter.startOfYear().addDays(dayOfYear - 1);
+            } else if (suffix) {
+                switch (suffix) {
+                    case 'st':
+                        formatter.setDay(1);
+                        break;
+                    case 'nd':
+                        formatter.setDay(2);
+                        break;
+                    case 'rd':
+                        formatter.setDay(3);
+                        break;
+                    case 'th':
+                        formatter.setDay(4);
+                        break;
                 }
             }
+
+            if (month !== null && formatter.month !== month) {
+                throw new Error('Date is invalid');
+            }
+
+            month = formatter.month;
+            day = formatter.day;
+            hours = hours === null ? formatter.hours : hours;
+            minutes = minutes === null ? formatter.minutes : minutes;
+            seconds = seconds === null ? formatter.seconds : seconds;
         }
 
         if (am !== null && divideHours !== null) {
@@ -433,10 +464,12 @@ export function parser(format: string, target: string): ParserResult {
         seconds = result - hours * 60 * 60 + minutes * 60;
     }
 
+    const formatter = new DateTimeFormatter();
+
     return {
-        year: year || 0,
-        month: month || 0,
-        day: day || 0,
+        year: year || formatter.year,
+        month: month === null ? formatter.month : month,
+        day: day || 1,
         hours: hours || 0,
         minutes: minutes || 0,
         seconds: seconds || 0,

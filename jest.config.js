@@ -1,12 +1,8 @@
 module.exports = {
     moduleNameMapper: {
         '^~/(.*)$': '<rootDir>/$1',
-        //'^~/(.*)$': '<rootDir>/$1',
+        '^\@lapaliv\/datetime-formatter$': '<rootDir>/datetime-formatter',
     },
-    //transform: {
-    //    '^.+\\.js$': 'babel-jest',
-    //    '.*\\.(vue)$': 'vue-jest',
-    //},
     collectCoverage: true,
     collectCoverageFrom: [
         '<rootDir>/**/*.js',

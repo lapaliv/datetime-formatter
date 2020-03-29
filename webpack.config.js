@@ -11,9 +11,10 @@ module.exports = {
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json'],
-        //alias: {
-        //    '': path.resolve(__dirname, 'src'),
-        //},
+        alias: {
+            '': path.resolve(__dirname, '.'),
+            '@lapaliv/datetime-formatter': path.resolve(__dirname, './datetime-formatter'),
+        },
     },
     module: {
         rules: [{
@@ -22,5 +23,5 @@ module.exports = {
             exclude: /node_modules/,
             loader: 'babel-loader',
         }],
-    }
+    },
 };

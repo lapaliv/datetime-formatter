@@ -1,4 +1,4 @@
-declare module 'datetime-formatter' {
+declare module '@lapaliv/datetime-formatter' {
     export default class DateTimeFormatter {
         static globalMonthNames: string[];
         static globalShortMonthNames: string[];
@@ -8,6 +8,11 @@ declare module 'datetime-formatter' {
          * Creates an instance with the current time
          */
         static now(): DateTimeFormatter;
+        /**
+         * Parse date from custom string
+         * @param target
+         */
+        static parse(target: string | Date | number | DateTimeFormatter | any): DateTimeFormatter;
         /**
          * Creates an instance with the date in the format
          * @param format
@@ -399,6 +404,92 @@ declare module 'datetime-formatter' {
          * @param payload
          */
         setTranslations(payload: Translation): this;
+        /**
+         * Returns `true` if the current date equals the transmitted date
+         * @param target
+         */
+        equal(target: DateTimeFormatter | number | Date): boolean;
+        /**
+         * Returns `true` if the current date equals the transmitted date
+         * without microseconds
+         * @param target
+         */
+        equalWithoutMicroseconds(target: DateTimeFormatter | number | Date): boolean;
+        /**
+         * Returns `true` if the current date equals the transmitted date
+         * without seconds and microseconds
+         * @param target
+         */
+        equalWithoutSeconds(target: DateTimeFormatter | number | Date): boolean;
+        /**
+         * Returns `true` if the current date equals the transmitted date
+         * without minutes, seconds and microseconds
+         * @param target
+         */
+        equalWithoutMinutes(target: DateTimeFormatter | number | Date): boolean;
+        /**
+         * Returns `true` if the current date equals the transmitted date
+         * without hours, minutes, seconds and microseconds
+         * @param target
+         */
+        equalWithoutHours(target: DateTimeFormatter | number | Date): boolean;
+        /**
+         * Returns `true` if the current date equals the transmitted date
+         * without days, hours, minutes, seconds and microseconds
+         * @param target
+         */
+        equalWithoutDays(target: DateTimeFormatter | number | Date): boolean;
+        /**
+         * Returns `true` if the current date equals the transmitted date
+         * without months, days, hours, minutes, seconds and microseconds
+         * @param target
+         */
+        equalWithoutMonths(target: DateTimeFormatter | number | Date): boolean;
+        /**
+         * Returns `true` if the current date equals the transmitted date
+         * @param target
+         */
+        notEqual(target: DateTimeFormatter | number | Date): boolean;
+        /**
+         * Returns `true` if the current date equals the transmitted date
+         * without microseconds
+         * @param target
+         */
+        notEqualWithoutMicroseconds(target: DateTimeFormatter | number | Date): boolean;
+        /**
+         * Returns `true` if the current date equals the transmitted date
+         * without seconds and microseconds
+         * @param target
+         */
+        notEqualWithoutSeconds(target: DateTimeFormatter | number | Date): boolean;
+        /**
+         * Returns `true` if the current date equals the transmitted date
+         * without minutes, seconds and microseconds
+         * @param target
+         */
+        notEqualWithoutMinutes(target: DateTimeFormatter | number | Date): boolean;
+        /**
+         * Returns `true` if the current date equals the transmitted date
+         * without hours, minutes, seconds and microseconds
+         * @param target
+         */
+        notEqualWithoutHours(target: DateTimeFormatter | number | Date): boolean;
+        /**
+         * Returns `true` if the current date equals the transmitted date
+         * without days, hours, minutes, seconds and microseconds
+         * @param target
+         */
+        notEqualWithoutDays(target: DateTimeFormatter | number | Date): boolean;
+        /**
+         * Returns `true` if the current date equals the transmitted date
+         * without months, days, hours, minutes, seconds and microseconds
+         * @param target
+         */
+        notEqualWithoutMonths(target: DateTimeFormatter | number | Date): boolean;
+        /**
+         * Returns the number of the day in the year
+         */
+        getDayOfYear(): number;
     }
 
     export type Translation = Object & {

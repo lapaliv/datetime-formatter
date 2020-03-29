@@ -20,6 +20,31 @@ export class DateTimeFormatter {
     }
 
     /**
+     * Parse date from custom string
+     * @param target
+     */
+    static parse(target: string | Date | number | DateTimeFormatter | any): DateTimeFormatter {
+        if (target instanceof DateTimeFormatter) {
+            return target;
+        } else if (typeof target === 'string') {
+            try {
+                const timestamp: number = Date.parse(target);
+                if (!isNaN(timestamp)) {
+                    return new DateTimeFormatter(new Date(target));
+                }
+            } catch (e) {
+                // ignoring
+            }
+        } else if (target instanceof Date) {
+            return new DateTimeFormatter(target);
+        } else if (typeof target === 'number') {
+            return new DateTimeFormatter(target);
+        }
+
+        throw new Error('Invalid date');
+    }
+
+    /**
      * Creates an instance with the date in the format
      * @param format
      * @param date
@@ -889,6 +914,155 @@ export class DateTimeFormatter {
     }
 
     /**
+     * Returns `true` if the current date equals the transmitted date
+     * @param target
+     */
+    equal(target: DateTimeFormatter | number | Date): boolean {
+        const date = DateTimeFormatter.parse(target);
+        return this.equalWithoutMicroseconds(date)
+            && this.microseconds === date.microseconds;
+    }
+
+    /**
+     * Returns `true` if the current date equals the transmitted date
+     * without microseconds
+     * @param target
+     */
+    equalWithoutMicroseconds(target: DateTimeFormatter | number | Date): boolean {
+        const date = DateTimeFormatter.parse(target);
+        return this.equalWithoutSeconds(date)
+            && this.seconds === date.seconds;
+    }
+
+    /**
+     * Returns `true` if the current date equals the transmitted date
+     * without seconds and microseconds
+     * @param target
+     */
+    equalWithoutSeconds(target: DateTimeFormatter | number | Date): boolean {
+        const date = DateTimeFormatter.parse(target);
+        return this.equalWithoutMinutes(date)
+            && this.minutes === date.minutes;
+    }
+
+    /**
+     * Returns `true` if the current date equals the transmitted date
+     * without minutes, seconds and microseconds
+     * @param target
+     */
+    equalWithoutMinutes(target: DateTimeFormatter | number | Date): boolean {
+        const date = DateTimeFormatter.parse(target);
+        return this.equalWithoutHours(date)
+            && this.hours === date.hours;
+    }
+
+    /**
+     * Returns `true` if the current date equals the transmitted date
+     * without hours, minutes, seconds and microseconds
+     * @param target
+     */
+    equalWithoutHours(target: DateTimeFormatter | number | Date): boolean {
+        const date = DateTimeFormatter.parse(target);
+        return this.equalWithoutDays(date)
+            && this.day === date.day;
+    }
+
+    /**
+     * Returns `true` if the current date equals the transmitted date
+     * without days, hours, minutes, seconds and microseconds
+     * @param target
+     */
+    equalWithoutDays(target: DateTimeFormatter | number | Date): boolean {
+        const date = DateTimeFormatter.parse(target);
+        return this.equalWithoutMonths(date)
+            && this.month === date.month;
+    }
+
+    /**
+     * Returns `true` if the current date equals the transmitted date
+     * without months, days, hours, minutes, seconds and microseconds
+     * @param target
+     */
+    equalWithoutMonths(target: DateTimeFormatter | number | Date): boolean {
+        const date = DateTimeFormatter.parse(target);
+        return this.year === date.year;
+    }
+
+    /**
+     * Returns `true` if the current date equals the transmitted date
+     * @param target
+     */
+    notEqual(target: DateTimeFormatter | number | Date): boolean {
+        return !this.equal(target);
+    }
+
+    /**
+     * Returns `true` if the current date equals the transmitted date
+     * without microseconds
+     * @param target
+     */
+    notEqualWithoutMicroseconds(target: DateTimeFormatter | number | Date): boolean {
+        return !this.equalWithoutMicroseconds(target);
+    }
+
+    /**
+     * Returns `true` if the current date equals the transmitted date
+     * without seconds and microseconds
+     * @param target
+     */
+    notEqualWithoutSeconds(target: DateTimeFormatter | number | Date): boolean {
+        return !this.equalWithoutSeconds(target);
+    }
+
+    /**
+     * Returns `true` if the current date equals the transmitted date
+     * without minutes, seconds and microseconds
+     * @param target
+     */
+    notEqualWithoutMinutes(target: DateTimeFormatter | number | Date): boolean {
+        return !this.equalWithoutMinutes(target);
+    }
+
+    /**
+     * Returns `true` if the current date equals the transmitted date
+     * without hours, minutes, seconds and microseconds
+     * @param target
+     */
+    notEqualWithoutHours(target: DateTimeFormatter | number | Date): boolean {
+        return !this.equalWithoutHours(target);
+    }
+
+    /**
+     * Returns `true` if the current date equals the transmitted date
+     * without days, hours, minutes, seconds and microseconds
+     * @param target
+     */
+    notEqualWithoutDays(target: DateTimeFormatter | number | Date): boolean {
+        return !this.equalWithoutDays(target);
+    }
+
+    /**
+     * Returns `true` if the current date equals the transmitted date
+     * without months, days, hours, minutes, seconds and microseconds
+     * @param target
+     */
+    notEqualWithoutMonths(target: DateTimeFormatter | number | Date): boolean {
+        return !this.equalWithoutMonths(target);
+    }
+
+    /**
+     * Returns the number of the day in the year
+     */
+    getDayOfYear(): number {
+        let countBeforeDays = 0;
+        for (let month = 0; month < this.month; month++) {
+            countBeforeDays += countDaysInMonth(this.year, month);
+        }
+
+        return countBeforeDays + this.day;
+    }
+
+    /**
      * Parses the date from the transmitted Date object
      * @param date
      */
@@ -899,8 +1073,23 @@ export class DateTimeFormatter {
         this.hours = date.getHours();
         this.minutes = date.getMinutes();
         this.seconds = date.getSeconds();
-        this.microseconds = date.getMilliseconds() * 1000;
+        this.microseconds = date.getMilliseconds() * Math.pow(10, 3);
         this.offset = date.getTimezoneOffset();
+    }
+
+    /**
+     * Parses the date from the transmitted Date object without offset
+     * @param date
+     */
+    private parseFromUTCDate(date: Date) {
+        this.year = date.getUTCFullYear();
+        this.month = date.getUTCMonth();
+        this.day = date.getUTCDate();
+        this.hours = date.getUTCHours();
+        this.minutes = date.getUTCMinutes();
+        this.seconds = date.getUTCSeconds();
+        this.microseconds = date.getUTCMilliseconds() * Math.pow(10, 3);
+        this.offset = 0;
     }
 
     /**
@@ -939,13 +1128,7 @@ export class DateTimeFormatter {
             microseconds = 0;
         }
 
-        const date = new Date(timestamp);
-        this.year = date.getUTCFullYear();
-        this.month = date.getUTCMonth();
-        this.day = date.getUTCDate();
-        this.hours = date.getUTCHours();
-        this.minutes = date.getUTCMinutes();
-        this.seconds = date.getUTCSeconds();
+        this.parseFromUTCDate(new Date(timestamp));
         this.microseconds = microseconds;
     }
 
@@ -984,15 +1167,15 @@ export class DateTimeFormatter {
         const safelyMicroseconds = microseconds % Math.pow(10, 6);
         seconds += (microseconds - safelyMicroseconds) / Math.pow(10, 6);
 
-        const date = new Date(Date.UTC(year, month, day, hours, minutes, seconds));
-        this.year = year < 100 ? year : date.getUTCFullYear();
-        this.month = date.getUTCMonth();
-        this.day = date.getUTCDate();
-        this.hours = date.getUTCHours();
-        this.minutes = date.getUTCMinutes();
-        this.seconds = date.getUTCSeconds();
+        this.parseFromUTCDate(
+            new Date(Date.UTC(year, month, day, hours, minutes, seconds))
+        );
+
+        if (year < 100) {
+            this.year = year;
+        }
+
         this.microseconds = safelyMicroseconds;
-        this.offset = 0;
 
         return this;
     }
