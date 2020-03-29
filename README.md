@@ -170,7 +170,7 @@ formatter.setTranslations({
 ```
 
 ### Other methods
-```
+```typescript
 getFirstDayInYearOnFullWeek:() number;
 getCountDaysInMonth:() number;
 getDayOfWeek:() number;
