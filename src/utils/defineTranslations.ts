@@ -7,11 +7,11 @@ export function defineTranslations(payload: Translation): {
     dayNames: string[];
     shortDayNames: string[];
 } {
-    let result = {
+    const result = {
         monthNames: DateTimeFormatter.globalMonthNames,
         shortMonthNames: DateTimeFormatter.globalShortMonthNames,
         dayNames: DateTimeFormatter.globalDayNames,
-        shortDayNames: DateTimeFormatter.globalShortMonthNames,
+        shortDayNames: DateTimeFormatter.globalShortDayNames,
     };
 
     if (payload.hasOwnProperty('monthNames') && Array.isArray(payload.monthNames) && payload.monthNames.length === 12) {
@@ -40,7 +40,7 @@ export function defineTranslations(payload: Translation): {
         }
     }
 
-    if (payload.hasOwnProperty('shortDayNames') && Array.isArray(payload.shortDayNames) && payload.shortDayNames.length === 12) {
+    if (payload.hasOwnProperty('shortDayNames') && Array.isArray(payload.shortDayNames) && payload.shortDayNames.length === 7) {
         result.shortDayNames = payload.shortDayNames;
     }
 

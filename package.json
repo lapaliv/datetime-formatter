@@ -1,5 +1,5 @@
 {
-  "name": "datetime-formatter",
+  "name": "@lapaliv/datetime-formatter",
   "description": "The library for work with date and time",
   "version": "0.1.4",
   "keywords": [
