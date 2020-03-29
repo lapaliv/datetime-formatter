@@ -29,10 +29,10 @@ export function defineTranslations(payload: Translation): {
         result.shortMonthNames = payload.shortMonthNames;
     }
 
-    if (payload.hasOwnProperty('dayNames') && Array.isArray(payload.dayNames) && payload.dayNames.length === 12) {
+    if (payload.hasOwnProperty('dayNames') && Array.isArray(payload.dayNames) && payload.dayNames.length === 7) {
         result.dayNames = payload.dayNames;
 
-        if (!payload.hasOwnProperty('shortDayNames') || !Array.isArray(payload.shortDayNames) || payload.shortDayNames.length !== 12) {
+        if (!payload.hasOwnProperty('shortDayNames') || !Array.isArray(payload.shortDayNames) || payload.shortDayNames.length !== 7) {
             result.shortDayNames = [];
             for (const day of payload.dayNames) {
                 result.shortDayNames.push(day.slice(0, 3));
