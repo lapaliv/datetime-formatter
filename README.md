@@ -1,7 +1,7 @@
 ## API
 
 ### Constructors
-```
+```typescript
 // Create an DateTimeFormatter with current datetime
 new DateTimeFormatter()
 new DateTimeFormatter(date: Date)
@@ -16,7 +16,7 @@ DateTimeFormatter.parse(format: string): DateTimeFormatter;
 ```
 
 #### Getters
-```
+```typescript
 getMicroseconds(): number;
 getMilliseconds(): number;
 getSeconds(): number;
@@ -28,7 +28,7 @@ getYear(): number;
 ```
 
 #### Setters
-```
+```typescript
 setMicroseconds(value: number): DateTimeFormatter;
 setSeconds(value: number): DateTimeFormatter;
 setMinutes(value: number): DateTimeFormatter;
@@ -39,7 +39,7 @@ setYear(value: number): DateTimeFormatter;
 ```
 
 #### Methods for change date manually
-```
+```typescript
 addSecond(): DateTimeFormatter;
 addSeconds(count: number): DateTimeFormatter;
 addMinute(): DateTimeFormatter;
@@ -72,7 +72,7 @@ subYears(count: number): DateTimeFormatter;
 ```
 
 #### Methods for change date automatically
-```
+```typescript
 startOfMinute(): DateTimeFormatter;
 startOfHour(): DateTimeFormatter;
 startOfDay(): DateTimeFormatter;
@@ -89,7 +89,7 @@ endOfYear(): DateTimeFormatter;
 ```
 
 #### Methods for checks
-```
+```typescript
 isFuture(): boolean;
 isLeapYear(): boolean;
 isPast(): boolean;
@@ -103,7 +103,7 @@ isYesterday(): boolean;
 ```
 
 ### Methods for compare
-```
+```typescript
 diffInDays(date: DateTimeFormatter): number;
 diffInHours(date: DateTimeFormatter): number;
 diffInMinutes(date: DateTimeFormatter): number;
@@ -135,7 +135,7 @@ notEqualWithoutMonths(date: DateTimeFormatter | Date | number | string): boolean
 ```
 
 ### Methods for convert
-```
+```typescript
 format(format: string): string;
 // An alternative for format('Y-m-d')
 toDateString(): string;
