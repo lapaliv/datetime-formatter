@@ -212,12 +212,12 @@ The table was copied from [php.net](https://www.php.net/manual/en/function.date.
 
 
 ### Year
-| Format character | Description                                                                                                                                                                                                                  | Example returned values |                  |
-|------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|------------------|
-| `L`              | Whether it's a leap year `1` if it is a leap year, `0` otherwise.                                                                                                                                                            |                         |                  |
-| `o`              | [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) week-numbering year. This has the same value as Y, except that if the ISO week number (W) belongs to the previous or next year, that year is used instead | `1999` or `2003`        |                  |
-| `Y`              | A full numeric representation of a year, 4 digits                                                                                                                                                                            |                         | `1999` or `2003` |
-| `y`              | A two digit representation of a year                                                                                                                                                                                         | `99` or `03`            |                  |
+| Format character | Description                                                                                                                                                                                                                  | Example returned values |
+|------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
+| `L`              | Whether it's a leap year `1` if it is a leap year, `0` otherwise.                                                                                                                                                            |                         |
+| `o`              | [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) week-numbering year. This has the same value as Y, except that if the ISO week number (W) belongs to the previous or next year, that year is used instead | `1999` or `2003`        |
+| `Y`              | A full numeric representation of a year, 4 digits                                                                                                                                                                            | `1999` or `2003`        |
+| `y`              | A two digit representation of a year                                                                                                                                                                                         | `99` or `03`            |
 
 ### Time
 | Format character | Description                                     | Example returned values |
