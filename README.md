@@ -11,11 +11,14 @@ new DateTimeFormatter(year: number, month: number, day: number, hours: number = 
 // Create an DateTimeFormatter with current datetime
 DateTimeFormatter.now(): DateTimeFormatter;
 DateTimeFormatter.createFromFormat(format: string, date: string): DateTimeFormatter;
+// Parse date from the custom format
+DateTimeFormatter.parse(format: string): DateTimeFormatter;
 ```
 
 #### Getters
 ```
 getMicroseconds(): number;
+getMilliseconds(): number;
 getSeconds(): number;
 getMinutes(): number;
 getHours(): number;
@@ -73,12 +76,14 @@ subYears(count: number): DateTimeFormatter;
 startOfMinute(): DateTimeFormatter;
 startOfHour(): DateTimeFormatter;
 startOfDay(): DateTimeFormatter;
+startOfWeek(): DateTimeFormatter;
 startOfMonth(): DateTimeFormatter;
 startOfYear(): DateTimeFormatter;
 
 endOfMinute(): DateTimeFormatter;
-endOfDay(): DateTimeFormatter;
 endOfHour(): DateTimeFormatter;
+endOfDay(): DateTimeFormatter;
+endOfWeek(): DateTimeFormatter;
 endOfMonth(): DateTimeFormatter;
 endOfYear(): DateTimeFormatter;
 ```
@@ -105,9 +110,31 @@ diffInMinutes(date: DateTimeFormatter): number;
 diffInMonths(date: DateTimeFormatter): number;
 diffInSeconds(date: DateTimeFormatter): number;
 diffInYears(date: DateTimeFormatter): number;
+
+equal(date: DateTimeFormatter | Date | number | string): boolean;
+// compare year, month, day, hours, minutes and seconds
+equalWithoutMicroseconds(date: DateTimeFormatter | Date | number | string): boolean;
+// compare year, month, day, hours and minutes
+equalWithoutSeconds(date: DateTimeFormatter | Date | number | string): boolean;
+// compare year, month, day and hours
+equalWithoutMinutes(date: DateTimeFormatter | Date | number | string): boolean;
+// compare year, month and day
+equalWithoutHours(date: DateTimeFormatter | Date | number | string): boolean;
+// compare year and month
+equalWithoutDays(date: DateTimeFormatter | Date | number | string): boolean;
+// compare years
+equalWithoutMonths(date: DateTimeFormatter | Date | number | string): boolean;
+
+notEqual(date: DateTimeFormatter | Date | number | string): boolean;
+notEqualWithoutMicroseconds(date: DateTimeFormatter | Date | number | string): boolean;
+notEqualWithoutSeconds(date: DateTimeFormatter | Date | number | string): boolean;
+notEqualWithoutMinutes(date: DateTimeFormatter | Date | number | string): boolean;
+notEqualWithoutHours(date: DateTimeFormatter | Date | number | string): boolean;
+notEqualWithoutDays(date: DateTimeFormatter | Date | number | string): boolean;
+notEqualWithoutMonths(date: DateTimeFormatter | Date | number | string): boolean;
 ```
 
-#### Methods for convert
+### Methods for convert
 ```
 format(format: string): string;
 // An alternative for format('Y-m-d')
@@ -121,11 +148,33 @@ toTimestamp(): number;
 toDate(): Date;
 ```
 
+### Translations
+##### Global
+```js
+DateTimeFormatter.setGlobalTranslations({
+    monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    shortMonthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    dateNames: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    shortDateNames: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+});
+```
+##### Local
+```js
+const formatter = new DateTimeFormatter();
+formatter.setTranslations({
+    monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    shortMonthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    dateNames: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    shortDateNames: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+});
+```
 
 ### Other methods
 ```
 getFirstDayInYearOnFullWeek:() number;
+getCountDaysInMonth:() number;
 getDayOfWeek:() number;
 getDayOfWeekIso:() number;
+getDayOfYear:() number;
 clone(): DateTimeFormatter;
 ```
