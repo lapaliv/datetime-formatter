@@ -1124,4 +1124,36 @@ describe('formatter', () => {
                 .toBe(translations.monthNames[index].slice(0, 3));
         }
     });
+
+    describe('startOfWeek', () => {
+        for (let day = 23; day <= 29; day++) {
+            it(`2020-03-${day < 10 ? 0 : ''}${day}`, () => {
+                const formatter = new DateTimeFormatter(2020, 3, day);
+                formatter.startOfWeek();
+                expect(formatter.getYear()).toBe(2020);
+                expect(formatter.getMonth()).toBe(3);
+                expect(formatter.getDay()).toBe(23);
+                expect(formatter.getHours()).toBe(0);
+                expect(formatter.getMinutes()).toBe(0);
+                expect(formatter.getSeconds()).toBe(0);
+                expect(formatter.getMicroseconds()).toBe(0);
+            });
+        }
+    });
+
+    describe('endOfWeek', () => {
+        for (let day = 23; day <= 29; day++) {
+            it(`2020-03-${day < 10 ? 0 : ''}${day}`, () => {
+                const formatter = new DateTimeFormatter(2020, 3, day);
+                formatter.endOfWeek();
+                expect(formatter.getYear()).toBe(2020);
+                expect(formatter.getMonth()).toBe(3);
+                expect(formatter.getDay()).toBe(29);
+                expect(formatter.getHours()).toBe(23);
+                expect(formatter.getMinutes()).toBe(59);
+                expect(formatter.getSeconds()).toBe(59);
+                expect(formatter.getMicroseconds()).toBe(999999);
+            });
+        }
+    });
 });

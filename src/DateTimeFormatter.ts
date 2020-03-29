@@ -479,6 +479,16 @@ export class DateTimeFormatter {
     }
 
     /**
+     * Goes to the beginning of the week
+     */
+    startOfWeek(): this {
+        this.startOfDay();
+        this.subDays(this.getDayOfWeekIso() - 1);
+
+        return this;
+    }
+
+    /**
      * Goes to the beginning of the month
      */
     startOfMonth(): this {
@@ -531,6 +541,16 @@ export class DateTimeFormatter {
     endOfDay(): this {
         this.endOfHour();
         this.hours = 23;
+
+        return this;
+    }
+
+    /**
+     * Goes to the end of the week
+     */
+    endOfWeek(): this {
+        this.endOfDay();
+        this.addDays(7 - this.getDayOfWeekIso());
 
         return this;
     }

@@ -236,6 +236,10 @@ declare module 'datetime-formatter' {
          */
         startOfDay(): this;
         /**
+         * Goes to the beginning of the week
+         */
+        startOfWeek(): this;
+        /**
          * Goes to the beginning of the month
          */
         startOfMonth(): this;
@@ -255,6 +259,10 @@ declare module 'datetime-formatter' {
          * Goes to the end of the day
          */
         endOfDay(): this;
+        /**
+         * Goes to the end of the week
+         */
+        endOfWeek(): this;
         /**
          * Goes to the end of the day
          */
