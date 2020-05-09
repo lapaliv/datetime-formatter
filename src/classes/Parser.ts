@@ -206,8 +206,7 @@ export class Parser {
             case 'U':
                 const match = this.target.match(/^([0-9]+)/);
                 if (match) {
-                    // @ts-ignore
-                    const formatter = DateTimeFormatter.createFromTimestamp(match[1]);
+                    const formatter = DateTimeFormatter.createFromTimestamp(Number(match[1]));
                     this.copyDataFromParserOrFormatter(formatter);
                     this.microseconds = 0;
                     break;
@@ -226,7 +225,6 @@ export class Parser {
     protected defineDay() {
         if (!this.day) {
             if (this.year) {
-                // @ts-ignore
                 const formatter = new DateTimeFormatter(this.year, this.month === null ? 1 : (this.month + 1), 1);
 
                 if (this.weekOfYear !== null || this.dayOfWeek !== null) {

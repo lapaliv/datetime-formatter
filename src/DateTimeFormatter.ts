@@ -111,11 +111,12 @@ export class DateTimeFormatter {
         return formatter.parseFromDate(date);
     }
 
-    // @ts-ignore
-    constructor()
-    constructor(date: Date)
-    constructor(timestamp: number)
-    constructor(year: number, month: number, day: number, hours?: number, minutes?: number, seconds?: number, microseconds?: number) {
+    constructor();
+    constructor(date: Date);
+    constructor(timestamp: number);
+    constructor(year: number, month: number, day: number, hours?: number, minutes?: number, seconds?: number, microseconds?: number);
+
+    constructor(year?: Date | number, month?: number, day?: number, hours?: number, minutes?: number, seconds?: number, microseconds?: number) {
         this.monthNames = DateTimeFormatter.globalMonthNames;
         this.dayNames = DateTimeFormatter.globalDayNames;
         this.shortMonthNames = DateTimeFormatter.globalShortMonthNames;

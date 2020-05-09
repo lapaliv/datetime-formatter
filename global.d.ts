@@ -49,6 +49,7 @@ declare module '@lapaliv/datetime-formatter' {
         constructor();
         constructor(date: Date);
         constructor(timestamp: number);
+        constructor(year: number, month: number, day: number, hours?: number, minutes?: number, seconds?: number, microseconds?: number);
         /**
          * Adds one second to the date
          */
@@ -629,6 +630,42 @@ declare module '@lapaliv/datetime-formatter' {
          * Returns the number of the day in the year
          */
         getDayOfYear(): number;
+        /**
+         * Parses the date from the transmitted Date object
+         * @param date
+         */
+        private parseFromDate;
+        /**
+         * Parses the date from the transmitted Date object without offset
+         * @param date
+         */
+        private parseFromUTCDate;
+        /**
+         * Parses the date from the transmitted timestamp
+         * @param timestamp
+         */
+        private parseFromTimestamp;
+        /**
+         * Adds the custom values to the current date
+         * @param years
+         * @param months
+         * @param days
+         * @param hours
+         * @param minutes
+         * @param seconds
+         */
+        private add;
+        /**
+         * Sets the custom values to the current date
+         * @param year
+         * @param month
+         * @param day
+         * @param hours
+         * @param minutes
+         * @param seconds
+         * @param microseconds
+         */
+        private set;
     }
 
     export type Translation = Object & {
