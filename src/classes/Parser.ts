@@ -100,7 +100,7 @@ export class Parser {
                 this.computeValueFromArray('suffix', ['st', 'nd', 'rd', 'th']);
                 break;
             case 'w':
-                this.computeNumberValue('dayOfWeek', [/^([0-6])/], (number: number) => number === 0 ? 7 : number + 1);
+                this.computeNumberValue('dayOfWeek', [/^([0-6])/], (number: number) => number === 0 ? 7 : number);
                 break;
             case 'z':
                 this.computeNumberValue('dayOfYear', [
@@ -207,7 +207,7 @@ export class Parser {
                 const match = this.target.match(/^([0-9]+)/);
                 if (match) {
                     // @ts-ignore
-                    const formatter = new DateTimeFormatter(match[1]);
+                    const formatter = DateTimeFormatter.createFromTimestamp(match[1]);
                     this.copyDataFromParserOrFormatter(formatter);
                     this.microseconds = 0;
                     break;
@@ -238,7 +238,7 @@ export class Parser {
                             formatter.subDay();
                         }
 
-                        if (formatter.isLeapYear()) {
+                        if (formatter.isLeapYear() && formatter.getMonth() > 2) {
                             formatter.subDay();
                         }
                     }
@@ -251,7 +251,7 @@ export class Parser {
                         }
                     }
                 } else if (this.dayOfYear) {
-                    formatter.startOfYear().addDays(this.dayOfYear - 1);
+                    formatter.startOfYear().addDays(this.dayOfYear);
                 } else if (this.suffix) {
                     switch (this.suffix) {
                         case 'st':
@@ -479,12 +479,13 @@ type FieldList =
     | 'suffix'
     | 'daysInMonth';
 
-type ParserOrFormatter = {
+type ParserOrFormatter = Object & {
     year: number;
     month: number;
     day: number;
     hours: number;
     minutes: number;
     seconds: number;
+    microseconds: number;
     offset: number;
 }

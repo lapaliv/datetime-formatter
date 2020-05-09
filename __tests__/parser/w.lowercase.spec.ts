@@ -8,7 +8,7 @@ describe('correct', () => {
             parser.parseSymbol('w');
 
             expect(parser.day).toBe(null);
-            expect(parser.dayOfWeek).toBe(i === 0 ? 7 : i + 1);
+            expect(parser.dayOfWeek).toBe(i === 0 ? 7 : i);
         });
     }
 });
