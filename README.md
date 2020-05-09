@@ -11,6 +11,8 @@ new DateTimeFormatter(year: number, month: number, day: number, hours: number = 
 // Create an DateTimeFormatter with current datetime
 DateTimeFormatter.now(): DateTimeFormatter;
 DateTimeFormatter.createFromFormat(format: string, date: string): DateTimeFormatter;
+DateTimeFormatter.createFromDate(date: Date): DateTimeFormatter;
+DateTimeFormatter.createFromTimestamp(timestamp: number): DateTimeFormatter;
 // Parse date from the custom format
 DateTimeFormatter.parse(format: string): DateTimeFormatter;
 ```
@@ -30,6 +32,7 @@ getYear(): number;
 ### Setters
 ```typescript
 setMicroseconds(value: number): DateTimeFormatter;
+setMilliseconds(value: number): DateTimeFormatter;
 setSeconds(value: number): DateTimeFormatter;
 setMinutes(value: number): DateTimeFormatter;
 setHours(value: number): DateTimeFormatter;
@@ -54,6 +57,10 @@ addMonth(): DateTimeFormatter;
 addMonths(count: number): DateTimeFormatter;
 addYear(): DateTimeFormatter;
 addYears(count: number): DateTimeFormatter;
+addDecade(): DateTimeFormatter;
+addDecades(count: number): DateTimeFormatter;
+addCentury(): DateTimeFormatter;
+addCenturies(count: number): DateTimeFormatter;
 
 subSecond(): DateTimeFormatter;
 subSeconds(count: number): DateTimeFormatter;
@@ -69,6 +76,10 @@ subMonth(): DateTimeFormatter;
 subMonths(count: number): DateTimeFormatter;
 subYear(): DateTimeFormatter;
 subYears(count: number): DateTimeFormatter;
+subDecade(): DateTimeFormatter;
+subDecades(count: number): DateTimeFormatter;
+subCentury(): DateTimeFormatter;
+subCenturies(count: number): DateTimeFormatter;
 ```
 
 ### Methods for change date automatically
@@ -78,14 +89,20 @@ startOfHour(): DateTimeFormatter;
 startOfDay(): DateTimeFormatter;
 startOfWeek(): DateTimeFormatter;
 startOfMonth(): DateTimeFormatter;
+startOfHalfYear(): DateTimeFormatter;
 startOfYear(): DateTimeFormatter;
+startOfDecade(): DateTimeFormatter;
+startOfCentury(): DateTimeFormatter;
 
 endOfMinute(): DateTimeFormatter;
 endOfHour(): DateTimeFormatter;
 endOfDay(): DateTimeFormatter;
 endOfWeek(): DateTimeFormatter;
 endOfMonth(): DateTimeFormatter;
+endOfHalfYear(): DateTimeFormatter;
 endOfYear(): DateTimeFormatter;
+endOfDecade(): DateTimeFormatter;
+endOfCentury(): DateTimeFormatter;
 ```
 
 ### Methods for checks
@@ -100,20 +117,35 @@ isPrevYear(): boolean;
 isToday(): boolean;
 isTomorrow(): boolean;
 isYesterday(): boolean;
+
+isCurrentMicrosecond(): boolean;
+isCurrentMillisecond(): boolean;
+isCurrentSecond(): boolean;
+isCurrentMinute(): boolean;
+isCurrentHour(): boolean;
+isCurrentDay(): boolean;
+isCurrentMonth(): boolean;
+isCurrentYear(): boolean;
+isCurrentDecade(): boolean;
+isCurrentCentury(): boolean;
 ```
 
 ### Methods for compare
 ```typescript
-diffInDays(date: DateTimeFormatter): number;
-diffInHours(date: DateTimeFormatter): number;
-diffInMinutes(date: DateTimeFormatter): number;
-diffInMonths(date: DateTimeFormatter): number;
+diffInMicroseconds(date: DateTimeFormatter): number;
+diffInMilliseconds(date: DateTimeFormatter): number;
 diffInSeconds(date: DateTimeFormatter): number;
+diffInMinutes(date: DateTimeFormatter): number;
+diffInHours(date: DateTimeFormatter): number;
+diffInDays(date: DateTimeFormatter): number;
+diffInMonths(date: DateTimeFormatter): number;
 diffInYears(date: DateTimeFormatter): number;
 
 equal(date: DateTimeFormatter | Date | number | string): boolean;
-// Compare year, month, day, hours, minutes and seconds
+// Compare year, month, day, hours, minutes, seconds and milliseconds
 equalWithoutMicroseconds(date: DateTimeFormatter | Date | number | string): boolean;
+// Compare year, month, day, hours, minutes and seconds
+equalWithoutMilliseconds(target: DateTimeFormatter | number | Date): boolean(date: DateTimeFormatter | Date | number | string): boolean;
 // Compare year, month, day, hours and minutes
 equalWithoutSeconds(date: DateTimeFormatter | Date | number | string): boolean;
 // Compare year, month, day and hours
@@ -127,6 +159,7 @@ equalWithoutMonths(date: DateTimeFormatter | Date | number | string): boolean;
 
 notEqual(date: DateTimeFormatter | Date | number | string): boolean;
 notEqualWithoutMicroseconds(date: DateTimeFormatter | Date | number | string): boolean;
+notEqualWithoutMilliseconds(date: DateTimeFormatter | Date | number | string): boolean;
 notEqualWithoutSeconds(date: DateTimeFormatter | Date | number | string): boolean;
 notEqualWithoutMinutes(date: DateTimeFormatter | Date | number | string): boolean;
 notEqualWithoutHours(date: DateTimeFormatter | Date | number | string): boolean;
@@ -240,3 +273,8 @@ The table was copied from [php.net](https://www.php.net/manual/en/function.date.
 | `c`              | [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) date | `2004-02-12T15:19:21+00:00`       |
 | `r`              | [RFC 2822](http://www.faqs.org/rfcs/rfc2822) formatted date             | `Thu, 21 Dec 2000 16:01:07 +0000` |
 | `U`              | Seconds since the Unix Epoch (January 1 1970 00:00:00 GMT)              | `1585517413`                      |
+
+## Tests
+```shell script
+yarn test
+```
