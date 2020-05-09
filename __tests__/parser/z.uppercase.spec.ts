@@ -2,7 +2,7 @@ import {DateTimeFormatter} from "../../src/DateTimeFormatter";
 import FakeParser from "../../src/classes/FakeParser";
 
 describe('correct', () => {
-    const offsets: {[key: string]: number} = {
+    const offsets: { [key: string]: number } = {
         '-43200': -720,
         '-43199': -720,
         '-42000': -700,
