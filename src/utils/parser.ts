@@ -1,6 +1,7 @@
 import {DateTimeFormatter} from "../DateTimeFormatter";
 import {pascalCase} from "./pascalCase";
-import {doubleNumber} from "./doubleNumber";
+import {leadingZeroNumber} from "./leadingZeroNumber";
+import {convertSecondsToTime} from "./convertSecondsToTime";
 
 type ParserResult = {
     year: number;
@@ -50,7 +51,8 @@ export class Parser {
         }
 
         this.parseSymbols(symbols);
-        this.findLostValues();
+        this.defineDay();
+        this.defineTimeByInternetTime();
 
         return this.toObject();
     }
@@ -110,7 +112,7 @@ export class Parser {
                 match = this.target.match(regexp);
 
                 if (match) {
-                    this.dayOfWeek = this.getIndex(this.formatter.dayNames, match[1]);
+                    this.dayOfWeek = this.getIndex(this.formatter.dayNames, match[1]) + 1;
                     this.target = this.target.slice(match[1].length);
                     break;
                 }
@@ -266,8 +268,8 @@ export class Parser {
                     let currentYear = DateTimeFormatter.now().getYear();
                     let firstSymbolsOfCurrentYear = Math.floor(currentYear / 100);
                     this.year = matchNumber < 70
-                        ? Number(`${firstSymbolsOfCurrentYear}${doubleNumber(matchNumber)}`)
-                        : Number(`${firstSymbolsOfCurrentYear - 1}${doubleNumber(matchNumber)}`);
+                        ? Number(`${firstSymbolsOfCurrentYear}${leadingZeroNumber(matchNumber)}`)
+                        : Number(`${firstSymbolsOfCurrentYear - 1}${leadingZeroNumber(matchNumber)}`);
                     this.target = this.target.slice(match[0].length);
                     break;
                 }
@@ -285,7 +287,7 @@ export class Parser {
 
                 throw new Error('Date format is not correct');
             case 'B':
-                match = this.target.match(/^[0-9]{3}/);
+                match = this.target.match(/^([0-9]{3})/);
 
                 if (match) {
                     this.internetTime = Number(match[1]);
@@ -295,34 +297,46 @@ export class Parser {
 
                 throw new Error('Date format is not correct');
             case 'g':
-                regexps = [/^1[0-2]/, /^[0-9]/];
+                regexps = [/^(1[0-2])/, /^([0-9])/];
 
                 for (const item of regexps) {
                     match = this.target.match(item);
                     if (match) {
                         this.divideHours = Number(match[1]);
                         this.target = this.target.slice(match[1].length);
+                        needBreak = true;
                         break;
                     }
                 }
 
+                if (needBreak) {
+                    break;
+                }
+
                 throw new Error('Date format is not correct');
             case 'G':
-                regexps = [/^(1[0-9]|2[0-3])/, /^[0-9]/];
+                regexps = [/^(1[0-9]|2[0-3])/, /^([0-9])/];
 
                 for (const item of regexps) {
                     match = this.target.match(item);
                     if (match) {
                         this.hours = Number(match[1]);
                         this.target = this.target.slice(match[1].length);
+                        needBreak = true;
                         break;
                     }
                 }
 
+                if (needBreak) {
+                    break;
+                }
+
                 throw new Error('Date format is not correct');
             case 'h':
-                if (this.target.match(/^(0[0-9]|1[0-2])/)) {
-                    this.hours = Number(this.target.slice(0, 2));
+                match = this.target.match(/^(0[0-9]|1[0-2])/);
+
+                if (match) {
+                    this.divideHours = Number(match[1]);
                     this.target = this.target.slice(2);
                     break;
                 }
@@ -369,58 +383,44 @@ export class Parser {
 
                 throw new Error('Date format is not correct');
             case 'O':
-                match = this.target.match(/^[-+]([0-1][0-9]|2[0-3])([0-5][0-9])/);
-
-                if (match) {
-                    this.offset = Number(match[1]) * 60 + Number(match[2]);
-                    this.target = this.target.slice(5);
-                    break;
-                }
-
-                throw new Error('Date format is not correct');
+                this.computeOffset([
+                    /^(-)(0[0-9]|1[0-1])([0-5][0-9])/,
+                    /^(-)(12)(00)/,
+                    /^(\+)(0[0-9]|1[0-3])([0-5][0-9])/,
+                    /^(\+)(14)(00)/,
+                ]);
+                break;
             case 'P':
-                match = this.target.match(/^[-+]([0-1][0-9]|2[0-3]):([0-5][0-9])/);
-
-                if (match) {
-                    this.offset = Number(match[1]) * 60 + Number(match[2]);
-                    this.target = this.target.slice(5);
-                    break;
-                }
-
-                throw new Error('Date format is not correct');
+                this.computeOffset([
+                    /^(-)(0[0-9]|1[0-1]):([0-5][0-9])/,
+                    /^(-)(12):(00)/,
+                    /^(\+)(0[0-9]|1[0-3]):([0-5][0-9])/,
+                    /^(\+)(14):(00)/,
+                ]);
+                break;
+            case 'Z':
+                this.computeOffsetFromSeconds([
+                    /^(-(?:43200|43[0-1][0-9]{2}|4[0-2][0-9]{3}|[1-3][0-9]{4}|[1-9][0-9]{0,4}))/,
+                    /^(50400|50[0-3][0-9]{2}|[1-4][0-9]{4}|[0-9]{1,4})/,
+                ]);
+                break;
             case 'c':
-                complex = new Parser(this.formatter, 'Y-m-dTH:i:sP', this.target).handle();
-                this.year = complex.year;
-                this.month = complex.month;
-                this.day = complex.day;
-                this.hours = complex.hours;
-                this.minutes = complex.minutes;
-                this.seconds = complex.seconds;
-                this.offset = complex.offset;
-                this.target = this.target.slice(-1);
+                this.computeFromComplex('Y-m-dTH:i:sP');
                 break;
             case 'r':
-                complex = new Parser(this.formatter, 'D, d M Y H:i:s O', this.target).handle();
-                this.year = complex.year;
-                this.month = complex.month;
-                this.day = complex.day;
-                this.hours = complex.hours;
-                this.minutes = complex.minutes;
-                this.seconds = complex.seconds;
-                this.offset = complex.offset;
-                this.target = this.target.slice(-1);
+                this.computeFromComplex('D, d M Y H:i:s O');
                 break;
             case 'U':
-                match = this.target.match(/^(-?[0-9]+)/);
+                match = this.target.match(/^([0-9]+)/);
                 if (match) {
-                    const date = new Date(match[0]);
-
-                    this.year = date.getUTCFullYear();
-                    this.month = date.getUTCMonth();
-                    this.day = date.getUTCDate();
-                    this.hours = date.getUTCHours();
-                    this.minutes = date.getUTCMinutes();
-                    this.seconds = date.getUTCSeconds();
+                    // @ts-ignore
+                    const formatter = new DateTimeFormatter(match[1]);
+                    this.year = formatter.year;
+                    this.month = formatter.month;
+                    this.day = formatter.day;
+                    this.hours = formatter.hours;
+                    this.minutes = formatter.minutes;
+                    this.seconds = formatter.seconds;
                     this.microseconds = 0;
                     this.target = this.target.slice(match[1].length);
                     break;
@@ -432,7 +432,7 @@ export class Parser {
         }
     }
 
-    protected findLostValues() {
+    protected defineDay() {
         if (!this.day) {
             if (this.year) {
                 // @ts-ignore
@@ -493,12 +493,15 @@ export class Parser {
                 this.hours = this.am ? this.divideHours : this.divideHours + 12;
             }
         }
+    }
 
+    protected defineTimeByInternetTime() {
         if (this.internetTime !== null && (this.hours === null || this.minutes === null || this.seconds === null)) {
-            const result = Math.floor(this.internetTime * 24 * 60 * 60 / 999);
-            this.hours = Math.floor(result / 60 / 60);
-            this.minutes = Math.floor((result - this.hours * 60 * 60) / 60);
-            this.seconds = result - this.hours * 60 * 60 + this.minutes * 60;
+            const {hours, minutes, seconds} = convertSecondsToTime(Math.floor(this.internetTime * 86400 / 999))
+
+            this.hours = hours + 1;
+            this.minutes = minutes;
+            this.seconds = seconds;
         }
     }
 
@@ -525,5 +528,84 @@ export class Parser {
         }
 
         throw new Error(`Internal error. Could not find element [${target}] in array: ${array.join(',')}`);
+    }
+
+    /**
+     * Search offset in target
+     * @param regexps
+     */
+    private computeOffset(regexps: Array<RegExp>) {
+        for (const regexp of regexps) {
+            const match = this.target.match(regexp);
+
+            if (match) {
+                this.offset = (Number(match[2]) * 60 + Number(match[3])) * (match[1] === '-' ? -1 : 1);
+                this.target = this.target.slice(5);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Search offset in seconds in target
+     * @param regexps
+     */
+    private computeOffsetFromSeconds(regexps: Array<RegExp>) {
+        for (const regexp of regexps) {
+            const match = this.target.match(regexp);
+
+            if (match) {
+                this.offset = Math.round(Number(match[1]) / 60);
+                this.target = this.target.slice(match[1].length);
+                return;
+            }
+        }
+
+        this.throwError();
+    }
+
+    /**
+     * Compute date from complex format
+     * @param format
+     */
+    private computeFromComplex(format: string) {
+        const complex = new Parser(this.formatter, format, this.target).handle();
+        this.year = complex.year;
+        this.month = complex.month;
+        this.day = complex.day;
+        this.hours = complex.hours;
+        this.minutes = complex.minutes;
+        this.seconds = complex.seconds;
+        this.offset = complex.offset;
+        this.target = this.target.slice(-1);
+    }
+
+    /**
+     * Compute a simple number by regexps from target
+     * @param field
+     * @param regexps
+     * @param multiplier
+     */
+    private computeSimpleNumber(field: string, regexps: Array<RegExp>, multiplier: number = 1) {
+        for (const regexp of regexps) {
+            const match = this.target.match(regexp);
+
+            if (match) {
+                this.microseconds = Number(match[1]) * multiplier;
+                this.target = this.target.slice(match[1].length);
+                return;
+            }
+        }
+
+        this.throwError();
+    }
+
+    /**
+     * Throw exception with error
+     */
+    private throwError() {
+        throw new Error('Date format is not correct');
     }
 }

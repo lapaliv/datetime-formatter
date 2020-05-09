@@ -2,22 +2,22 @@ import FakeParser from "../../src/utils/FakeParser";
 import {DateTimeFormatter} from "../../src/DateTimeFormatter";
 
 describe('correct', () => {
-    for (let i = 1; i <= 12; i++) {
+    for (let i = 0; i <= 23; i++) {
         it(i.toString(), () => {
-            const parser = new FakeParser(new DateTimeFormatter(), 'n', i.toString());
-            parser.parseSymbol('n');
+            const parser = new FakeParser(new DateTimeFormatter(), 'G', i.toString());
+            parser.parseSymbol('G');
 
-            expect(parser.month).toBe(i - 1);
+            expect(parser.hours).toBe(i);
         });
     }
 });
 
 describe('not correct', () => {
-    for (const value of ['a', '13', '0', 'f', '-3']) {
+    for (const value of ['a', '24', 'fb', '-3']) {
         it(value.toString(), () => {
-            const parser = new FakeParser(new DateTimeFormatter(), 'n', value);
+            const parser = new FakeParser(new DateTimeFormatter(), 'G', value);
             try {
-                parser.parseSymbol('n');
+                parser.parseSymbol('G');
                 expect(true).toBe(false);
             } catch (e) {
                 expect(true).toBe(true);

@@ -1,11 +1,11 @@
 import {DateTimeFormatter} from "../../src/DateTimeFormatter";
-import FakeParser from "../FakeParser";
-import {doubleNumber} from "../../src/utils/doubleNumber";
+import FakeParser from "../../src/utils/FakeParser";
+import {leadingZeroNumber} from "../../src/utils/leadingZeroNumber";
 
 describe('correct', () => {
     for (let i = 1; i <= 52; i++) {
-        it(doubleNumber(i), () => {
-            const parser = new FakeParser(new DateTimeFormatter(), 'W', doubleNumber(i));
+        it(leadingZeroNumber(i), () => {
+            const parser = new FakeParser(new DateTimeFormatter(), 'W', leadingZeroNumber(i));
             parser.parseSymbol('W');
 
             expect(parser.day).toBe(null);

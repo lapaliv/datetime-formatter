@@ -1,4 +1,4 @@
-import {Parser} from "../src/utils/parser";
+import {Parser} from "./parser";
 
 export default class FakeParser extends Parser {
     public year: number | null = null;
@@ -21,5 +21,13 @@ export default class FakeParser extends Parser {
 
     public parseSymbol(symbol: string) {
         super.parseSymbol(symbol);
+    }
+
+    public defineDay() {
+        super.defineDay();
+    }
+
+    public defineTimeByInternetTime() {
+        super.defineTimeByInternetTime();
     }
 }

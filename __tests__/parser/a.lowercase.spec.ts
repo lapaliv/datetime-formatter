@@ -1,5 +1,5 @@
 import {DateTimeFormatter} from "../../src/DateTimeFormatter";
-import FakeParser from "../FakeParser";
+import FakeParser from "../../src/utils/FakeParser";
 
 describe('correct', () => {
     for (const item of ['am', 'pm']) {

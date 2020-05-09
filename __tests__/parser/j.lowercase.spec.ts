@@ -1,4 +1,4 @@
-import FakeParser from "../FakeParser";
+import FakeParser from "../../src/utils/FakeParser";
 import {DateTimeFormatter} from "../../src/DateTimeFormatter";
 
 describe('correct', () => {
