@@ -1,6 +1,6 @@
 import {builder} from "./utils/builder";
 import {isLeapYear} from "./utils/isLeapYear";
-import {parser} from "./utils/parser";
+import {Parser} from "./classes/Parser";
 import {dayOnFirstWeekInYear} from "./utils/dayOnFirstWeekInYear";
 import {Translation} from "./types/Translation";
 import {countDaysInMonth} from "./utils/countDaysInMonth";
@@ -50,8 +50,9 @@ export class DateTimeFormatter {
      * @param date
      */
     static createFromFormat(format: string, date: string): DateTimeFormatter {
-        const result = parser(format, date);
         const formatter = new DateTimeFormatter();
+        const result = new Parser(formatter, format, date).handle();
+
         formatter.year = result.year;
         formatter.month = result.month;
         formatter.day = result.day;
@@ -471,13 +472,20 @@ export class DateTimeFormatter {
     }
 
     /**
+     * Goes to the beginning of the second
+     */
+    startOfSecond(): this {
+        this.microseconds = 0;
+
+        return this;
+    }
+
+    /**
      * Goes to the beginning of the minute
      */
     startOfMinute(): this {
         this.seconds = 0;
-        this.microseconds = 0;
-
-        return this;
+        return this.startOfSecond();
     }
 
     /**
@@ -485,10 +493,7 @@ export class DateTimeFormatter {
      */
     startOfHour(): this {
         this.minutes = 0;
-        this.seconds = 0;
-        this.microseconds = 0;
-
-        return this;
+        return this.startOfMinute();
     }
 
     /**
@@ -496,11 +501,7 @@ export class DateTimeFormatter {
      */
     startOfDay(): this {
         this.hours = 0;
-        this.minutes = 0;
-        this.seconds = 0;
-        this.microseconds = 0;
-
-        return this;
+        return this.startOfHour();
     }
 
     /**
@@ -518,12 +519,14 @@ export class DateTimeFormatter {
      */
     startOfMonth(): this {
         this.day = 1;
-        this.hours = 0;
-        this.minutes = 0;
-        this.seconds = 0;
-        this.microseconds = 0;
+        return this.startOfDay();
+    }
 
-        return this;
+    /**
+     * Goes to the beginning of the half year
+     */
+    startOfHalfYear(): this {
+        return this.subMonths(this.month % 6).startOfMonth();
     }
 
     /**
@@ -531,11 +534,28 @@ export class DateTimeFormatter {
      */
     startOfYear(): this {
         this.month = 0;
-        this.day = 1;
-        this.hours = 0;
-        this.minutes = 0;
-        this.seconds = 0;
-        this.microseconds = 0;
+        return this.startOfMonth();
+    }
+
+    /**
+     * Goes to the beginning of the decade
+     */
+    startOfDecade(): this {
+        return this.subYears(this.year % 10).startOfYear()
+    }
+
+    /**
+     * Goes to the beginning of the decade
+     */
+    startOfCentury(): this {
+        return this.subYears(this.year % 100 - 1).startOfYear()
+    }
+
+    /**
+     * Goes to the end of the minute
+     */
+    endOfSecond(): this {
+        this.microseconds = 999999;
 
         return this;
     }
@@ -545,59 +565,67 @@ export class DateTimeFormatter {
      */
     endOfMinute(): this {
         this.seconds = 59;
-        this.microseconds = 999999;
-
-        return this;
+        return this.endOfSecond();
     }
 
     /**
      * Goes to the end of the hour
      */
     endOfHour(): this {
-        this.endOfMinute();
         this.minutes = 59;
-
-        return this;
+        return this.endOfMinute();
     }
 
     /**
      * Goes to the end of the day
      */
     endOfDay(): this {
-        this.endOfHour();
         this.hours = 23;
-
-        return this;
+        return this.endOfHour();
     }
 
     /**
      * Goes to the end of the week
      */
     endOfWeek(): this {
-        this.endOfDay();
-        this.addDays(7 - this.getDayOfWeekIso());
-
-        return this;
+        return this.endOfDay().addDays(7 - this.getDayOfWeekIso());
     }
 
     /**
      * Goes to the end of the day
      */
     endOfMonth(): this {
-        this.endOfDay();
         this.day = countDaysInMonth(this.year, this.month);
+        return this.endOfDay();
+    }
 
-        return this;
+    /**
+     * Goes to the end of the year
+     */
+    endOfHalfYear(): this {
+        return this.startOfHalfYear().addMonths(6).endOfMonth();
     }
 
     /**
      * Goes to the end of the year
      */
     endOfYear(): this {
-        this.endOfMonth();
         this.month = 11;
+        return this.endOfMonth();
+    }
 
-        return this;
+    /**
+     * Goes to the end of decade
+     */
+    endOfDecade(): this {
+        return this.startOfDecade().addYears(9).endOfYear();
+    }
+
+    /**
+     * Goes to the end of century
+     */
+    endOfCentury(): this {
+        return this.startOfCentury().addYears(99).endOfYear();
     }
 
     /**

@@ -1,5 +1,5 @@
 import {DateTimeFormatter} from "../../src/DateTimeFormatter";
-import FakeParser from "../../src/utils/FakeParser";
+import FakeParser from "../../src/classes/FakeParser";
 
 describe('correct', () => {
     const allMonthNames = [

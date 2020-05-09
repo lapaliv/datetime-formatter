@@ -1,4 +1,4 @@
-import {Parser} from "./parser";
+import {Parser} from "./Parser";
 
 export default class FakeParser extends Parser {
     public year: number | null = null;

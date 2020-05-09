@@ -1,4 +1,4 @@
-import FakeParser from "../../src/utils/FakeParser";
+import FakeParser from "../../src/classes/FakeParser";
 import {leadingZeroNumber} from "../../src/utils/leadingZeroNumber";
 import {DateTimeFormatter} from "../../src/DateTimeFormatter";
 
