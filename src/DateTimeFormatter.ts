@@ -1,6 +1,6 @@
 import {builder} from "./utils/builder";
 import {isLeapYear} from "./utils/isLeapYear";
-import {parser} from "./utils/parser";
+import {Parser} from "./classes/Parser";
 import {dayOnFirstWeekInYear} from "./utils/dayOnFirstWeekInYear";
 import {Translation} from "./types/Translation";
 import {countDaysInMonth} from "./utils/countDaysInMonth";
@@ -11,6 +11,20 @@ export class DateTimeFormatter {
     public static globalShortMonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     public static globalDayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     public static globalShortDayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+    public year: number = 0;
+    public month: number = 0;
+    public day: number = 0;
+    public hours: number = 0;
+    public minutes: number = 0;
+    public seconds: number = 0;
+    public microseconds: number = 0;
+    public offset: number = 0;
+
+    public monthNames: string[] = [];
+    public shortMonthNames: string[] = [];
+    public dayNames: string[] = [];
+    public shortDayNames: string[] = [];
 
     /**
      * Creates an instance with the current time
@@ -50,8 +64,9 @@ export class DateTimeFormatter {
      * @param date
      */
     static createFromFormat(format: string, date: string): DateTimeFormatter {
-        const result = parser(format, date);
         const formatter = new DateTimeFormatter();
+        const result = new Parser(formatter, format, date).handle();
+
         formatter.year = result.year;
         formatter.month = result.month;
         formatter.day = result.day;
@@ -76,25 +91,32 @@ export class DateTimeFormatter {
         DateTimeFormatter.globalShortDayNames = result.shortDayNames;
     }
 
-    public year: number = 0;
-    public month: number = 0;
-    public day: number = 0;
-    public hours: number = 0;
-    public minutes: number = 0;
-    public seconds: number = 0;
-    public microseconds: number = 0;
-    public offset: number = 0;
+    /**
+     * Parses the date from the transmitted timestamp
+     * @param timestamp
+     */
+    static createFromTimestamp(timestamp: number) {
+        const formatter = new DateTimeFormatter();
+        formatter.parseFromTimestamp(timestamp);
 
-    public monthNames: string[] = [];
-    public shortMonthNames: string[] = [];
-    public dayNames: string[] = [];
-    public shortDayNames: string[] = [];
+        return formatter;
+    }
 
-    // @ts-ignore
-    constructor()
-    constructor(date: Date)
-    constructor(timestamp: number)
-    constructor(year: number, month: number, day: number, hours?: number, minutes?: number, seconds?: number, microseconds?: number) {
+    /**
+     * Parses the date from the transmitted Date object
+     * @param date
+     */
+    static createFromDate(date: Date) {
+        const formatter = new DateTimeFormatter();
+        return formatter.parseFromDate(date);
+    }
+
+    constructor();
+    constructor(date: Date);
+    constructor(timestamp: number);
+    constructor(year: number, month: number, day: number, hours?: number, minutes?: number, seconds?: number, microseconds?: number);
+
+    constructor(year?: Date | number, month?: number, day?: number, hours?: number, minutes?: number, seconds?: number, microseconds?: number) {
         this.monthNames = DateTimeFormatter.globalMonthNames;
         this.dayNames = DateTimeFormatter.globalDayNames;
         this.shortMonthNames = DateTimeFormatter.globalShortMonthNames;
@@ -103,17 +125,17 @@ export class DateTimeFormatter {
         if (arguments.length === 1) {
             if (arguments[0] instanceof Date) {
                 this.parseFromDate(arguments[0]);
-            } else if (Number(arguments[0]) === arguments[0]) {
+            } else if (['string', 'number'].includes(typeof arguments[0]) && Number(arguments[0]).toString() === arguments[0].toString()) {
                 this.parseFromTimestamp(arguments[0]);
             } else {
-                throw new Error('Argument is undefined');
+                throw new Error(`Argument #0 [${arguments[0]}] is not correct`);
             }
 
             return this;
         } else if (arguments.length >= 3) {
             for (let index = 0; index < Math.min(arguments.length, 7); index++) {
-                if (Number(arguments[index]) !== arguments[index]) {
-                    throw new Error(`Argument ${index} is undefined`);
+                if (!['string', 'number'].includes(typeof arguments[0]) || Number(arguments[index]).toString() !== arguments[index].toString()) {
+                    throw new Error(`Argument #${index} [${arguments[index]}] is not correct`);
                 }
             }
 
@@ -243,6 +265,36 @@ export class DateTimeFormatter {
     }
 
     /**
+     * Adds one decade to the date
+     */
+    addDecade(): this {
+        return this.addYears(10);
+    }
+
+    /**
+     * Adds many decades to the date
+     * @param count
+     */
+    addDecades(count: number): this {
+        return this.addYears(count * 10);
+    }
+
+    /**
+     * Adds one decade to the date
+     */
+    addCentury(): this {
+        return this.addYears(100);
+    }
+
+    /**
+     * Adds many centuries to the date
+     * @param count
+     */
+    addCenturies(count: number): this {
+        return this.addYears(count * 100);
+    }
+
+    /**
      * Subtracts one second from the current date
      */
     subSecond(): this {
@@ -348,6 +400,34 @@ export class DateTimeFormatter {
     }
 
     /**
+     * Subtracts one decade from the current date
+     */
+    subDecade(): this {
+        return this.subYears(10);
+    }
+
+    /**
+     * Subtracts many decades from the current date
+     */
+    subDecades(count: number): this {
+        return this.subYears(10 * count);
+    }
+
+    /**
+     * Subtracts one century from the current date
+     */
+    subCentury(): this {
+        return this.subYears(100);
+    }
+
+    /**
+     * Subtracts many centuries from the current date
+     */
+    subCenturies(count: number): this {
+        return this.subYears(100 * count);
+    }
+
+    /**
      * Converts to the `Y-m-d` format
      */
     toDateString(): string {
@@ -415,6 +495,25 @@ export class DateTimeFormatter {
     }
 
     /**
+     * Returns the count of full microseconds between the current date and the transmitted date
+     * @param date
+     */
+    diffInMicroseconds(date: this): number {
+        const dateTimestamp = date.toJsTimestamp() * Math.pow(10, 3) + date.getMicroseconds();
+        const thisTimestamp = this.toJsTimestamp() * Math.pow(10, 3) + this.getMicroseconds();
+
+        return Math.abs(dateTimestamp - thisTimestamp);
+    }
+
+    /**
+     * Returns the count of full milliseconds between the current date and the transmitted date
+     * @param date
+     */
+    diffInMilliseconds(date: this): number {
+        return Math.abs(date.toJsTimestamp() - this.toJsTimestamp());
+    }
+
+    /**
      * Returns the count of full seconds between the current date and the transmitted date
      * @param date
      */
@@ -471,13 +570,20 @@ export class DateTimeFormatter {
     }
 
     /**
+     * Goes to the beginning of the second
+     */
+    startOfSecond(): this {
+        this.microseconds = 0;
+
+        return this;
+    }
+
+    /**
      * Goes to the beginning of the minute
      */
     startOfMinute(): this {
         this.seconds = 0;
-        this.microseconds = 0;
-
-        return this;
+        return this.startOfSecond();
     }
 
     /**
@@ -485,10 +591,7 @@ export class DateTimeFormatter {
      */
     startOfHour(): this {
         this.minutes = 0;
-        this.seconds = 0;
-        this.microseconds = 0;
-
-        return this;
+        return this.startOfMinute();
     }
 
     /**
@@ -496,11 +599,7 @@ export class DateTimeFormatter {
      */
     startOfDay(): this {
         this.hours = 0;
-        this.minutes = 0;
-        this.seconds = 0;
-        this.microseconds = 0;
-
-        return this;
+        return this.startOfHour();
     }
 
     /**
@@ -518,12 +617,14 @@ export class DateTimeFormatter {
      */
     startOfMonth(): this {
         this.day = 1;
-        this.hours = 0;
-        this.minutes = 0;
-        this.seconds = 0;
-        this.microseconds = 0;
+        return this.startOfDay();
+    }
 
-        return this;
+    /**
+     * Goes to the beginning of the half year
+     */
+    startOfHalfYear(): this {
+        return this.subMonths(this.month % 6).startOfMonth();
     }
 
     /**
@@ -531,11 +632,28 @@ export class DateTimeFormatter {
      */
     startOfYear(): this {
         this.month = 0;
-        this.day = 1;
-        this.hours = 0;
-        this.minutes = 0;
-        this.seconds = 0;
-        this.microseconds = 0;
+        return this.startOfMonth();
+    }
+
+    /**
+     * Goes to the beginning of the decade
+     */
+    startOfDecade(): this {
+        return this.subYears(this.year % 10).startOfYear()
+    }
+
+    /**
+     * Goes to the beginning of the decade
+     */
+    startOfCentury(): this {
+        return this.subYears(this.year % 100 - 1).startOfYear()
+    }
+
+    /**
+     * Goes to the end of the minute
+     */
+    endOfSecond(): this {
+        this.microseconds = 999999;
 
         return this;
     }
@@ -545,59 +663,67 @@ export class DateTimeFormatter {
      */
     endOfMinute(): this {
         this.seconds = 59;
-        this.microseconds = 999999;
-
-        return this;
+        return this.endOfSecond();
     }
 
     /**
      * Goes to the end of the hour
      */
     endOfHour(): this {
-        this.endOfMinute();
         this.minutes = 59;
-
-        return this;
+        return this.endOfMinute();
     }
 
     /**
      * Goes to the end of the day
      */
     endOfDay(): this {
-        this.endOfHour();
         this.hours = 23;
-
-        return this;
+        return this.endOfHour();
     }
 
     /**
      * Goes to the end of the week
      */
     endOfWeek(): this {
-        this.endOfDay();
-        this.addDays(7 - this.getDayOfWeekIso());
-
-        return this;
+        return this.endOfDay().addDays(7 - this.getDayOfWeekIso());
     }
 
     /**
      * Goes to the end of the day
      */
     endOfMonth(): this {
-        this.endOfDay();
         this.day = countDaysInMonth(this.year, this.month);
+        return this.endOfDay();
+    }
 
-        return this;
+    /**
+     * Goes to the end of the year
+     */
+    endOfHalfYear(): this {
+        return this.startOfHalfYear().addMonths(6).endOfMonth();
     }
 
     /**
      * Goes to the end of the year
      */
     endOfYear(): this {
-        this.endOfMonth();
         this.month = 11;
+        return this.endOfMonth();
+    }
 
-        return this;
+    /**
+     * Goes to the end of decade
+     */
+    endOfDecade(): this {
+        return this.startOfDecade().addYears(9).endOfYear();
+    }
+
+    /**
+     * Goes to the end of century
+     */
+    endOfCentury(): this {
+        return this.startOfCentury().addYears(99).endOfYear();
     }
 
     /**
@@ -703,6 +829,84 @@ export class DateTimeFormatter {
     }
 
     /**
+     * Returns `true` if the current date is in current microsecond
+     */
+    isCurrentMicrosecond(): boolean {
+        const now = DateTimeFormatter.now();
+        return this.isCurrentSecond()
+            && this.getMicroseconds() === now.getMicroseconds();
+    }
+
+    /**
+     * Returns `true` if the current date is in current millisecond
+     */
+    isCurrentMillisecond(): boolean {
+        const now = DateTimeFormatter.now();
+        return this.isCurrentSecond()
+            && this.getMilliseconds() === now.getMilliseconds();
+    }
+
+    /**
+     * Returns `true` if the current date is in current second
+     */
+    isCurrentSecond(): boolean {
+        return this.notEqualWithoutMilliseconds(DateTimeFormatter.now());
+    }
+
+    /**
+     * Returns `true` if the current date is in current minute
+     */
+    isCurrentMinute(): boolean {
+        return this.notEqualWithoutSeconds(DateTimeFormatter.now());
+    }
+
+    /**
+     * Returns `true` if the current date is in current hour
+     */
+    isCurrentHour(): boolean {
+        return this.notEqualWithoutMinutes(DateTimeFormatter.now());
+    }
+
+    /**
+     * Returns `true` if the current date is in current day
+     */
+    isCurrentDay(): boolean {
+        return this.notEqualWithoutHours(DateTimeFormatter.now());
+    }
+
+    /**
+     * Returns `true` if the current date is in current month
+     */
+    isCurrentMonth(): boolean {
+        return this.notEqualWithoutDays(DateTimeFormatter.now());
+    }
+
+    /**
+     * Returns `true` if the current date is in current year
+     */
+    isCurrentYear(): boolean {
+        return this.notEqualWithoutMonths(DateTimeFormatter.now());
+    }
+
+    /**
+     * Returns 'true' if the current date is in the current decade
+     */
+    isCurrentDecade(): boolean {
+        const now = DateTimeFormatter.now();
+        return this.getYear() >= now.startOfDecade().getYear()
+            && this.getYear() <= now.endOfDecade().getYear();
+    }
+
+    /**
+     * Returns 'true' if the current date is in the current century
+     */
+    isCurrentCentury(): boolean {
+        const now = DateTimeFormatter.now();
+        return this.getYear() >= now.startOfCentury().getYear()
+            && this.getYear() <= now.endOfCentury().getYear();
+    }
+
+    /**
      * Returns the microseconds
      */
     getMicroseconds(): number {
@@ -771,6 +975,22 @@ export class DateTimeFormatter {
             this.minutes,
             this.seconds,
             value
+        );
+    }
+
+    /**
+     * Setter for milliseconds
+     * @param value
+     */
+    setMilliseconds(value: number): this {
+        return this.set(
+            this.year,
+            this.month,
+            this.day,
+            this.hours,
+            this.minutes,
+            this.seconds,
+            value * 1000
         );
     }
 
@@ -931,6 +1151,18 @@ export class DateTimeFormatter {
     equalWithoutMicroseconds(target: DateTimeFormatter | number | Date): boolean {
         const date = DateTimeFormatter.parse(target);
         return this.equalWithoutSeconds(date)
+            && this.seconds === date.seconds
+            && this.getMilliseconds() === date.getMilliseconds();
+    }
+
+    /**
+     * Returns `true` if the current date equals the transmitted date
+     * without milliseconds
+     * @param target
+     */
+    equalWithoutMilliseconds(target: DateTimeFormatter | number | Date): boolean {
+        const date = DateTimeFormatter.parse(target);
+        return this.equalWithoutSeconds(date)
             && this.seconds === date.seconds;
     }
 
@@ -1007,6 +1239,15 @@ export class DateTimeFormatter {
 
     /**
      * Returns `true` if the current date equals the transmitted date
+     * without milliseconds
+     * @param target
+     */
+    notEqualWithoutMilliseconds(target: DateTimeFormatter | number | Date): boolean {
+        return !this.equalWithoutMilliseconds(target);
+    }
+
+    /**
+     * Returns `true` if the current date equals the transmitted date
      * without seconds and microseconds
      * @param target
      */
@@ -1066,7 +1307,7 @@ export class DateTimeFormatter {
      * Parses the date from the transmitted Date object
      * @param date
      */
-    private parseFromDate(date: Date) {
+    private parseFromDate(date: Date): this {
         this.year = date.getFullYear();
         this.month = date.getMonth();
         this.day = date.getDate();
@@ -1075,13 +1316,15 @@ export class DateTimeFormatter {
         this.seconds = date.getSeconds();
         this.microseconds = date.getMilliseconds() * Math.pow(10, 3);
         this.offset = date.getTimezoneOffset();
+
+        return this;
     }
 
     /**
      * Parses the date from the transmitted Date object without offset
      * @param date
      */
-    private parseFromUTCDate(date: Date) {
+    private parseFromUTCDate(date: Date): this {
         this.year = date.getUTCFullYear();
         this.month = date.getUTCMonth();
         this.day = date.getUTCDate();
@@ -1090,13 +1333,15 @@ export class DateTimeFormatter {
         this.seconds = date.getUTCSeconds();
         this.microseconds = date.getUTCMilliseconds() * Math.pow(10, 3);
         this.offset = 0;
+
+        return this;
     }
 
     /**
      * Parses the date from the transmitted timestamp
      * @param timestamp
      */
-    private parseFromTimestamp(timestamp: number) {
+    private parseFromTimestamp(timestamp: number): this {
         let timestampAsString = `${timestamp}`;
         let microseconds = 0;
 
@@ -1130,6 +1375,8 @@ export class DateTimeFormatter {
 
         this.parseFromUTCDate(new Date(timestamp));
         this.microseconds = microseconds;
+
+        return this;
     }
 
     /**

@@ -4,6 +4,18 @@ declare module '@lapaliv/datetime-formatter' {
         static globalShortMonthNames: string[];
         static globalDayNames: string[];
         static globalShortDayNames: string[];
+        year: number;
+        month: number;
+        day: number;
+        hours: number;
+        minutes: number;
+        seconds: number;
+        microseconds: number;
+        offset: number;
+        monthNames: string[];
+        shortMonthNames: string[];
+        dayNames: string[];
+        shortDayNames: string[];
         /**
          * Creates an instance with the current time
          */
@@ -24,25 +36,20 @@ declare module '@lapaliv/datetime-formatter' {
          * @param payload
          */
         static setGlobalTranslations(payload: Translation): void;
-
-        year: number;
-        month: number;
-        day: number;
-        hours: number;
-        minutes: number;
-        seconds: number;
-        microseconds: number;
-        offset: number;
-        monthNames: string[];
-        shortMonthNames: string[];
-        dayNames: string[];
-        shortDayNames: string[];
-
+        /**
+         * Parses the date from the transmitted timestamp
+         * @param timestamp
+         */
+        static createFromTimestamp(timestamp: number): DateTimeFormatter;
+        /**
+         * Parses the date from the transmitted Date object
+         * @param date
+         */
+        static createFromDate(date: Date): DateTimeFormatter;
         constructor();
         constructor(date: Date);
         constructor(timestamp: number);
         constructor(year: number, month: number, day: number, hours?: number, minutes?: number, seconds?: number, microseconds?: number);
-
         /**
          * Adds one second to the date
          */
@@ -107,6 +114,24 @@ declare module '@lapaliv/datetime-formatter' {
          */
         addYears(count: number): this;
         /**
+         * Adds one decade to the date
+         */
+        addDecade(): this;
+        /**
+         * Adds many decades to the date
+         * @param count
+         */
+        addDecades(count: number): this;
+        /**
+         * Adds one decade to the date
+         */
+        addCentury(): this;
+        /**
+         * Adds many centuries to the date
+         * @param count
+         */
+        addCenturies(count: number): this;
+        /**
          * Subtracts one second from the current date
          */
         subSecond(): this;
@@ -170,6 +195,22 @@ declare module '@lapaliv/datetime-formatter' {
          */
         subYears(count: number): this;
         /**
+         * Subtracts one decade from the current date
+         */
+        subDecade(): this;
+        /**
+         * Subtracts many decades from the current date
+         */
+        subDecades(count: number): this;
+        /**
+         * Subtracts one century from the current date
+         */
+        subCentury(): this;
+        /**
+         * Subtracts many centuries from the current date
+         */
+        subCenturies(count: number): this;
+        /**
          * Converts to the `Y-m-d` format
          */
         toDateString(): string;
@@ -193,6 +234,16 @@ declare module '@lapaliv/datetime-formatter' {
          * Clones an instance and returns it
          */
         clone(): DateTimeFormatter;
+        /**
+         * Returns the count of full microseconds between the current date and the transmitted date
+         * @param date
+         */
+        diffInMicroseconds(date: this): number;
+        /**
+         * Returns the count of full milliseconds between the current date and the transmitted date
+         * @param date
+         */
+        diffInMilliseconds(date: this): number;
         /**
          * Returns the count of full seconds between the current date and the transmitted date
          * @param date
@@ -229,6 +280,10 @@ declare module '@lapaliv/datetime-formatter' {
          */
         format(target: string): string;
         /**
+         * Goes to the beginning of the second
+         */
+        startOfSecond(): this;
+        /**
          * Goes to the beginning of the minute
          */
         startOfMinute(): this;
@@ -249,9 +304,25 @@ declare module '@lapaliv/datetime-formatter' {
          */
         startOfMonth(): this;
         /**
+         * Goes to the beginning of the half year
+         */
+        startOfHalfYear(): this;
+        /**
          * Goes to the beginning of the year
          */
         startOfYear(): this;
+        /**
+         * Goes to the beginning of the decade
+         */
+        startOfDecade(): this;
+        /**
+         * Goes to the beginning of the decade
+         */
+        startOfCentury(): this;
+        /**
+         * Goes to the end of the minute
+         */
+        endOfSecond(): this;
         /**
          * Goes to the end of the minute
          */
@@ -275,7 +346,19 @@ declare module '@lapaliv/datetime-formatter' {
         /**
          * Goes to the end of the year
          */
+        endOfHalfYear(): this;
+        /**
+         * Goes to the end of the year
+         */
         endOfYear(): this;
+        /**
+         * Goes to the end of decade
+         */
+        endOfDecade(): this;
+        /**
+         * Goes to the end of century
+         */
+        endOfCentury(): this;
         /**
          * Returns `true` if the date in future
          */
@@ -317,6 +400,46 @@ declare module '@lapaliv/datetime-formatter' {
          */
         isYesterday(): boolean;
         /**
+         * Returns `true` if the current date is in current microsecond
+         */
+        isCurrentMicrosecond(): boolean;
+        /**
+         * Returns `true` if the current date is in current millisecond
+         */
+        isCurrentMillisecond(): boolean;
+        /**
+         * Returns `true` if the current date is in current second
+         */
+        isCurrentSecond(): boolean;
+        /**
+         * Returns `true` if the current date is in current minute
+         */
+        isCurrentMinute(): boolean;
+        /**
+         * Returns `true` if the current date is in current hour
+         */
+        isCurrentHour(): boolean;
+        /**
+         * Returns `true` if the current date is in current day
+         */
+        isCurrentDay(): boolean;
+        /**
+         * Returns `true` if the current date is in current month
+         */
+        isCurrentMonth(): boolean;
+        /**
+         * Returns `true` if the current date is in current year
+         */
+        isCurrentYear(): boolean;
+        /**
+         * Returns 'true' if the current date is in the current decade
+         */
+        isCurrentDecade(): boolean;
+        /**
+         * Returns 'true' if the current date is in the current century
+         */
+        isCurrentCentury(): boolean;
+        /**
          * Returns the microseconds
          */
         getMicroseconds(): number;
@@ -353,6 +476,11 @@ declare module '@lapaliv/datetime-formatter' {
          * @param value
          */
         setMicroseconds(value: number): this;
+        /**
+         * Setter for milliseconds
+         * @param value
+         */
+        setMilliseconds(value: number): this;
         /**
          * Setter for seconds
          * @param value
@@ -417,6 +545,12 @@ declare module '@lapaliv/datetime-formatter' {
         equalWithoutMicroseconds(target: DateTimeFormatter | number | Date): boolean;
         /**
          * Returns `true` if the current date equals the transmitted date
+         * without milliseconds
+         * @param target
+         */
+        equalWithoutMilliseconds(target: DateTimeFormatter | number | Date): boolean;
+        /**
+         * Returns `true` if the current date equals the transmitted date
          * without seconds and microseconds
          * @param target
          */
@@ -458,6 +592,12 @@ declare module '@lapaliv/datetime-formatter' {
         notEqualWithoutMicroseconds(target: DateTimeFormatter | number | Date): boolean;
         /**
          * Returns `true` if the current date equals the transmitted date
+         * without milliseconds
+         * @param target
+         */
+        notEqualWithoutMilliseconds(target: DateTimeFormatter | number | Date): boolean;
+        /**
+         * Returns `true` if the current date equals the transmitted date
          * without seconds and microseconds
          * @param target
          */
@@ -490,6 +630,42 @@ declare module '@lapaliv/datetime-formatter' {
          * Returns the number of the day in the year
          */
         getDayOfYear(): number;
+        /**
+         * Parses the date from the transmitted Date object
+         * @param date
+         */
+        private parseFromDate;
+        /**
+         * Parses the date from the transmitted Date object without offset
+         * @param date
+         */
+        private parseFromUTCDate;
+        /**
+         * Parses the date from the transmitted timestamp
+         * @param timestamp
+         */
+        private parseFromTimestamp;
+        /**
+         * Adds the custom values to the current date
+         * @param years
+         * @param months
+         * @param days
+         * @param hours
+         * @param minutes
+         * @param seconds
+         */
+        private add;
+        /**
+         * Sets the custom values to the current date
+         * @param year
+         * @param month
+         * @param day
+         * @param hours
+         * @param minutes
+         * @param seconds
+         * @param microseconds
+         */
+        private set;
     }
 
     export type Translation = Object & {
