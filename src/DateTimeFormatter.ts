@@ -12,6 +12,20 @@ export class DateTimeFormatter {
     public static globalDayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     public static globalShortDayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
+    public year: number = 0;
+    public month: number = 0;
+    public day: number = 0;
+    public hours: number = 0;
+    public minutes: number = 0;
+    public seconds: number = 0;
+    public microseconds: number = 0;
+    public offset: number = 0;
+
+    public monthNames: string[] = [];
+    public shortMonthNames: string[] = [];
+    public dayNames: string[] = [];
+    public shortDayNames: string[] = [];
+
     /**
      * Creates an instance with the current time
      */
@@ -77,19 +91,25 @@ export class DateTimeFormatter {
         DateTimeFormatter.globalShortDayNames = result.shortDayNames;
     }
 
-    public year: number = 0;
-    public month: number = 0;
-    public day: number = 0;
-    public hours: number = 0;
-    public minutes: number = 0;
-    public seconds: number = 0;
-    public microseconds: number = 0;
-    public offset: number = 0;
+    /**
+     * Parses the date from the transmitted timestamp
+     * @param timestamp
+     */
+    static createFromTimestamp(timestamp: number) {
+        const formatter = new DateTimeFormatter();
+        formatter.parseFromTimestamp(timestamp);
 
-    public monthNames: string[] = [];
-    public shortMonthNames: string[] = [];
-    public dayNames: string[] = [];
-    public shortDayNames: string[] = [];
+        return formatter;
+    }
+
+    /**
+     * Parses the date from the transmitted Date object
+     * @param date
+     */
+    static createFromDate(date: Date) {
+        const formatter = new DateTimeFormatter();
+        return formatter.parseFromDate(date);
+    }
 
     // @ts-ignore
     constructor()
@@ -104,17 +124,17 @@ export class DateTimeFormatter {
         if (arguments.length === 1) {
             if (arguments[0] instanceof Date) {
                 this.parseFromDate(arguments[0]);
-            } else if (Number(arguments[0]) === arguments[0]) {
+            } else if (['string', 'number'].includes(typeof arguments[0]) && Number(arguments[0]).toString() === arguments[0].toString()) {
                 this.parseFromTimestamp(arguments[0]);
             } else {
-                throw new Error('Argument is undefined');
+                throw new Error(`Argument #0 [${arguments[0]}] is not correct`);
             }
 
             return this;
         } else if (arguments.length >= 3) {
             for (let index = 0; index < Math.min(arguments.length, 7); index++) {
-                if (Number(arguments[index]) !== arguments[index]) {
-                    throw new Error(`Argument ${index} is undefined`);
+                if (!['string', 'number'].includes(typeof arguments[0]) || Number(arguments[index]).toString() !== arguments[index].toString()) {
+                    throw new Error(`Argument #${index} [${arguments[index]}] is not correct`);
                 }
             }
 
@@ -1094,7 +1114,7 @@ export class DateTimeFormatter {
      * Parses the date from the transmitted Date object
      * @param date
      */
-    private parseFromDate(date: Date) {
+    private parseFromDate(date: Date): this {
         this.year = date.getFullYear();
         this.month = date.getMonth();
         this.day = date.getDate();
@@ -1103,13 +1123,15 @@ export class DateTimeFormatter {
         this.seconds = date.getSeconds();
         this.microseconds = date.getMilliseconds() * Math.pow(10, 3);
         this.offset = date.getTimezoneOffset();
+
+        return this;
     }
 
     /**
      * Parses the date from the transmitted Date object without offset
      * @param date
      */
-    private parseFromUTCDate(date: Date) {
+    private parseFromUTCDate(date: Date): this {
         this.year = date.getUTCFullYear();
         this.month = date.getUTCMonth();
         this.day = date.getUTCDate();
@@ -1118,13 +1140,15 @@ export class DateTimeFormatter {
         this.seconds = date.getUTCSeconds();
         this.microseconds = date.getUTCMilliseconds() * Math.pow(10, 3);
         this.offset = 0;
+
+        return this;
     }
 
     /**
      * Parses the date from the transmitted timestamp
      * @param timestamp
      */
-    private parseFromTimestamp(timestamp: number) {
+    private parseFromTimestamp(timestamp: number): this {
         let timestampAsString = `${timestamp}`;
         let microseconds = 0;
 
@@ -1158,6 +1182,8 @@ export class DateTimeFormatter {
 
         this.parseFromUTCDate(new Date(timestamp));
         this.microseconds = microseconds;
+
+        return this;
     }
 
     /**
