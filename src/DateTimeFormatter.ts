@@ -494,6 +494,25 @@ export class DateTimeFormatter {
     }
 
     /**
+     * Returns the count of full microseconds between the current date and the transmitted date
+     * @param date
+     */
+    diffInMicroseconds(date: this): number {
+        const dateTimestamp = date.toJsTimestamp() * Math.pow(10, 3) + date.getMicroseconds();
+        const thisTimestamp = this.toJsTimestamp() * Math.pow(10, 3) + this.getMicroseconds();
+
+        return Math.abs(dateTimestamp - thisTimestamp);
+    }
+
+    /**
+     * Returns the count of full milliseconds between the current date and the transmitted date
+     * @param date
+     */
+    diffInMilliseconds(date: this): number {
+        return Math.abs(date.toJsTimestamp() - this.toJsTimestamp());
+    }
+
+    /**
      * Returns the count of full seconds between the current date and the transmitted date
      * @param date
      */
@@ -881,6 +900,22 @@ export class DateTimeFormatter {
     }
 
     /**
+     * Setter for milliseconds
+     * @param value
+     */
+    setMilliseconds(value: number): this {
+        return this.set(
+            this.year,
+            this.month,
+            this.day,
+            this.hours,
+            this.minutes,
+            this.seconds,
+            value * 1000
+        );
+    }
+
+    /**
      * Setter for seconds
      * @param value
      */
@@ -1037,6 +1072,18 @@ export class DateTimeFormatter {
     equalWithoutMicroseconds(target: DateTimeFormatter | number | Date): boolean {
         const date = DateTimeFormatter.parse(target);
         return this.equalWithoutSeconds(date)
+            && this.seconds === date.seconds
+            && this.getMilliseconds() === date.getMilliseconds();
+    }
+
+    /**
+     * Returns `true` if the current date equals the transmitted date
+     * without milliseconds
+     * @param target
+     */
+    equalWithoutMilliseconds(target: DateTimeFormatter | number | Date): boolean {
+        const date = DateTimeFormatter.parse(target);
+        return this.equalWithoutSeconds(date)
             && this.seconds === date.seconds;
     }
 
@@ -1109,6 +1156,15 @@ export class DateTimeFormatter {
      */
     notEqualWithoutMicroseconds(target: DateTimeFormatter | number | Date): boolean {
         return !this.equalWithoutMicroseconds(target);
+    }
+
+    /**
+     * Returns `true` if the current date equals the transmitted date
+     * without milliseconds
+     * @param target
+     */
+    notEqualWithoutMilliseconds(target: DateTimeFormatter | number | Date): boolean {
+        return !this.equalWithoutMilliseconds(target);
     }
 
     /**
