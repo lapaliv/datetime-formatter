@@ -264,6 +264,36 @@ export class DateTimeFormatter {
     }
 
     /**
+     * Adds one decade to the date
+     */
+    addDecade(): this {
+        return this.addYears(10);
+    }
+
+    /**
+     * Adds many decades to the date
+     * @param count
+     */
+    addDecades(count: number): this {
+        return this.addYears(count * 10);
+    }
+
+    /**
+     * Adds one decade to the date
+     */
+    addCentury(): this {
+        return this.addYears(100);
+    }
+
+    /**
+     * Adds many centuries to the date
+     * @param count
+     */
+    addCenturies(count: number): this {
+        return this.addYears(count * 100);
+    }
+
+    /**
      * Subtracts one second from the current date
      */
     subSecond(): this {
@@ -366,6 +396,34 @@ export class DateTimeFormatter {
      */
     subYears(count: number): this {
         return this.addYears(count * -1);
+    }
+
+    /**
+     * Subtracts one decade from the current date
+     */
+    subDecade(): this {
+        return this.subYears(10);
+    }
+
+    /**
+     * Subtracts many decades from the current date
+     */
+    subDecades(count: number): this {
+        return this.subYears(10 * count);
+    }
+
+    /**
+     * Subtracts one century from the current date
+     */
+    subCentury(): this {
+        return this.subYears(100);
+    }
+
+    /**
+     * Subtracts many centuries from the current date
+     */
+    subCenturies(count: number): this {
+        return this.subYears(100 * count);
     }
 
     /**
