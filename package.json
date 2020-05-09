@@ -1,12 +1,16 @@
 {
   "name": "@lapaliv/datetime-formatter",
   "description": "The library for work with date and time",
-  "version": "0.1.8",
+  "private": false,
+  "version": "0.1.9",
   "keywords": [
     "date",
     "time",
     "datetime",
-    "formatter"
+    "formatter",
+    "datetime-formatter",
+    "php-datetime",
+    "php-date"
   ],
   "homepage": "https://github.com/lapaliv/datetime-formatter",
   "author": {
@@ -42,5 +46,8 @@
     "uuid": "^7.0.2",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   }
 }
