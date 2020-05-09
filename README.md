@@ -1,3 +1,11 @@
+## Import
+```typescript
+// ES6
+import DateTimeFormatter from '@lapaliv/datetime-formatter';
+// Node.js/ES5
+var DateTimeFormatter = require('@lapaliv/datetime-formatter').default;
+```
+
 ## API
 
 ### Constructors
@@ -145,7 +153,7 @@ equal(date: DateTimeFormatter | Date | number | string): boolean;
 // Compare year, month, day, hours, minutes, seconds and milliseconds
 equalWithoutMicroseconds(date: DateTimeFormatter | Date | number | string): boolean;
 // Compare year, month, day, hours, minutes and seconds
-equalWithoutMilliseconds(target: DateTimeFormatter | number | Date): boolean(date: DateTimeFormatter | Date | number | string): boolean;
+equalWithoutMilliseconds(target: DateTimeFormatter | number | Date): boolean;
 // Compare year, month, day, hours and minutes
 equalWithoutSeconds(date: DateTimeFormatter | Date | number | string): boolean;
 // Compare year, month, day and hours
