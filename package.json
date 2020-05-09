@@ -1,7 +1,7 @@
 {
   "name": "@lapaliv/datetime-formatter",
   "description": "The library for work with date and time",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "keywords": [
     "date",
     "time",
