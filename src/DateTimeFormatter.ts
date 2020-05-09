@@ -828,6 +828,84 @@ export class DateTimeFormatter {
     }
 
     /**
+     * Returns `true` if the current date is in current microsecond
+     */
+    isCurrentMicrosecond(): boolean {
+        const now = DateTimeFormatter.now();
+        return this.isCurrentSecond()
+            && this.getMicroseconds() === now.getMicroseconds();
+    }
+
+    /**
+     * Returns `true` if the current date is in current millisecond
+     */
+    isCurrentMillisecond(): boolean {
+        const now = DateTimeFormatter.now();
+        return this.isCurrentSecond()
+            && this.getMilliseconds() === now.getMilliseconds();
+    }
+
+    /**
+     * Returns `true` if the current date is in current second
+     */
+    isCurrentSecond(): boolean {
+        return this.notEqualWithoutMilliseconds(DateTimeFormatter.now());
+    }
+
+    /**
+     * Returns `true` if the current date is in current minute
+     */
+    isCurrentMinute(): boolean {
+        return this.notEqualWithoutSeconds(DateTimeFormatter.now());
+    }
+
+    /**
+     * Returns `true` if the current date is in current hour
+     */
+    isCurrentHour(): boolean {
+        return this.notEqualWithoutMinutes(DateTimeFormatter.now());
+    }
+
+    /**
+     * Returns `true` if the current date is in current day
+     */
+    isCurrentDay(): boolean {
+        return this.notEqualWithoutHours(DateTimeFormatter.now());
+    }
+
+    /**
+     * Returns `true` if the current date is in current month
+     */
+    isCurrentMonth(): boolean {
+        return this.notEqualWithoutDays(DateTimeFormatter.now());
+    }
+
+    /**
+     * Returns `true` if the current date is in current year
+     */
+    isCurrentYear(): boolean {
+        return this.notEqualWithoutMonths(DateTimeFormatter.now());
+    }
+
+    /**
+     * Returns 'true' if the current date is in the current decade
+     */
+    isCurrentDecade(): boolean {
+        const now = DateTimeFormatter.now();
+        return this.getYear() >= now.startOfDecade().getYear()
+            && this.getYear() <= now.endOfDecade().getYear();
+    }
+
+    /**
+     * Returns 'true' if the current date is in the current century
+     */
+    isCurrentCentury(): boolean {
+        const now = DateTimeFormatter.now();
+        return this.getYear() >= now.startOfCentury().getYear()
+            && this.getYear() <= now.endOfCentury().getYear();
+    }
+
+    /**
      * Returns the microseconds
      */
     getMicroseconds(): number {
