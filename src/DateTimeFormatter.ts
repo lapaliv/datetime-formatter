@@ -5,6 +5,7 @@ import {dayOnFirstWeekInYear} from "./utils/dayOnFirstWeekInYear";
 import {Translation} from "./types/Translation";
 import {countDaysInMonth} from "./utils/countDaysInMonth";
 import {defineTranslations} from "./utils/defineTranslations";
+import {getIndexOfPeriodOnWhichDateIsIncluded} from "./utils/getIndexOfPeriodOnWhichDateIsIncluded";
 
 export class DateTimeFormatter {
     public static globalMonthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -162,7 +163,7 @@ export class DateTimeFormatter {
     /**
      * Adds one second to the date
      */
-    addSecond(): this {
+    addSecond(): DateTimeFormatter {
         return this.addSeconds(1);
     }
 
@@ -170,14 +171,14 @@ export class DateTimeFormatter {
      * Adds many seconds to the date
      * @param count
      */
-    addSeconds(count: number): this {
+    addSeconds(count: number): DateTimeFormatter {
         return this.add(0, 0, 0, 0, 0, count);
     }
 
     /**
      * Adds one minute to the date
      */
-    addMinute(): this {
+    addMinute(): DateTimeFormatter {
         return this.addMinutes(1);
     }
 
@@ -185,14 +186,14 @@ export class DateTimeFormatter {
      * Adds many minutes to the date
      * @param count
      */
-    addMinutes(count: number): this {
+    addMinutes(count: number): DateTimeFormatter {
         return this.add(0, 0, 0, 0, count);
     }
 
     /**
      * Adds one hour to the date
      */
-    addHour(): this {
+    addHour(): DateTimeFormatter {
         return this.addHours(1);
     }
 
@@ -200,14 +201,14 @@ export class DateTimeFormatter {
      * Adds many hours to the date
      * @param count
      */
-    addHours(count: number): this {
+    addHours(count: number): DateTimeFormatter {
         return this.add(0, 0, 0, count);
     }
 
     /**
      * Adds one day to the date
      */
-    addDay(): this {
+    addDay(): DateTimeFormatter {
         return this.addDays(1);
     }
 
@@ -215,14 +216,14 @@ export class DateTimeFormatter {
      * Adds many days to the date
      * @param count
      */
-    addDays(count: number): this {
+    addDays(count: number): DateTimeFormatter {
         return this.add(0, 0, count);
     }
 
     /**
      * Adds one week to the date
      */
-    addWeek(): this {
+    addWeek(): DateTimeFormatter {
         return this.addDays(7);
     }
 
@@ -230,14 +231,14 @@ export class DateTimeFormatter {
      * Adds many weeks to the date
      * @param count
      */
-    addWeeks(count: number): this {
+    addWeeks(count: number): DateTimeFormatter {
         return this.addDays(7 * count);
     }
 
     /**
      * Adds one month to the date
      */
-    addMonth(): this {
+    addMonth(): DateTimeFormatter {
         return this.addMonths(1);
     }
 
@@ -245,14 +246,14 @@ export class DateTimeFormatter {
      * Adds many months to the date
      * @param count
      */
-    addMonths(count: number): this {
+    addMonths(count: number): DateTimeFormatter {
         return this.add(0, count);
     }
 
     /**
      * Adds one year to the date
      */
-    addYear(): this {
+    addYear(): DateTimeFormatter {
         return this.addYears(1);
     }
 
@@ -260,14 +261,14 @@ export class DateTimeFormatter {
      * Adds many years to the date
      * @param count
      */
-    addYears(count: number): this {
+    addYears(count: number): DateTimeFormatter {
         return this.add(count);
     }
 
     /**
      * Adds one decade to the date
      */
-    addDecade(): this {
+    addDecade(): DateTimeFormatter {
         return this.addYears(10);
     }
 
@@ -275,14 +276,14 @@ export class DateTimeFormatter {
      * Adds many decades to the date
      * @param count
      */
-    addDecades(count: number): this {
+    addDecades(count: number): DateTimeFormatter {
         return this.addYears(count * 10);
     }
 
     /**
      * Adds one decade to the date
      */
-    addCentury(): this {
+    addCentury(): DateTimeFormatter {
         return this.addYears(100);
     }
 
@@ -290,14 +291,14 @@ export class DateTimeFormatter {
      * Adds many centuries to the date
      * @param count
      */
-    addCenturies(count: number): this {
+    addCenturies(count: number): DateTimeFormatter {
         return this.addYears(count * 100);
     }
 
     /**
      * Subtracts one second from the current date
      */
-    subSecond(): this {
+    subSecond(): DateTimeFormatter {
         return this.addSeconds(-1);
     }
 
@@ -305,14 +306,14 @@ export class DateTimeFormatter {
      * Subtracts many seconds from the current date
      * @param count
      */
-    subSeconds(count: number): this {
+    subSeconds(count: number): DateTimeFormatter {
         return this.addSeconds(count * -1);
     }
 
     /**
      * Subtracts one minute from the current date
      */
-    subMinute(): this {
+    subMinute(): DateTimeFormatter {
         return this.addMinutes(-1);
     }
 
@@ -320,14 +321,14 @@ export class DateTimeFormatter {
      * Subtracts many minutes from the current date
      * @param count
      */
-    subMinutes(count: number): this {
+    subMinutes(count: number): DateTimeFormatter {
         return this.addMinutes(count * -1);
     }
 
     /**
      * Subtracts one hour from the current date
      */
-    subHour(): this {
+    subHour(): DateTimeFormatter {
         return this.addHours(-1);
     }
 
@@ -335,14 +336,14 @@ export class DateTimeFormatter {
      * Subtracts many hours from the current date
      * @param count
      */
-    subHours(count: number): this {
+    subHours(count: number): DateTimeFormatter {
         return this.addHours(count * -1);
     }
 
     /**
      * Subtracts one day from the current date
      */
-    subDay(): this {
+    subDay(): DateTimeFormatter {
         return this.addDays(-1);
     }
 
@@ -350,14 +351,14 @@ export class DateTimeFormatter {
      * Subtracts many days from the current date
      * @param count
      */
-    subDays(count: number): this {
+    subDays(count: number): DateTimeFormatter {
         return this.addDays(count * -1);
     }
 
     /**
      * Subtracts one week from the current date
      */
-    subWeek(): this {
+    subWeek(): DateTimeFormatter {
         return this.addDays(-7);
     }
 
@@ -365,14 +366,14 @@ export class DateTimeFormatter {
      * Subtracts many weeks from the current date
      * @param count
      */
-    subWeeks(count: number): this {
+    subWeeks(count: number): DateTimeFormatter {
         return this.addDays(count * -7);
     }
 
     /**
      * Subtracts one month from the current date
      */
-    subMonth(): this {
+    subMonth(): DateTimeFormatter {
         return this.addMonths(-1);
     }
 
@@ -380,14 +381,14 @@ export class DateTimeFormatter {
      * Subtracts many months from the current date
      * @param count
      */
-    subMonths(count: number): this {
+    subMonths(count: number): DateTimeFormatter {
         return this.addMonths(count * -1);
     }
 
     /**
      * Subtracts one year from the current date
      */
-    subYear(): this {
+    subYear(): DateTimeFormatter {
         return this.addYears(-1);
     }
 
@@ -395,35 +396,35 @@ export class DateTimeFormatter {
      * Subtracts many years from the current date
      * @param count
      */
-    subYears(count: number): this {
+    subYears(count: number): DateTimeFormatter {
         return this.addYears(count * -1);
     }
 
     /**
      * Subtracts one decade from the current date
      */
-    subDecade(): this {
+    subDecade(): DateTimeFormatter {
         return this.subYears(10);
     }
 
     /**
      * Subtracts many decades from the current date
      */
-    subDecades(count: number): this {
+    subDecades(count: number): DateTimeFormatter {
         return this.subYears(10 * count);
     }
 
     /**
      * Subtracts one century from the current date
      */
-    subCentury(): this {
+    subCentury(): DateTimeFormatter {
         return this.subYears(100);
     }
 
     /**
      * Subtracts many centuries from the current date
      */
-    subCenturies(count: number): this {
+    subCenturies(count: number): DateTimeFormatter {
         return this.subYears(100 * count);
     }
 
@@ -498,9 +499,10 @@ export class DateTimeFormatter {
      * Returns the count of full microseconds between the current date and the transmitted date
      * @param date
      */
-    diffInMicroseconds(date: this): number {
-        const dateTimestamp = date.toJsTimestamp() * Math.pow(10, 3) + date.getMicroseconds();
-        const thisTimestamp = this.toJsTimestamp() * Math.pow(10, 3) + this.getMicroseconds();
+    diffInMicroseconds(date: DateTimeFormatter): number {
+        const multiplier = Math.pow(10, 3);
+        const dateTimestamp = date.toJsTimestamp() * multiplier + date.getMicroseconds() % multiplier;
+        const thisTimestamp = this.toJsTimestamp() * multiplier + this.getMicroseconds() % multiplier;
 
         return Math.abs(dateTimestamp - thisTimestamp);
     }
@@ -509,7 +511,7 @@ export class DateTimeFormatter {
      * Returns the count of full milliseconds between the current date and the transmitted date
      * @param date
      */
-    diffInMilliseconds(date: this): number {
+    diffInMilliseconds(date: DateTimeFormatter): number {
         return Math.abs(date.toJsTimestamp() - this.toJsTimestamp());
     }
 
@@ -517,7 +519,7 @@ export class DateTimeFormatter {
      * Returns the count of full seconds between the current date and the transmitted date
      * @param date
      */
-    diffInSeconds(date: this): number {
+    diffInSeconds(date: DateTimeFormatter): number {
         return Math.abs(date.toTimestamp() - this.toTimestamp());
     }
 
@@ -525,7 +527,7 @@ export class DateTimeFormatter {
      * Returns the count of full minutes between the current date and the transmitted date
      * @param date
      */
-    diffInMinutes(date: this): number {
+    diffInMinutes(date: DateTimeFormatter): number {
         return Math.floor(this.diffInSeconds(date) / 60);
     }
 
@@ -533,7 +535,7 @@ export class DateTimeFormatter {
      * Returns the count of full hours between the current date and the transmitted date
      * @param date
      */
-    diffInHours(date: this): number {
+    diffInHours(date: DateTimeFormatter): number {
         return Math.floor(this.diffInMinutes(date) / 60);
     }
 
@@ -541,7 +543,7 @@ export class DateTimeFormatter {
      * Returns the count of full days between the current date and the transmitted date
      * @param date
      */
-    diffInDays(date: this): number {
+    diffInDays(date: DateTimeFormatter): number {
         return Math.floor(this.diffInHours(date) / 24);
     }
 
@@ -549,7 +551,7 @@ export class DateTimeFormatter {
      * Returns the count of full months between the current date and the transmitted date
      * @param date
      */
-    diffInMonths(date: this): number {
+    diffInMonths(date: DateTimeFormatter): number {
         return this.diffInYears(date) * 12 + Math.abs(date.month - this.month);
     }
 
@@ -557,8 +559,24 @@ export class DateTimeFormatter {
      * Returns the count of full years between the current date and the transmitted date
      * @param date
      */
-    diffInYears(date: this): number {
+    diffInYears(date: DateTimeFormatter): number {
         return Math.abs(date.year - this.year);
+    }
+
+    /**
+     * Returns the count of full decades between the current date and the transmitted date
+     * @param date
+     */
+    diffInDecades(date: DateTimeFormatter): number {
+        return Math.floor(this.diffInYears(date) / 10);
+    }
+
+    /**
+     * Returns the count of full centuries between the current date and the transmitted date
+     * @param date
+     */
+    diffInCenturies(date: DateTimeFormatter): number {
+        return Math.floor(this.diffInYears(date) / 100);
     }
 
     /**
@@ -572,7 +590,7 @@ export class DateTimeFormatter {
     /**
      * Goes to the beginning of the second
      */
-    startOfSecond(): this {
+    startOfSecond(): DateTimeFormatter {
         this.microseconds = 0;
 
         return this;
@@ -581,7 +599,7 @@ export class DateTimeFormatter {
     /**
      * Goes to the beginning of the minute
      */
-    startOfMinute(): this {
+    startOfMinute(): DateTimeFormatter {
         this.seconds = 0;
         return this.startOfSecond();
     }
@@ -589,7 +607,7 @@ export class DateTimeFormatter {
     /**
      * Goes to the beginning of the hour
      */
-    startOfHour(): this {
+    startOfHour(): DateTimeFormatter {
         this.minutes = 0;
         return this.startOfMinute();
     }
@@ -597,7 +615,7 @@ export class DateTimeFormatter {
     /**
      * Goes to the beginning of the day
      */
-    startOfDay(): this {
+    startOfDay(): DateTimeFormatter {
         this.hours = 0;
         return this.startOfHour();
     }
@@ -605,7 +623,7 @@ export class DateTimeFormatter {
     /**
      * Goes to the beginning of the week
      */
-    startOfWeek(): this {
+    startOfWeek(): DateTimeFormatter {
         this.startOfDay();
         this.subDays(this.getDayOfWeekIso() - 1);
 
@@ -615,7 +633,7 @@ export class DateTimeFormatter {
     /**
      * Goes to the beginning of the month
      */
-    startOfMonth(): this {
+    startOfMonth(): DateTimeFormatter {
         this.day = 1;
         return this.startOfDay();
     }
@@ -623,14 +641,14 @@ export class DateTimeFormatter {
     /**
      * Goes to the beginning of the half year
      */
-    startOfHalfYear(): this {
+    startOfHalfYear(): DateTimeFormatter {
         return this.subMonths(this.month % 6).startOfMonth();
     }
 
     /**
      * Goes to the beginning of the year
      */
-    startOfYear(): this {
+    startOfYear(): DateTimeFormatter {
         this.month = 0;
         return this.startOfMonth();
     }
@@ -638,21 +656,21 @@ export class DateTimeFormatter {
     /**
      * Goes to the beginning of the decade
      */
-    startOfDecade(): this {
+    startOfDecade(): DateTimeFormatter {
         return this.subYears(this.year % 10).startOfYear()
     }
 
     /**
      * Goes to the beginning of the decade
      */
-    startOfCentury(): this {
+    startOfCentury(): DateTimeFormatter {
         return this.subYears(this.year % 100 - 1).startOfYear()
     }
 
     /**
      * Goes to the end of the minute
      */
-    endOfSecond(): this {
+    endOfSecond(): DateTimeFormatter {
         this.microseconds = 999999;
 
         return this;
@@ -661,7 +679,7 @@ export class DateTimeFormatter {
     /**
      * Goes to the end of the minute
      */
-    endOfMinute(): this {
+    endOfMinute(): DateTimeFormatter {
         this.seconds = 59;
         return this.endOfSecond();
     }
@@ -669,7 +687,7 @@ export class DateTimeFormatter {
     /**
      * Goes to the end of the hour
      */
-    endOfHour(): this {
+    endOfHour(): DateTimeFormatter {
         this.minutes = 59;
         return this.endOfMinute();
     }
@@ -677,7 +695,7 @@ export class DateTimeFormatter {
     /**
      * Goes to the end of the day
      */
-    endOfDay(): this {
+    endOfDay(): DateTimeFormatter {
         this.hours = 23;
         return this.endOfHour();
     }
@@ -685,14 +703,14 @@ export class DateTimeFormatter {
     /**
      * Goes to the end of the week
      */
-    endOfWeek(): this {
+    endOfWeek(): DateTimeFormatter {
         return this.endOfDay().addDays(7 - this.getDayOfWeekIso());
     }
 
     /**
      * Goes to the end of the day
      */
-    endOfMonth(): this {
+    endOfMonth(): DateTimeFormatter {
         this.day = countDaysInMonth(this.year, this.month);
         return this.endOfDay();
     }
@@ -700,14 +718,14 @@ export class DateTimeFormatter {
     /**
      * Goes to the end of the year
      */
-    endOfHalfYear(): this {
+    endOfHalfYear(): DateTimeFormatter {
         return this.startOfHalfYear().addMonths(6).endOfMonth();
     }
 
     /**
      * Goes to the end of the year
      */
-    endOfYear(): this {
+    endOfYear(): DateTimeFormatter {
         this.month = 11;
         return this.endOfMonth();
     }
@@ -715,14 +733,14 @@ export class DateTimeFormatter {
     /**
      * Goes to the end of decade
      */
-    endOfDecade(): this {
+    endOfDecade(): DateTimeFormatter {
         return this.startOfDecade().addYears(9).endOfYear();
     }
 
     /**
      * Goes to the end of century
      */
-    endOfCentury(): this {
+    endOfCentury(): DateTimeFormatter {
         return this.startOfCentury().addYears(99).endOfYear();
     }
 
@@ -966,7 +984,7 @@ export class DateTimeFormatter {
      * Setter for microseconds
      * @param value
      */
-    setMicroseconds(value: number): this {
+    setMicroseconds(value: number): DateTimeFormatter {
         return this.set(
             this.year,
             this.month,
@@ -982,7 +1000,7 @@ export class DateTimeFormatter {
      * Setter for milliseconds
      * @param value
      */
-    setMilliseconds(value: number): this {
+    setMilliseconds(value: number): DateTimeFormatter {
         return this.set(
             this.year,
             this.month,
@@ -998,7 +1016,7 @@ export class DateTimeFormatter {
      * Setter for seconds
      * @param value
      */
-    setSeconds(value: number): this {
+    setSeconds(value: number): DateTimeFormatter {
         return this.set(
             this.year,
             this.month,
@@ -1014,7 +1032,7 @@ export class DateTimeFormatter {
      * Setter for minutes
      * @param value
      */
-    setMinutes(value: number): this {
+    setMinutes(value: number): DateTimeFormatter {
         return this.set(
             this.year,
             this.month,
@@ -1030,7 +1048,7 @@ export class DateTimeFormatter {
      * Setter for hours
      * @param value
      */
-    setHours(value: number): this {
+    setHours(value: number): DateTimeFormatter {
         return this.set(
             this.year,
             this.month,
@@ -1046,7 +1064,7 @@ export class DateTimeFormatter {
      * Setter for day
      * @param value
      */
-    setDay(value: number): this {
+    setDay(value: number): DateTimeFormatter {
         return this.set(
             this.year,
             this.month,
@@ -1062,7 +1080,7 @@ export class DateTimeFormatter {
      * Setter for month
      * @param value
      */
-    setMonth(value: number): this {
+    setMonth(value: number): DateTimeFormatter {
         return this.set(
             this.year,
             value,
@@ -1078,7 +1096,7 @@ export class DateTimeFormatter {
      * Setter for year
      * @param value
      */
-    setYear(value: number): this {
+    setYear(value: number): DateTimeFormatter {
         return this.set(
             value,
             this.month,
@@ -1122,7 +1140,7 @@ export class DateTimeFormatter {
      * Set the translations
      * @param payload
      */
-    setTranslations(payload: Translation): this {
+    setTranslations(payload: Translation): DateTimeFormatter {
         const result = defineTranslations(payload);
 
         this.monthNames = result.monthNames;
@@ -1304,10 +1322,100 @@ export class DateTimeFormatter {
     }
 
     /**
+     * Returns the index of microsecond in which date is included
+     * @param startedFrom
+     * @param microseconds
+     */
+    getIndexOfMicrosecondPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...microseconds: Array<number> | Array<Array<number>>): number {
+        return getIndexOfPeriodOnWhichDateIsIncluded(this.diffInMicroseconds(startedFrom), microseconds);
+    }
+
+    /**
+     * Returns the index of millisecond in which date is included
+     * @param startedFrom
+     * @param milliseconds
+     */
+    getIndexOfMillisecondPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...milliseconds: Array<number> | Array<Array<number>>): number {
+        return getIndexOfPeriodOnWhichDateIsIncluded(this.diffInMilliseconds(startedFrom), milliseconds);
+    }
+
+    /**
+     * Returns the index of second in which date is included
+     * @param startedFrom
+     * @param seconds
+     */
+    getIndexOfSecondPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...seconds: Array<number> | Array<Array<number>>): number {
+        return getIndexOfPeriodOnWhichDateIsIncluded(this.diffInSeconds(startedFrom), seconds);
+    }
+
+    /**
+     * Returns the index of minute in which date is included
+     * @param startedFrom
+     * @param minutes
+     */
+    getIndexOfMinutePeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...minutes: Array<number> | Array<Array<number>>): number {
+        return getIndexOfPeriodOnWhichDateIsIncluded(this.diffInMinutes(startedFrom), minutes);
+    }
+
+    /**
+     * Returns the index of hour in which date is included
+     * @param startedFrom
+     * @param hours
+     */
+    getIndexOfHourPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...hours: Array<number> | Array<Array<number>>): number {
+        return getIndexOfPeriodOnWhichDateIsIncluded(this.diffInHours(startedFrom), hours);
+    }
+
+    /**
+     * Returns the index of day in which date is included
+     * @param startedFrom
+     * @param days
+     */
+    getIndexOfDayPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...days: Array<number> | Array<Array<number>>): number {
+        return getIndexOfPeriodOnWhichDateIsIncluded(this.diffInDays(startedFrom), days);
+    }
+
+    /**
+     * Returns the index of month in which date is included
+     * @param startedFrom
+     * @param months
+     */
+    getIndexOfMonthPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...months: Array<number> | Array<Array<number>>): number {
+        return getIndexOfPeriodOnWhichDateIsIncluded(this.diffInMonths(startedFrom), months);
+    }
+
+    /**
+     * Returns the index of year in which date is included
+     * @param startedFrom
+     * @param years
+     */
+    getIndexOfYearPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...years: Array<number> | Array<Array<number>>): number {
+        return getIndexOfPeriodOnWhichDateIsIncluded(this.diffInYears(startedFrom), years);
+    }
+
+    /**
+     * Returns the index of decade in which date is included
+     * @param startedFrom
+     * @param decades
+     */
+    getIndexOfDecadePeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...decades: Array<number> | Array<Array<number>>): number {
+        return getIndexOfPeriodOnWhichDateIsIncluded(this.diffInDecades(startedFrom), decades);
+    }
+
+    /**
+     * Returns the index of century in which date is included
+     * @param startedFrom
+     * @param centuries
+     */
+    getIndexOfCenturyPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...centuries: Array<number> | Array<Array<number>>): number {
+        return getIndexOfPeriodOnWhichDateIsIncluded(this.diffInCenturies(startedFrom), centuries);
+    }
+
+    /**
      * Parses the date from the transmitted Date object
      * @param date
      */
-    private parseFromDate(date: Date): this {
+    private parseFromDate(date: Date): DateTimeFormatter {
         this.year = date.getFullYear();
         this.month = date.getMonth();
         this.day = date.getDate();
@@ -1324,7 +1432,7 @@ export class DateTimeFormatter {
      * Parses the date from the transmitted Date object without offset
      * @param date
      */
-    private parseFromUTCDate(date: Date): this {
+    private parseFromUTCDate(date: Date): DateTimeFormatter {
         this.year = date.getUTCFullYear();
         this.month = date.getUTCMonth();
         this.day = date.getUTCDate();
@@ -1341,7 +1449,7 @@ export class DateTimeFormatter {
      * Parses the date from the transmitted timestamp
      * @param timestamp
      */
-    private parseFromTimestamp(timestamp: number): this {
+    private parseFromTimestamp(timestamp: number): DateTimeFormatter {
         let timestampAsString = `${timestamp}`;
         let microseconds = 0;
 
