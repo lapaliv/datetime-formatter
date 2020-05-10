@@ -5,8 +5,8 @@ module.exports = {
     },
     collectCoverage: true,
     collectCoverageFrom: [
-        '<rootDir>/**/*.spec.js',
-        '<rootDir>/**/*.spec.ts',
+        '<rootDir>/__tests__/**/*.spec.js',
+        '<rootDir>/__tests__/**/*.spec.ts',
     ],
     coverageReporters: ['json', 'lcovonly', 'text', 'clover'],
 };

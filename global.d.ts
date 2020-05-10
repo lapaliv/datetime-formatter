@@ -53,163 +53,163 @@ declare module '@lapaliv/datetime-formatter' {
         /**
          * Adds one second to the date
          */
-        addSecond(): this;
+        addSecond(): DateTimeFormatter;
         /**
          * Adds many seconds to the date
          * @param count
          */
-        addSeconds(count: number): this;
+        addSeconds(count: number): DateTimeFormatter;
         /**
          * Adds one minute to the date
          */
-        addMinute(): this;
+        addMinute(): DateTimeFormatter;
         /**
          * Adds many minutes to the date
          * @param count
          */
-        addMinutes(count: number): this;
+        addMinutes(count: number): DateTimeFormatter;
         /**
          * Adds one hour to the date
          */
-        addHour(): this;
+        addHour(): DateTimeFormatter;
         /**
          * Adds many hours to the date
          * @param count
          */
-        addHours(count: number): this;
+        addHours(count: number): DateTimeFormatter;
         /**
          * Adds one day to the date
          */
-        addDay(): this;
+        addDay(): DateTimeFormatter;
         /**
          * Adds many days to the date
          * @param count
          */
-        addDays(count: number): this;
+        addDays(count: number): DateTimeFormatter;
         /**
          * Adds one week to the date
          */
-        addWeek(): this;
+        addWeek(): DateTimeFormatter;
         /**
          * Adds many weeks to the date
          * @param count
          */
-        addWeeks(count: number): this;
+        addWeeks(count: number): DateTimeFormatter;
         /**
          * Adds one month to the date
          */
-        addMonth(): this;
+        addMonth(): DateTimeFormatter;
         /**
          * Adds many months to the date
          * @param count
          */
-        addMonths(count: number): this;
+        addMonths(count: number): DateTimeFormatter;
         /**
          * Adds one year to the date
          */
-        addYear(): this;
+        addYear(): DateTimeFormatter;
         /**
          * Adds many years to the date
          * @param count
          */
-        addYears(count: number): this;
+        addYears(count: number): DateTimeFormatter;
         /**
          * Adds one decade to the date
          */
-        addDecade(): this;
+        addDecade(): DateTimeFormatter;
         /**
          * Adds many decades to the date
          * @param count
          */
-        addDecades(count: number): this;
+        addDecades(count: number): DateTimeFormatter;
         /**
          * Adds one decade to the date
          */
-        addCentury(): this;
+        addCentury(): DateTimeFormatter;
         /**
          * Adds many centuries to the date
          * @param count
          */
-        addCenturies(count: number): this;
+        addCenturies(count: number): DateTimeFormatter;
         /**
          * Subtracts one second from the current date
          */
-        subSecond(): this;
+        subSecond(): DateTimeFormatter;
         /**
          * Subtracts many seconds from the current date
          * @param count
          */
-        subSeconds(count: number): this;
+        subSeconds(count: number): DateTimeFormatter;
         /**
          * Subtracts one minute from the current date
          */
-        subMinute(): this;
+        subMinute(): DateTimeFormatter;
         /**
          * Subtracts many minutes from the current date
          * @param count
          */
-        subMinutes(count: number): this;
+        subMinutes(count: number): DateTimeFormatter;
         /**
          * Subtracts one hour from the current date
          */
-        subHour(): this;
+        subHour(): DateTimeFormatter;
         /**
          * Subtracts many hours from the current date
          * @param count
          */
-        subHours(count: number): this;
+        subHours(count: number): DateTimeFormatter;
         /**
          * Subtracts one day from the current date
          */
-        subDay(): this;
+        subDay(): DateTimeFormatter;
         /**
          * Subtracts many days from the current date
          * @param count
          */
-        subDays(count: number): this;
+        subDays(count: number): DateTimeFormatter;
         /**
          * Subtracts one week from the current date
          */
-        subWeek(): this;
+        subWeek(): DateTimeFormatter;
         /**
          * Subtracts many weeks from the current date
          * @param count
          */
-        subWeeks(count: number): this;
+        subWeeks(count: number): DateTimeFormatter;
         /**
          * Subtracts one month from the current date
          */
-        subMonth(): this;
+        subMonth(): DateTimeFormatter;
         /**
          * Subtracts many months from the current date
          * @param count
          */
-        subMonths(count: number): this;
+        subMonths(count: number): DateTimeFormatter;
         /**
          * Subtracts one year from the current date
          */
-        subYear(): this;
+        subYear(): DateTimeFormatter;
         /**
          * Subtracts many years from the current date
          * @param count
          */
-        subYears(count: number): this;
+        subYears(count: number): DateTimeFormatter;
         /**
          * Subtracts one decade from the current date
          */
-        subDecade(): this;
+        subDecade(): DateTimeFormatter;
         /**
          * Subtracts many decades from the current date
          */
-        subDecades(count: number): this;
+        subDecades(count: number): DateTimeFormatter;
         /**
          * Subtracts one century from the current date
          */
-        subCentury(): this;
+        subCentury(): DateTimeFormatter;
         /**
          * Subtracts many centuries from the current date
          */
-        subCenturies(count: number): this;
+        subCenturies(count: number): DateTimeFormatter;
         /**
          * Converts to the `Y-m-d` format
          */
@@ -238,42 +238,52 @@ declare module '@lapaliv/datetime-formatter' {
          * Returns the count of full microseconds between the current date and the transmitted date
          * @param date
          */
-        diffInMicroseconds(date: this): number;
+        diffInMicroseconds(date: DateTimeFormatter): number;
         /**
          * Returns the count of full milliseconds between the current date and the transmitted date
          * @param date
          */
-        diffInMilliseconds(date: this): number;
+        diffInMilliseconds(date: DateTimeFormatter): number;
         /**
          * Returns the count of full seconds between the current date and the transmitted date
          * @param date
          */
-        diffInSeconds(date: this): number;
+        diffInSeconds(date: DateTimeFormatter): number;
         /**
          * Returns the count of full minutes between the current date and the transmitted date
          * @param date
          */
-        diffInMinutes(date: this): number;
+        diffInMinutes(date: DateTimeFormatter): number;
         /**
          * Returns the count of full hours between the current date and the transmitted date
          * @param date
          */
-        diffInHours(date: this): number;
+        diffInHours(date: DateTimeFormatter): number;
         /**
          * Returns the count of full days between the current date and the transmitted date
          * @param date
          */
-        diffInDays(date: this): number;
+        diffInDays(date: DateTimeFormatter): number;
         /**
          * Returns the count of full months between the current date and the transmitted date
          * @param date
          */
-        diffInMonths(date: this): number;
+        diffInMonths(date: DateTimeFormatter): number;
         /**
          * Returns the count of full years between the current date and the transmitted date
          * @param date
          */
-        diffInYears(date: this): number;
+        diffInYears(date: DateTimeFormatter): number;
+        /**
+         * Returns the count of full decades between the current date and the transmitted date
+         * @param date
+         */
+        diffInDecades(date: DateTimeFormatter): number;
+        /**
+         * Returns the count of full centuries between the current date and the transmitted date
+         * @param date
+         */
+        diffInCenturies(date: DateTimeFormatter): number;
         /**
          * Converts the date to the target format
          * @param target
@@ -282,83 +292,83 @@ declare module '@lapaliv/datetime-formatter' {
         /**
          * Goes to the beginning of the second
          */
-        startOfSecond(): this;
+        startOfSecond(): DateTimeFormatter;
         /**
          * Goes to the beginning of the minute
          */
-        startOfMinute(): this;
+        startOfMinute(): DateTimeFormatter;
         /**
          * Goes to the beginning of the hour
          */
-        startOfHour(): this;
+        startOfHour(): DateTimeFormatter;
         /**
          * Goes to the beginning of the day
          */
-        startOfDay(): this;
+        startOfDay(): DateTimeFormatter;
         /**
          * Goes to the beginning of the week
          */
-        startOfWeek(): this;
+        startOfWeek(): DateTimeFormatter;
         /**
          * Goes to the beginning of the month
          */
-        startOfMonth(): this;
+        startOfMonth(): DateTimeFormatter;
         /**
          * Goes to the beginning of the half year
          */
-        startOfHalfYear(): this;
+        startOfHalfYear(): DateTimeFormatter;
         /**
          * Goes to the beginning of the year
          */
-        startOfYear(): this;
+        startOfYear(): DateTimeFormatter;
         /**
          * Goes to the beginning of the decade
          */
-        startOfDecade(): this;
+        startOfDecade(): DateTimeFormatter;
         /**
          * Goes to the beginning of the decade
          */
-        startOfCentury(): this;
+        startOfCentury(): DateTimeFormatter;
         /**
          * Goes to the end of the minute
          */
-        endOfSecond(): this;
+        endOfSecond(): DateTimeFormatter;
         /**
          * Goes to the end of the minute
          */
-        endOfMinute(): this;
+        endOfMinute(): DateTimeFormatter;
         /**
          * Goes to the end of the hour
          */
-        endOfHour(): this;
+        endOfHour(): DateTimeFormatter;
         /**
          * Goes to the end of the day
          */
-        endOfDay(): this;
+        endOfDay(): DateTimeFormatter;
         /**
          * Goes to the end of the week
          */
-        endOfWeek(): this;
+        endOfWeek(): DateTimeFormatter;
         /**
          * Goes to the end of the day
          */
-        endOfMonth(): this;
+        endOfMonth(): DateTimeFormatter;
         /**
          * Goes to the end of the year
          */
-        endOfHalfYear(): this;
+        endOfHalfYear(): DateTimeFormatter;
         /**
          * Goes to the end of the year
          */
-        endOfYear(): this;
+        endOfYear(): DateTimeFormatter;
         /**
          * Goes to the end of decade
          */
-        endOfDecade(): this;
+        endOfDecade(): DateTimeFormatter;
         /**
          * Goes to the end of century
          */
-        endOfCentury(): this;
+        endOfCentury(): DateTimeFormatter;
         /**
          * Returns `true` if the date in future
          */
@@ -475,42 +485,42 @@ declare module '@lapaliv/datetime-formatter' {
          * Setter for microseconds
          * @param value
          */
-        setMicroseconds(value: number): this;
+        setMicroseconds(value: number): DateTimeFormatter;
         /**
          * Setter for milliseconds
          * @param value
          */
-        setMilliseconds(value: number): this;
+        setMilliseconds(value: number): DateTimeFormatter;
         /**
          * Setter for seconds
          * @param value
          */
-        setSeconds(value: number): this;
+        setSeconds(value: number): DateTimeFormatter;
         /**
          * Setter for minutes
          * @param value
          */
-        setMinutes(value: number): this;
+        setMinutes(value: number): DateTimeFormatter;
         /**
          * Setter for hours
          * @param value
          */
-        setHours(value: number): this;
+        setHours(value: number): DateTimeFormatter;
         /**
          * Setter for day
          * @param value
          */
-        setDay(value: number): this;
+        setDay(value: number): DateTimeFormatter;
         /**
          * Setter for month
          * @param value
          */
-        setMonth(value: number): this;
+        setMonth(value: number): DateTimeFormatter;
         /**
          * Setter for year
          * @param value
          */
-        setYear(value: number): this;
+        setYear(value: number): DateTimeFormatter;
         /**
          * Returns the first day in year on full week
          */
@@ -531,7 +541,7 @@ declare module '@lapaliv/datetime-formatter' {
          * Set the translations
          * @param payload
          */
-        setTranslations(payload: Translation): this;
+        setTranslations(payload: Translation): DateTimeFormatter;
         /**
          * Returns `true` if the current date equals the transmitted date
          * @param target
@@ -630,6 +640,66 @@ declare module '@lapaliv/datetime-formatter' {
          * Returns the number of the day in the year
          */
         getDayOfYear(): number;
+        /**
+         * Returns the index of microsecond in which date is included
+         * @param startedFrom
+         * @param microseconds
+         */
+        getIndexOfMicrosecondPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...microseconds: Array<number> | Array<Array<number>>): number;
+        /**
+         * Returns the index of millisecond in which date is included
+         * @param startedFrom
+         * @param milliseconds
+         */
+        getIndexOfMillisecondPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...milliseconds: Array<number> | Array<Array<number>>): number;
+        /**
+         * Returns the index of second in which date is included
+         * @param startedFrom
+         * @param seconds
+         */
+        getIndexOfSecondPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...seconds: Array<number> | Array<Array<number>>): number;
+        /**
+         * Returns the index of minute in which date is included
+         * @param startedFrom
+         * @param minutes
+         */
+        getIndexOfMinutePeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...minutes: Array<number> | Array<Array<number>>): number;
+        /**
+         * Returns the index of hour in which date is included
+         * @param startedFrom
+         * @param hours
+         */
+        getIndexOfHourPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...hours: Array<number> | Array<Array<number>>): number;
+        /**
+         * Returns the index of day in which date is included
+         * @param startedFrom
+         * @param days
+         */
+        getIndexOfDayPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...days: Array<number> | Array<Array<number>>): number;
+        /**
+         * Returns the index of month in which date is included
+         * @param startedFrom
+         * @param months
+         */
+        getIndexOfMonthPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...months: Array<number> | Array<Array<number>>): number;
+        /**
+         * Returns the index of year in which date is included
+         * @param startedFrom
+         * @param years
+         */
+        getIndexOfYearPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...years: Array<number> | Array<Array<number>>): number;
+        /**
+         * Returns the index of decade in which date is included
+         * @param startedFrom
+         * @param decades
+         */
+        getIndexOfDecadePeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...decades: Array<number> | Array<Array<number>>): number;
+        /**
+         * Returns the index of century in which date is included
+         * @param startedFrom
+         * @param centuries
+         */
+        getIndexOfCenturyPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...centuries: Array<number> | Array<Array<number>>): number;
         /**
          * Parses the date from the transmitted Date object
          * @param date

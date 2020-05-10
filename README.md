@@ -148,6 +148,8 @@ diffInHours(date: DateTimeFormatter): number;
 diffInDays(date: DateTimeFormatter): number;
 diffInMonths(date: DateTimeFormatter): number;
 diffInYears(date: DateTimeFormatter): number;
+diffInDecades(date: DateTimeFormatter): number;
+diffInCenturies(date: DateTimeFormatter): number;
 
 equal(date: DateTimeFormatter | Date | number | string): boolean;
 // Compare year, month, day, hours, minutes, seconds and milliseconds
@@ -218,7 +220,20 @@ getDayOfWeek(): number;
 getDayOfWeekIso(): number;
 getDayOfYear(): number;
 clone(): DateTimeFormatter;
+
+// See below
+getIndexOfMicrosecondPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...microseconds: Array<number> | Array<Array<number>>): number;
+getIndexOfMillisecondPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...milliseconds: Array<number> | Array<Array<number>>): number;
+getIndexOfSecondPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...seconds: Array<number> | Array<Array<number>>): number;
+getIndexOfMinutePeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...minutes: Array<number> | Array<Array<number>>): number;
+getIndexOfHourPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...hours: Array<number> | Array<Array<number>>): number;
+getIndexOfDayPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...days: Array<number> | Array<Array<number>>): number;
+getIndexOfMonthPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...months: Array<number> | Array<Array<number>>): number;
+getIndexOfYearPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...years: Array<number> | Array<Array<number>>): number;
+getIndexOfDecadePeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...decades: Array<number> | Array<Array<number>>): number;
+getIndexOfCenturyPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...centuries: Array<number> | Array<Array<number>>): number;
 ```
+Please see the [doc](https://github.com/lapaliv/datetime-formatter/wiki/Methods-getIndexOf*PeriodOnWhichDateIsIncluded) about `getIndexOf*PeriodOnWhichDateIsIncluded` methods
 
 ## Format parameters
 
@@ -232,15 +247,15 @@ The table was copied from [php.net](https://www.php.net/manual/en/function.date.
 | `D`                 | A textual representation of a day, three letters                                                                 | `Mon` through `Sun`                           |
 | `j`                 | Day of the month without leading zeros                                                                           | `1` to `31`                                   |
 | `l` (lowercase 'L') | A full textual representation of the day of the week                                                             | `Sunday` through `Saturday`                   |
-| `N`                 | [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) numeric representation of the day of the week | 1 (for Monday) through 7 (for Sunday)         |
+| `N`                 | [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) numeric representation of the day of the week | `1` (for Monday) through `7` (for Sunday)     |
 | `S`                 | English ordinal suffix for the day of the month, 2 characters                                                    | `st`, `nd`, `rd` or `th`. Works well with `j` |
 | `w`                 | Numeric representation of the day of the week                                                                    | `0` (for Sunday) through `6` (for Saturday)   |
 | `z`                 | The day of the year (starting from 0)                                                                            | `0` through `365`                             |
 
 ### Week
-| Format character | Description                                                                                                      | Example returned values          |
-|------------------|------------------------------------------------------------------------------------------------------------------|----------------------------------|
-| `W`              | [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) week number of year, weeks starting on Monday | `42` (the 42nd week in the year) |
+| Format character | Description                                                                                                      | Example returned values                             |
+|------------------|------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------|
+| `W`              | [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) week number of year, weeks starting on Monday | `42` (the 42nd week in the year). `00` through `52` |
 
 ### Month
 | Format character | Description                                                        | Example returned values      |
@@ -253,12 +268,12 @@ The table was copied from [php.net](https://www.php.net/manual/en/function.date.
 
 
 ### Year
-| Format character | Description                                                                                                                                                                                                                  | Example returned values |
-|------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
-| `L`              | Whether it's a leap year `1` if it is a leap year, `0` otherwise.                                                                                                                                                            |                         |
-| `o`              | [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) week-numbering year. This has the same value as Y, except that if the ISO week number (W) belongs to the previous or next year, that year is used instead | `1999` or `2003`        |
-| `Y`              | A full numeric representation of a year, 4 digits                                                                                                                                                                            | `1999` or `2003`        |
-| `y`              | A two digit representation of a year                                                                                                                                                                                         | `99` or `03`            |
+| Format character | Description                                                                                                                                                                                                                    | Example returned values |
+|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|
+| `L`              | Whether it's a leap year `1` if it is a leap year, `0` otherwise.                                                                                                                                                              |                         |
+| `o`              | [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) week-numbering year. This has the same value as Y, except that if the ISO week number (`W`) belongs to the previous or next year, that year is used instead | `1999` or `2003`        |
+| `Y`              | A full numeric representation of a year, 4 digits                                                                                                                                                                              | `1999` or `2003`        |
+| `y`              | A two digit representation of a year                                                                                                                                                                                           | `99` or `03`            |
 
 ### Time
 | Format character | Description                                     | Example returned values |
@@ -273,7 +288,7 @@ The table was copied from [php.net](https://www.php.net/manual/en/function.date.
 | `i`              | Minutes with leading zeros                      | `00` to `59`            |
 | `s`              | Seconds with leading zeros                      | `00` through `59`       |
 | `u`              | Microseconds                                    | `654321`                |
-| `v`              | Milliseconds. Same note applies as for u.       | `654`                   |
+| `v`              | Milliseconds. Same note applies as for `u`.     | `654`                   |
 
 ### Full datetime
 | Format character | Description                                                             | Example returned values           |

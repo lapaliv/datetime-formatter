@@ -1,9 +1,12 @@
 /.idea
 /src
 /coverage
+/lib
 /node_modules
+/__tests__
 .babelrc
 .gitignore
+.editorconfig
 jest.config.js
 tsconfig.json
 webpack.config.js
