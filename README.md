@@ -1,3 +1,7 @@
+# DateTimeFormatter
+
+![npm licence](https://img.shields.io/npm/l/@lapaliv/datetime-formatter)
+
 ## Import
 ```typescript
 // ES6
@@ -125,6 +129,19 @@ isPrevYear(): boolean;
 isToday(): boolean;
 isTomorrow(): boolean;
 isYesterday(): boolean;
+
+isJanuary(): boolean;
+isFebruary(): boolean;
+isMarch(): boolean;
+isApril(): boolean;
+isMay(): boolean;
+isJune(): boolean;
+isJuly(): boolean;
+isAugust(): boolean;
+isSeptember(): boolean;
+isOctober(): boolean;
+isNovember(): boolean;
+isDecember(): boolean;
 
 isCurrentMicrosecond(): boolean;
 isCurrentMillisecond(): boolean;

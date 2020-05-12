@@ -450,6 +450,54 @@ declare module '@lapaliv/datetime-formatter' {
          */
         isCurrentCentury(): boolean;
         /**
+         * Returns `true` if the current month is January
+         */
+        isJanuary(): boolean;
+        /**
+         * Returns `true` if the current month is February
+         */
+        isFebruary(): boolean;
+        /**
+         * Returns `true` if the current month is March
+         */
+        isMarch(): boolean;
+        /**
+         * Returns `true` if the current month is April
+         */
+        isApril(): boolean;
+        /**
+         * Returns `true` if the current month is May
+         */
+        isMay(): boolean;
+        /**
+         * Returns `true` if the current month is June
+         */
+        isJune(): boolean;
+        /**
+         * Returns `true` if the current month is July
+         */
+        isJuly(): boolean;
+        /**
+         * Returns `true` if the current month is August
+         */
+        isAugust(): boolean;
+        /**
+         * Returns `true` if the current month is September
+         */
+        isSeptember(): boolean;
+        /**
+         * Returns `true` if the current month is October
+         */
+        isOctober(): boolean;
+        /**
+         * Returns `true` if the current month is November
+         */
+        isNovember(): boolean;
+        /**
+         * Returns `true` if the current month is December
+         */
+        isDecember(): boolean;
+        /**
          * Returns the microseconds
          */
         getMicroseconds(): number;

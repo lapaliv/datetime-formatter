@@ -2,7 +2,7 @@
   "name": "@lapaliv/datetime-formatter",
   "description": "The library for work with date and time",
   "private": false,
-  "version": "0.1.10",
+  "version": "0.1.11",
   "keywords": [
     "date",
     "time",
@@ -10,7 +10,8 @@
     "formatter",
     "datetime-formatter",
     "php-datetime",
-    "php-date"
+    "php-date",
+    "carbon"
   ],
   "homepage": "https://github.com/lapaliv/datetime-formatter",
   "author": {

@@ -925,6 +925,90 @@ export class DateTimeFormatter {
     }
 
     /**
+     * Returns `true` if the current month is January
+     */
+    isJanuary(): boolean {
+        return this.getMonth() === 1;
+    }
+
+    /**
+     * Returns `true` if the current month is February
+     */
+    isFebruary(): boolean {
+        return this.getMonth() === 2;
+    }
+
+    /**
+     * Returns `true` if the current month is March
+     */
+    isMarch(): boolean {
+        return this.getMonth() === 3;
+    }
+
+    /**
+     * Returns `true` if the current month is April
+     */
+    isApril(): boolean {
+        return this.getMonth() === 4;
+    }
+
+    /**
+     * Returns `true` if the current month is May
+     */
+    isMay(): boolean {
+        return this.getMonth() === 5;
+    }
+
+    /**
+     * Returns `true` if the current month is June
+     */
+    isJune(): boolean {
+        return this.getMonth() === 6;
+    }
+
+    /**
+     * Returns `true` if the current month is July
+     */
+    isJuly(): boolean {
+        return this.getMonth() === 7;
+    }
+
+    /**
+     * Returns `true` if the current month is August
+     */
+    isAugust(): boolean {
+        return this.getMonth() === 8;
+    }
+
+    /**
+     * Returns `true` if the current month is September
+     */
+    isSeptember(): boolean {
+        return this.getMonth() === 9;
+    }
+
+    /**
+     * Returns `true` if the current month is October
+     */
+    isOctober(): boolean {
+        return this.getMonth() === 10;
+    }
+
+    /**
+     * Returns `true` if the current month is November
+     */
+    isNovember(): boolean {
+        return this.getMonth() === 11;
+    }
+
+    /**
+     * Returns `true` if the current month is December
+     */
+    isDecember(): boolean {
+        return this.getMonth() === 12;
+    }
+
+    /**
      * Returns the microseconds
      */
     getMicroseconds(): number {
