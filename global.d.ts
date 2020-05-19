@@ -290,6 +290,10 @@ declare module '@lapaliv/datetime-formatter' {
          */
         format(target: string): string;
         /**
+         * Goes to the beginning of the millisecond
+         */
+        startOfMillisecond(): DateTimeFormatter;
+        /**
          * Goes to the beginning of the second
          */
         startOfSecond(): DateTimeFormatter;
@@ -329,6 +333,10 @@ declare module '@lapaliv/datetime-formatter' {
          * Goes to the beginning of the decade
          */
         startOfCentury(): DateTimeFormatter;
+        /**
+         * Goes to the end of the millisecond
+         */
+        endOfMillisecond(): DateTimeFormatter;
         /**
          * Goes to the end of the minute
          */
@@ -748,6 +756,39 @@ declare module '@lapaliv/datetime-formatter' {
          * @param centuries
          */
         getIndexOfCenturyPeriodOnWhichDateIsIncluded(startedFrom: DateTimeFormatter, ...centuries: Array<number> | Array<Array<number>>): number;
+        /**
+         * Returns the Unix-timestamp with a precision
+         * @param precision
+         * @example getPreciseTimestamp()   1589833741123456
+         * @example getPreciseTimestamp(6)  1589833741123456
+         * @example getPreciseTimestamp(5)  158983374112345
+         * @example getPreciseTimestamp(4)  158983374112345
+         * @example getPreciseTimestamp(3)  15898337411234
+         * @example getPreciseTimestamp(2)  1589833741123
+         * @example getPreciseTimestamp(1)  158983374112
+         * @example getPreciseTimestamp(0)  15898337411
+         */
+        getPreciseTimestamp(precision?: number): number;
+        /**
+         * Returns `true` if the current date is greater than the transmitted date
+         * @param date
+         */
+        greaterThan(date: DateTimeFormatter): boolean;
+        /**
+         * Returns `true` if the current date is greater than or equal to the transmitted date
+         * @param date
+         */
+        greaterThanOrEqualTo(date: DateTimeFormatter): boolean;
+        /**
+         * Returns `true` if the current date is less than the transmitted date
+         * @param date
+         */
+        lessThan(date: DateTimeFormatter): boolean;
+        /**
+         * Returns `true` if the current date is less than or equal to the transmitted date
+         * @param date
+         */
+        lessThanOrEqualTo(date: DateTimeFormatter): boolean;
         /**
          * Parses the date from the transmitted Date object
          * @param date

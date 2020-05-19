@@ -86,4 +86,18 @@ describe('correct', () => {
         const result = formatter.getIndexOfDayPeriodOnWhichDateIsIncluded(new DateTimeFormatter(2010, 2, 1), 5, 2);
         expect(result).toBe(1);
     });
+
+    it('2/2 from 2020-05-04', () => {
+        const formatter = new DateTimeFormatter(2020, 5, 4, 9, 0, 0);
+        const result1 = formatter.getIndexOfDayPeriodOnWhichDateIsIncluded(new DateTimeFormatter(2020, 5, 4, 10), 2, 2);
+        expect(result1).toBe(0);
+        const result2 = formatter.getIndexOfDayPeriodOnWhichDateIsIncluded(new DateTimeFormatter(2020, 5, 5, 11), 2, 2);
+        expect(result2).toBe(0);
+        const result3 = formatter.getIndexOfDayPeriodOnWhichDateIsIncluded(new DateTimeFormatter(2020, 5, 6, 12), 2, 2);
+        expect(result3).toBe(1);
+        const result4 = formatter.getIndexOfDayPeriodOnWhichDateIsIncluded(new DateTimeFormatter(2020, 5, 7, 13), 2, 2);
+        expect(result4).toBe(1);
+        const result5 = formatter.getIndexOfDayPeriodOnWhichDateIsIncluded(new DateTimeFormatter(2020, 5, 8, 14), 2, 2);
+        expect(result5).toBe(0);
+    });
 });
