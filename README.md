@@ -96,6 +96,8 @@ subCenturies(count: number): DateTimeFormatter;
 
 ### Methods for change date automatically
 ```typescript
+startOfMillisecond(): DateTimeFormatter;
+startOfSecond(): DateTimeFormatter;
 startOfMinute(): DateTimeFormatter;
 startOfHour(): DateTimeFormatter;
 startOfDay(): DateTimeFormatter;
@@ -106,6 +108,8 @@ startOfYear(): DateTimeFormatter;
 startOfDecade(): DateTimeFormatter;
 startOfCentury(): DateTimeFormatter;
 
+endOfMillisecond(): DateTimeFormatter;
+endOfSecond(): DateTimeFormatter;
 endOfMinute(): DateTimeFormatter;
 endOfHour(): DateTimeFormatter;
 endOfDay(): DateTimeFormatter;
@@ -157,6 +161,11 @@ isCurrentCentury(): boolean;
 
 ### Methods for compare
 ```typescript
+greaterThan(date: DateTimeFormatter): boolean;
+greaterThanOrEqualTo(date: DateTimeFormatter): boolean;
+lessThan(date: DateTimeFormatter): boolean;
+lessThanOrEqualTo(date: DateTimeFormatter): boolean;
+
 diffInMicroseconds(date: DateTimeFormatter): number;
 diffInMilliseconds(date: DateTimeFormatter): number;
 diffInSeconds(date: DateTimeFormatter): number;
@@ -206,6 +215,19 @@ toJsTimestamp(): number;
 // Returns a Unix timestamp
 toTimestamp(): number;
 toDate(): Date;
+/**
+ * Returns the Unix-timestamp with a precision
+ * @param precision
+ * @example getPreciseTimestamp()   1589833741123456
+ * @example getPreciseTimestamp(6)  1589833741123456
+ * @example getPreciseTimestamp(5)  158983374112345
+ * @example getPreciseTimestamp(4)  158983374112345
+ * @example getPreciseTimestamp(3)  15898337411234
+ * @example getPreciseTimestamp(2)  1589833741123
+ * @example getPreciseTimestamp(1)  158983374112
+ * @example getPreciseTimestamp(0)  15898337411
+ */
+getPreciseTimestamp(precision?: number): number;
 ```
 
 ### Translations
