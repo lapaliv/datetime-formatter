@@ -11,27 +11,27 @@ describe('correct', () => {
   });
   it('5', () => {
     const date = new DateTimeFormatter(2020, 1, 2, 3, 4, 5, 123456);
-    expect(date.getPreciseTimestamp(6)).toEqual(157793424512345);
+    expect(date.getPreciseTimestamp(5)).toEqual(157793424512345);
   });
   it('4', () => {
     const date = new DateTimeFormatter(2020, 1, 2, 3, 4, 5, 123456);
-    expect(date.getPreciseTimestamp(6)).toEqual(15779342451234);
+    expect(date.getPreciseTimestamp(4)).toEqual(15779342451234);
   });
   it('3', () => {
     const date = new DateTimeFormatter(2020, 1, 2, 3, 4, 5, 123456);
-    expect(date.getPreciseTimestamp(6)).toEqual(1577934245123);
+    expect(date.getPreciseTimestamp(3)).toEqual(1577934245123);
   });
   it('2', () => {
     const date = new DateTimeFormatter(2020, 1, 2, 3, 4, 5, 123456);
-    expect(date.getPreciseTimestamp(6)).toEqual(157793424512);
+    expect(date.getPreciseTimestamp(2)).toEqual(157793424512);
   });
   it('1', () => {
     const date = new DateTimeFormatter(2020, 1, 2, 3, 4, 5, 123456);
-    expect(date.getPreciseTimestamp(6)).toEqual(15779342451);
+    expect(date.getPreciseTimestamp(1)).toEqual(15779342451);
   });
   it('0', () => {
     const date = new DateTimeFormatter(2020, 1, 2, 3, 4, 5, 123456);
-    expect(date.getPreciseTimestamp(6)).toEqual(1577934245);
+    expect(date.getPreciseTimestamp(0)).toEqual(1577934245);
   });
 });
 
