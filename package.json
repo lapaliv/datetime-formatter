@@ -2,7 +2,7 @@
   "name": "@lapaliv/datetime-formatter",
   "description": "The library for work with date and time",
   "private": false,
-  "version": "0.1.13",
+  "version": "0.1.14",
   "keywords": [
     "date",
     "time",
@@ -43,16 +43,11 @@
     "babel-loader": "^8.1.0",
     "jest": "^25.1.0",
     "jest-each": "^25.1.0",
+    "node-notifier": "^9.0.1",
+    "ssri": "^8.0.1",
     "typescript": "^3.8.3",
     "uuid": "^7.0.2",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
-  "dependencies": {
-    "node-notifier": "^9.0.1",
-    "ssri": "^8.0.1"
   }
 }
