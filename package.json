@@ -50,5 +50,9 @@
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
+  },
+  "dependencies": {
+    "node-notifier": "^9.0.1",
+    "ssri": "^8.0.1"
   }
 }
