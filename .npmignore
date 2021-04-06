@@ -3,7 +3,7 @@
 /coverage
 /lib
 /node_modules
-/__tests__
+/tests
 .babelrc
 .gitignore
 .editorconfig
